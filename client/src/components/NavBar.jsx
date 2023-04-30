@@ -1,13 +1,22 @@
-import * as React from "react";
-// import { Link as RouterLink } from "react-router-dom";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
+import AuthModal from "./AuthModal";
+
 const NavBar = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -42,6 +51,7 @@ const NavBar = () => {
             sx={{ flexGrow: 0.5 }}></Typography>
           <Link
             to="/login"
+            onClick={handleOpen}
             style={{
               textDecoration: "none",
               marginRight: "1.5rem",
@@ -51,6 +61,7 @@ const NavBar = () => {
           </Link>
         </Toolbar>
       </AppBar>
+      <AuthModal open={open} handleClose={handleClose} />
     </Box>
   );
 };
