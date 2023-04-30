@@ -1,32 +1,58 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import * as React from "react";
+// import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function ButtonAppBar() {
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+
+const NavBar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        elevation={0}
+        style={{ backgroundColor: "#F5F5F5", color: "#2E3840" }}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+          <Typography variant="h6" component="div" sx={{ flexGrow: 0.5 }}>
+            Feed
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Link
+            to="/pricing"
+            style={{
+              textDecoration: "none",
+              marginRight: "1.5rem",
+              color: "inherit",
+            }}>
+            Pricing
+          </Link>
+          <Link
+            to="/features"
+            style={{
+              textDecoration: "none",
+              marginRight: "1.5rem",
+              color: "inherit",
+            }}>
+            Features
+          </Link>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 0.5 }}></Typography>
+          <Link
+            to="/login"
+            style={{
+              textDecoration: "none",
+              marginRight: "1.5rem",
+              color: "inherit",
+            }}>
+            Login
+          </Link>
         </Toolbar>
       </AppBar>
     </Box>
   );
-}
+};
+
+export default NavBar;
