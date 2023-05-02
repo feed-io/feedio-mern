@@ -56,12 +56,22 @@ exports.loginUser = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    // You now have access to the user's ID through existingUser._id
-    const userId = existingUser._id;
+    let token;
+    try {
+      token = jwt.sign(
+        { userId: existingUser._id, email: existingUser.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+    } catch (error) {
+      return res.status(500).json({ message: "Something went wrong" });
+    }
 
     // Here, you can generate and send a token, or simply send the user data back to the client
     // For demonstration purposes, we will just send the user data including the user ID
-    res.status(200).json({ message: "Login successful", user: existingUser });
+    res
+      .status(200)
+      .json({ userId: existingUser._id, email: existingUser.email, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

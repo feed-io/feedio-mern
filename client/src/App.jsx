@@ -12,13 +12,15 @@ import Landing from "./pages/Landing";
 import Pricing from "./pages/Pricing";
 import FeaturesPage from "./pages/Features";
 import Profile from "./pages/Profile";
-import useToken from "./hooks/useToken";
+// import useToken from "./hooks/useToken";
+// import { AuthProvider } from "./context/authContext";
 
 const App = () => {
-  const { token, setToken } = useToken();
+  // const { token, setToken } = useToken();
 
   return (
     <>
+      {/* <AuthProvider userData={""}> */}
       <Router>
         <NavBar />
         <Routes>
@@ -27,10 +29,11 @@ const App = () => {
           <Route path="/features" element={<FeaturesPage />} />
           <Route
             path="/user"
-            element={token ? <Profile /> : <Navigate to="/login" />}
+            element={false ? <Profile /> : <Navigate to="/login" />}
           />
         </Routes>
       </Router>
+      {/* </AuthProvider> */}
       <Footer />
     </>
   );
