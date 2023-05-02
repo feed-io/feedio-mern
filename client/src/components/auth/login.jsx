@@ -7,6 +7,7 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
+import axios from "axios";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -15,9 +16,22 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call your API to log in the user
+    console.log("Submitting form", formData); // Add this line
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/users/login",
+        formData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log("Request sent"); // Add this line
+      // Handle success (e.g., navigate to another page, display a success message, etc.)
+      console.log(response);
+    } catch (error) {
+      // Handle error (e.g., display an error message, etc.)
+      console.log(error);
+    }
   };
 
   return (
