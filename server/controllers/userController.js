@@ -3,11 +3,12 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 const User = require("../models/user");
+const Company = require("../models/company");
 
 dotenv.config();
 
 exports.registerUser = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, companyName, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -16,8 +17,21 @@ exports.registerUser = async (req, res, next) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    let company = await Company.findOne({ name: companyName });
+
+    // Create a new company if it doesn't exist (optional)
+    if (!company) {
+      company = new Company({ name: companyName });
+      await company.save();
+    }
+
     const hashedPassword = await bcrypt.hash(password, 12);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({
+      username,
+      companyName: company._id,
+      email,
+      password: hashedPassword,
+    });
     await newUser.save();
 
     let token;
@@ -28,11 +42,15 @@ exports.registerUser = async (req, res, next) => {
         { expiresIn: "1h" }
       );
     } catch (error) {
-      return res.status(500).json({ message: "Something went wrong" });
+      return res
+        .status(500)
+        .json({ message: "Something went ttoken", error: error });
     }
     res.status(201).json({ userId: newUser._id, email: newUser.email, token });
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 
@@ -40,14 +58,12 @@ exports.loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email
     const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
       return res.status(400).json({ message: "User doesn't exist" });
     }
 
-    // Check if the password is correct
     const isPasswordValid = await bcrypt.compare(
       password,
       existingUser.password
@@ -78,16 +94,59 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
-exports.getAllUsers = (req, res) => {
-  // Implement logic to fetch all users
-};
-
-exports.getUserById = (req, res) => {
+exports.getUserById = async (req, res) => {
   // Implement logic to fetch a user by ID
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const userData = {
+      userId: user._id,
+      username: user.username,
+      companyName: user.companyName,
+    };
+
+    res.status(200).json({ user: user });
+  } catch (error) {}
 };
 
-exports.updateUser = (req, res) => {
-  // Implement logic to update a user
+exports.updateUser = async (req, res, next) => {
+  const { id } = req.params;
+  const { username, email, password } = req.body;
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (username) {
+      user.username = username;
+    }
+
+    if (email) {
+      const existingUser = await User.findOne({ email });
+      if (existingUser && existingUser._id.toString() !== userId) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+      user.email = email;
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
 };
 
 exports.deleteUser = (req, res) => {

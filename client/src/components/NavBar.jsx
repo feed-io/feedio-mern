@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { AuthContext } from "../context/auth-context";
 
 import AuthModal from "./AuthModal";
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
+  const auth = useContext(AuthContext);
 
   const handleOpen = () => {
     setOpen(true);
@@ -17,6 +19,7 @@ const NavBar = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -49,16 +52,29 @@ const NavBar = () => {
             variant="h6"
             component="div"
             sx={{ flexGrow: 0.5 }}></Typography>
-          <Link
-            to="/login"
-            onClick={handleOpen}
-            style={{
-              textDecoration: "none",
-              marginRight: "1.5rem",
-              color: "inherit",
-            }}>
-            Login
-          </Link>
+
+          {!auth.isLoggedIn ? (
+            <Link
+              onClick={handleOpen}
+              style={{
+                textDecoration: "none",
+                marginRight: "1.5rem",
+                color: "inherit",
+              }}>
+              Login
+            </Link>
+          ) : (
+            <Link
+              to="/"
+              onClick={auth.logout}
+              style={{
+                textDecoration: "none",
+                marginRight: "1.5rem",
+                color: "inherit",
+              }}>
+              Logout
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
       <AuthModal open={open} handleClose={handleClose} />

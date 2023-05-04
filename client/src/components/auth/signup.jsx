@@ -1,5 +1,6 @@
 // src/components/SignUp.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   TextField,
@@ -8,13 +9,19 @@ import {
   Container,
 } from "@material-ui/core";
 import axios from "axios";
+import { AuthContext } from "../../context/auth-context";
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [formData, setFormData] = useState({
     username: "",
+    companyName: "", // Change this line
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const { handleClose } = props;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,10 +37,11 @@ const SignUp = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      // Handle success (e.g., navigate to another page, display a success message, etc.)
-      console.log(response);
+      console.log(formData);
+      auth.login(response.data.userId, response.data.token);
+      navigate("/profile");
+      handleClose();
     } catch (error) {
-      // Handle error (e.g., display an error message, etc.)
       console.log(error);
     }
   };
@@ -53,6 +61,17 @@ const SignUp = () => {
               onChange={handleChange}
             />
           </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="companyName" // Change this line
+              label="Company"
+              value={formData.companyName} // And this line
+              onChange={handleChange}
+            />
+          </Grid>
+
           <Grid item xs={12}>
             <TextField
               required

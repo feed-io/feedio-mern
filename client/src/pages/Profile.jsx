@@ -1,124 +1,59 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useState, useContext } from "react";
+import { Container, Typography, Box, Paper, Grid } from "@mui/material";
+import axios from "axios";
 
-function UserPage() {
-  const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
-  const [tasks, setTasks] = useState(Array(8).fill(Array(7).fill("")));
-  const daysOfWeek = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+import { AuthContext } from "../context/auth-context";
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+const Profile = () => {
+  const [company, setCompany] = useState([]);
+  const [content, setContent] = useState(""); // Add a new state for content
+  const auth = useContext(AuthContext);
 
-  const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
-  };
-
-  const handleTaskChange = (event, row, col) => {
-    const newTasks = [...tasks];
-    newTasks[row][col] = event.target.value;
-    setTasks(newTasks);
-  };
-
-  const handleAddUser = () => {
-    // Save user to database or perform other actions
-    console.log(`Username: ${username}, Phone: ${phone}, Tasks: ${tasks}`);
-  };
+  useEffect(() => {
+    const loadCompanyData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/users/${auth.userId}`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+        setContent(response.data.user.company); // Set the content state
+        console.log(content);
+      } catch (error) {
+        console.log("Error fetching testimonials data:", error);
+      }
+    };
+    loadCompanyData();
+  }, []);
 
   return (
     <Container maxWidth="md">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          User Page
+      <Box my={4}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          {content}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Welcome to your company profile. Here you can see the testimonials
+          submitted by your clients.
         </Typography>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h5" gutterBottom>
-                Add User
-              </Typography>
-              <TextField
-                label="Username"
-                variant="outlined"
-                fullWidth
-                value={username}
-                onChange={handleUsernameChange}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                label="Phone Number"
-                variant="outlined"
-                fullWidth
-                value={phone}
-                onChange={handlePhoneChange}
-                sx={{ mb: 2 }}
-              />
-              <Button variant="contained" onClick={handleAddUser}>
-                Add
-              </Button>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h5" gutterBottom>
-                Tasks
-              </Typography>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell />
-                      {daysOfWeek.map((day) => (
-                        <TableCell key={day}>{day}</TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {tasks.map((row, i) => (
-                      <TableRow key={i}>
-                        <TableCell>Task {i + 1}</TableCell>
-                        {row.map((col, j) => (
-                          <TableCell key={j}>
-                            <TextField
-                              value={tasks[i][j]}
-                              onChange={(e) => handleTaskChange(e, i, j)}
-                            />
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
-          </Grid>
+          {company.map((testimonial) => (
+            <Grid item xs={12} md={4} key={testimonial.id}>
+              <Paper elevation={3} style={{ padding: "1rem" }}>
+                <Typography variant="h6" component="h2">
+                  {testimonial.author}
+                </Typography>
+                <Typography variant="body2">{testimonial.content}</Typography>
+              </Paper>
+            </Grid>
+          ))}
         </Grid>
       </Box>
     </Container>
   );
-}
+};
 
-export default UserPage;
+export default Profile;

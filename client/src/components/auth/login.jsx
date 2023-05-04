@@ -1,5 +1,5 @@
 // src/components/Login.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   TextField,
@@ -8,9 +8,15 @@ import {
   Container,
 } from "@material-ui/core";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+import { AuthContext } from "../../context/auth-context";
+
+const Login = (props) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const { handleClose } = props;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,18 +24,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting form", formData); // Add this line
     try {
       const response = await axios.post(
         "http://localhost:8080/api/users/login",
         formData,
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("Request sent"); // Add this line
-      // Handle success (e.g., navigate to another page, display a success message, etc.)
-      console.log(response);
+
+      auth.login(response.data.userId, response.data.token);
+      navigate("/profile");
+      handleClose();
     } catch (error) {
-      // Handle error (e.g., display an error message, etc.)
       console.log(error);
     }
   };

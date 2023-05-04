@@ -21,7 +21,13 @@ const AuthModal = ({ open, handleClose }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle></DialogTitle>
-      <DialogContent>{hasAccount ? <Login /> : <SignUp />}</DialogContent>
+      <DialogContent>
+        {hasAccount ? (
+          <Login handleClose={handleClose} />
+        ) : (
+          <SignUp handleClose={handleClose} />
+        )}
+      </DialogContent>
       <DialogActions>
         {hasAccount ? (
           <Button onClick={handleCreateAccount}>Need an account?</Button>
