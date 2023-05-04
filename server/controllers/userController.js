@@ -3,12 +3,11 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 const User = require("../models/user");
-const Company = require("../models/company");
 
 dotenv.config();
 
 exports.registerUser = async (req, res, next) => {
-  const { username, companyName, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -17,18 +16,9 @@ exports.registerUser = async (req, res, next) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    let company = await Company.findOne({ name: companyName });
-
-    // Create a new company if it doesn't exist (optional)
-    if (!company) {
-      company = new Company({ name: companyName });
-      await company.save();
-    }
-
     const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = new User({
       username,
-      companyName: company._id,
       email,
       password: hashedPassword,
     });
@@ -95,7 +85,6 @@ exports.loginUser = async (req, res, next) => {
 };
 
 exports.getUserById = async (req, res) => {
-  // Implement logic to fetch a user by ID
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -107,7 +96,6 @@ exports.getUserById = async (req, res) => {
     const userData = {
       userId: user._id,
       username: user.username,
-      companyName: user.companyName,
     };
 
     res.status(200).json({ user: user });
@@ -119,7 +107,7 @@ exports.updateUser = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findByIdAndUpdate(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Container, Typography, Box, Paper, Grid } from "@mui/material";
+import { Typography, Box, Button, Fab, Container } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import SettingsIcon from "@mui/icons-material/Settings";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
 
-const Profile = () => {
-  const [company, setCompany] = useState([]);
-  const [content, setContent] = useState(""); // Add a new state for content
+export default function ProfilePage() {
+  const [content, setContent] = useState("");
   const auth = useContext(AuthContext);
 
   useEffect(() => {
@@ -20,40 +21,57 @@ const Profile = () => {
             },
           }
         );
-        setContent(response.data.user.company); // Set the content state
-        console.log(content);
+        console.log(response.data.user);
+        setContent(response.data.user.email); // Set the content state
       } catch (error) {
-        console.log("Error fetching testimonials data:", error);
+        console.log("Error fetching testimonials data:", error.message);
       }
     };
     loadCompanyData();
   }, []);
 
   return (
-    <Container maxWidth="md">
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          {content}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Welcome to your company profile. Here you can see the testimonials
-          submitted by your clients.
-        </Typography>
-        <Grid container spacing={3}>
-          {company.map((testimonial) => (
-            <Grid item xs={12} md={4} key={testimonial.id}>
-              <Paper elevation={3} style={{ padding: "1rem" }}>
-                <Typography variant="h6" component="h2">
-                  {testimonial.author}
-                </Typography>
-                <Typography variant="body2">{testimonial.content}</Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
+    <Container>
+      <Box
+        sx={{
+          position: "fixed",
+          right: 2,
+          top: 2,
+        }}>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<SettingsIcon />}
+          onClick={() => console.log("Navigate to settings page")}>
+          Settings
+        </Button>
       </Box>
+
+      <Typography variant="h4" component="h1" sx={{ marginBottom: 2 }}>
+        {auth.userId}
+      </Typography>
+
+      <Typography variant="h5" component="h2" sx={{ marginBottom: 4 }}>
+        {content}
+      </Typography>
+
+      <Box>
+        <Typography variant="h6" component="h3">
+          Product Reviews Overview
+        </Typography>
+        {/* Add the product reviews overview component here */}
+      </Box>
+
+      <Fab
+        color="primary"
+        sx={{
+          position: "fixed",
+          bottom: 4,
+          right: 4,
+        }}
+        onClick={() => console.log("Create a new product review")}>
+        <AddIcon />
+      </Fab>
     </Container>
   );
-};
-
-export default Profile;
+}

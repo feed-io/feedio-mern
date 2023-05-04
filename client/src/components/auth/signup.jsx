@@ -14,7 +14,6 @@ import { AuthContext } from "../../context/auth-context";
 const SignUp = (props) => {
   const [formData, setFormData] = useState({
     username: "",
-    companyName: "", // Change this line
     email: "",
     password: "",
   });
@@ -42,7 +41,7 @@ const SignUp = (props) => {
       navigate("/profile");
       handleClose();
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -61,17 +60,6 @@ const SignUp = (props) => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="companyName" // Change this line
-              label="Company"
-              value={formData.companyName} // And this line
-              onChange={handleChange}
-            />
-          </Grid>
-
           <Grid item xs={12}>
             <TextField
               required
