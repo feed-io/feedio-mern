@@ -11,11 +11,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/auth-context";
+import { UserDataContext } from "../../context/userData-context";
 
 const Login = (props) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
+  const userData = useContext(UserDataContext);
   const { handleClose } = props;
 
   const handleChange = (e) => {
@@ -32,6 +34,7 @@ const Login = (props) => {
       );
 
       auth.login(response.data.userId, response.data.token);
+      userData.addProduct(response.data.products[0]._id);
       navigate("/dashboard");
       handleClose();
     } catch (error) {

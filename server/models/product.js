@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema({
   name: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 module.exports = mongoose.model("Product", productSchema);

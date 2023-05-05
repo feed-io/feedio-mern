@@ -15,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
+import ProductsList from "../components/dashboard/ProductsList";
 
 export default function ProfilePage() {
   const [email, setEmail] = useState("");
@@ -23,6 +24,9 @@ export default function ProfilePage() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [updatedEmail, setUpdatedEmail] = useState("");
+  const [openCreateProduct, setOpenCreateProduct] = useState(false);
+  const [newProductName, setNewProductName] = useState("");
+  const [newProductImageUrl, setNewProductImageUrl] = useState("");
 
   useEffect(() => {
     const loadCompanyData = async () => {
@@ -80,11 +84,39 @@ export default function ProfilePage() {
           },
         }
       );
-      console.log(response);
+
       handleUpdateClose();
     } catch (error) {
       console.log("Error deleting user:", error.message);
     }
+  };
+
+  const handleCreateProductSubmit = async (e) => {
+    e.preventDefault();
+    console.log(auth);
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/users/${auth.userId}/products/createProduct`,
+        {
+          name: newProductName,
+          imageUrl: newProductImageUrl,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + auth.token,
+          },
+        }
+      );
+      console.log(response);
+      handleCreateProductClose();
+      // Add the new product to the list of products or reload the list of products
+    } catch (error) {
+      console.log("Error creating product:", error.message);
+    }
+  };
+
+  const handleCreateProduct = () => {
+    handleCreateProductOpen();
   };
 
   const handleUpdateClick = () => {
@@ -101,6 +133,13 @@ export default function ProfilePage() {
 
   const handleDeleteClose = () => {
     setOpenDelete(false);
+  };
+  const handleCreateProductOpen = () => {
+    setOpenCreateProduct(true);
+  };
+
+  const handleCreateProductClose = () => {
+    setOpenCreateProduct(false);
   };
 
   return (
@@ -140,10 +179,9 @@ export default function ProfilePage() {
           </Button>
         </Box>
         <Typography variant="h6" component="h3" textAlign="center">
-          Product Reviews Overview
+          Products
         </Typography>
-        {/* Add the product reviews overview component here */}
-        REVIEWs
+        <ProductsList />
         <Fab
           color="primary"
           sx={{
@@ -151,10 +189,37 @@ export default function ProfilePage() {
             bottom: 4,
             right: 4,
           }}
-          onClick={() => console.log("Create a new product review")}>
+          onClick={handleCreateProduct}>
           <AddIcon />
         </Fab>
       </Box>
+      {/* Create product dialog */}
+      <Dialog open={openCreateProduct} onClose={handleCreateProductClose}>
+        <DialogTitle>Create New Product</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Product Name"
+            value={newProductName}
+            onChange={(e) => setNewProductName(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Image URL"
+            value={newProductImageUrl}
+            onChange={(e) => setNewProductImageUrl(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCreateProductClose}>Cancel</Button>
+          <Button color="primary" onClick={handleCreateProductSubmit}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Update user dialog */}
       <Dialog open={openUpdate} onClose={handleUpdateClose}>
         <DialogTitle>Update User</DialogTitle>

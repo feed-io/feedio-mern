@@ -48,7 +48,7 @@ exports.loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email }).populate("products");
 
     if (!existingUser) {
       return res.status(400).json({ message: "User doesn't exist" });
@@ -73,11 +73,12 @@ exports.loginUser = async (req, res, next) => {
       return res.status(500).json({ message: "Something went wrong" });
     }
 
-    // Here, you can generate and send a token, or simply send the user data back to the client
-    // For demonstration purposes, we will just send the user data including the user ID
-    res
-      .status(200)
-      .json({ userId: existingUser._id, email: existingUser.email, token });
+    res.status(200).json({
+      userId: existingUser._id,
+      email: existingUser.email,
+      token,
+      products: existingUser.products,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

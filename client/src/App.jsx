@@ -8,10 +8,12 @@ import Pricing from "./pages/Pricing";
 import FeaturesPage from "./pages/Features";
 import Dashboard from "./pages/Dashboard";
 import { AuthContext } from "./context/auth-context";
+import { UserDataContext } from "./context/userData-context";
 
 const App = () => {
   const [token, setToken] = useState(false);
   const [userId, setUserId] = useState(false);
+  const [productId, setProductId] = useState([]);
 
   const login = useCallback((uid, token) => {
     setToken(token);
@@ -23,6 +25,12 @@ const App = () => {
     setUserId(null);
   }, []);
 
+  const addProduct = useCallback((newItem) => {
+    if (newItem && !productId.includes(newItem)) {
+      setProductId((previous) => [...previous, newItem]);
+    }
+  }, []);
+  // setProductId([]);
   let routes;
 
   if (token) {
@@ -50,11 +58,17 @@ const App = () => {
         login: login,
         logout: logout,
       }}>
-      <Router>
-        <NavBar />
-        <main>{routes}</main>
-        <Footer />
-      </Router>
+      <UserDataContext.Provider
+        value={{
+          productId: productId,
+          addProduct: addProduct,
+        }}>
+        <Router>
+          <NavBar />
+          <main>{routes}</main>
+          <Footer />
+        </Router>
+      </UserDataContext.Provider>
     </AuthContext.Provider>
   );
 };
