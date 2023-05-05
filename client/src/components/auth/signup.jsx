@@ -38,7 +38,7 @@ const SignUp = (props) => {
       );
       console.log(formData);
       auth.login(response.data.userId, response.data.token);
-      navigate("/profile");
+      navigate("/dashboard");
       handleClose();
     } catch (error) {
       console.log(error.message);

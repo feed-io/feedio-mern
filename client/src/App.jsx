@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import Landing from "./pages/Landing";
 import Pricing from "./pages/Pricing";
 import FeaturesPage from "./pages/Features";
-import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
 import { AuthContext } from "./context/auth-context";
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
   if (token) {
     routes = (
       <Routes>
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     );
   } else {

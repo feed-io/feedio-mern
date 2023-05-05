@@ -32,7 +32,7 @@ const Login = (props) => {
       );
 
       auth.login(response.data.userId, response.data.token);
-      navigate("/profile");
+      navigate("/dashboard");
       handleClose();
     } catch (error) {
       console.log(error);
