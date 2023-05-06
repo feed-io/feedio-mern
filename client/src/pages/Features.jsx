@@ -6,21 +6,23 @@ import CustomizableDesign from "../components/featuresPage/CustomizableDesign";
 
 const FeaturesPage = () => {
   return (
-    <Container>
-      <Box my={5}>
-        <Grid container spacing={5}>
-          <Grid item xs={12} md={4}>
-            <WallOfLoveWidget />
+    <Box flexGrow={1}>
+      <Container>
+        <Box my={5}>
+          <Grid container spacing={5}>
+            <Grid item xs={12} md={4}>
+              <WallOfLoveWidget />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <EffortlessTestimonialCollection />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <CustomizableDesign />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <EffortlessTestimonialCollection />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <CustomizableDesign />
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

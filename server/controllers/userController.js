@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 const User = require("../models/user");
+const Product = require("../models/Product");
 
 dotenv.config();
 
@@ -88,7 +89,7 @@ exports.loginUser = async (req, res, next) => {
 exports.getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("products");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -97,10 +98,15 @@ exports.getUserById = async (req, res) => {
     const userData = {
       userId: user._id,
       username: user.username,
+      products: user.products, // Include the products in the response
     };
 
-    res.status(200).json({ user: user });
-  } catch (error) {}
+    res.status(200).json({ user: userData });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching user data" });
+  }
 };
 
 exports.updateUser = async (req, res, next) => {

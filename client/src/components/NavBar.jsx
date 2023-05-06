@@ -38,28 +38,29 @@ const NavBar = () => {
               Feed
             </Link>
           </Typography>
-          <Link
-            to="/pricing"
-            style={{
-              textDecoration: "none",
-              marginRight: "1.5rem",
-              color: "inherit",
-            }}>
-            Pricing
-          </Link>
-          <Link
-            to="/features"
-            style={{
-              textDecoration: "none",
-              marginRight: "1.5rem",
-              color: "inherit",
-            }}>
-            Features
-          </Link>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 0.5 }}></Typography>
+
+          {auth.isLoggedIn || (
+            <>
+              <Link
+                to="/pricing"
+                style={{
+                  textDecoration: "none",
+                  marginRight: "1.5rem",
+                  color: "inherit",
+                }}>
+                Pricing
+              </Link>
+              <Link
+                to="/features"
+                style={{
+                  textDecoration: "none",
+                  marginRight: "1.5rem",
+                  color: "inherit",
+                }}>
+                Features
+              </Link>
+            </>
+          )}
 
           {!auth.isLoggedIn ? (
             <Link
@@ -72,16 +73,27 @@ const NavBar = () => {
               Login
             </Link>
           ) : (
-            <Link
-              to="/"
-              onClick={auth.logout}
-              style={{
-                textDecoration: "none",
-                marginRight: "1.5rem",
-                color: "inherit",
-              }}>
-              Logout
-            </Link>
+            <>
+              <Link
+                to="/dashboard"
+                style={{
+                  textDecoration: "none",
+                  marginRight: "1.5rem",
+                  color: "inherit",
+                }}>
+                Dashboard
+              </Link>
+              <Link
+                to="/"
+                onClick={auth.logout}
+                style={{
+                  textDecoration: "none",
+                  marginRight: "1.5rem",
+                  color: "inherit",
+                }}>
+                Logout
+              </Link>
+            </>
           )}
         </Toolbar>
       </AppBar>

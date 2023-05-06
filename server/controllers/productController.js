@@ -93,7 +93,8 @@ exports.updateProduct = async (req, res) => {
 };
 
 exports.deleteProduct = async (req, res) => {
-  const { id, pid } = req.params;
+  const { pid } = req.params;
+  const id = req.userData.userId;
 
   try {
     const product = await Product.findByIdAndDelete(pid);
@@ -101,6 +102,13 @@ exports.deleteProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
+
+    // Remove the product reference from the user's products array
+    await User.findOneAndUpdate(
+      { _id: id },
+      { $pull: { products: pid } },
+      { new: true }
+    );
 
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {

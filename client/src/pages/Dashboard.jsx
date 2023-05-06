@@ -8,14 +8,17 @@ import ProductList from "../components/dashboardPage/ProductList";
 import UpdateModal from "../components/dashboardPage/UpdateModal";
 import CreateModal from "../components/dashboardPage/CreateModal";
 import DeleteModal from "../components/dashboardPage/DeleteModal";
+import Avatar from "../components/dashboardPage/Avatar";
 
 export default function ProfilePage() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const auth = useContext(AuthContext);
+  const [user, setUser] = useState("");
+  const [prodQuantity, setProdQuantity] = useState(0);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openCreateProduct, setOpenCreateProduct] = useState(false);
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     const loadData = async () => {
@@ -29,8 +32,10 @@ export default function ProfilePage() {
           }
         );
 
+        setUser(response.data.user);
         setEmail(response.data.user.email);
         setUsername(response.data.user.username);
+        setProdQuantity(response.data.user.products.length);
       } catch (error) {
         console.log("Error fetching testimonials data:", error.message);
       }
@@ -82,6 +87,10 @@ export default function ProfilePage() {
         <Typography variant="h5" component="h2" textAlign="center">
           {email}
         </Typography>
+        <Typography variant="h5" component="h2" textAlign="center">
+          {prodQuantity}
+        </Typography>
+        <Avatar user={user} />
         <Box
           sx={{
             display: "flex",
@@ -102,7 +111,7 @@ export default function ProfilePage() {
           </Button>
         </Box>
         <Typography variant="h6" component="h3" textAlign="center">
-          Products
+          Spaces
         </Typography>
         <ProductList />
         <Fab
