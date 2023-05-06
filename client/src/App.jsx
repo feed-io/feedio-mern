@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import NavBar from "./components/NavBar";
@@ -9,26 +9,18 @@ import FeaturesPage from "./pages/Features";
 import Dashboard from "./pages/Dashboard";
 import ProductProfile from "./pages/ProductProfile";
 import { AuthContext } from "./context/auth-context";
+import { useAuth } from "./hooks/auth-hook";
 
 const App = () => {
-  const [token, setToken] = useState(false);
-  const [userId, setUserId] = useState(false);
-
-  const login = useCallback((uid, token) => {
-    setToken(token);
-    setUserId(uid);
-  }, []);
-
-  const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
-  }, []);
-
+  const { token, login, logout, userId } = useAuth();
   let routes;
 
   if (token) {
     routes = (
       <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/features" element={<FeaturesPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/products/:productId" element={<ProductProfile />} />
       </Routes>
