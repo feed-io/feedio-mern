@@ -4,8 +4,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import SignUp from "./auth/signup";
-import Login from "./auth/login";
+import SignUp from "./signup";
+import Login from "./login";
 
 const AuthModal = ({ open, handleClose }) => {
   const [hasAccount, setHasAccount] = useState(true);

@@ -2,7 +2,7 @@ const Product = require("../models/Product");
 const User = require("../models/user"); // Import User model
 
 exports.createProduct = async (req, res) => {
-  const { name, imageUrl } = req.body;
+  const { name, imageUrl, header, content, questions, rating } = req.body;
   const userId = req.userData.userId; // Assuming you have the user ID from an authentication middleware
 
   try {
@@ -13,6 +13,10 @@ exports.createProduct = async (req, res) => {
 
     const newProduct = new Product({
       name,
+      header,
+      content,
+      questions,
+      rating,
       imageUrl,
       user: userId, // Add this line
     });
@@ -31,19 +35,32 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+exports.getAllProducts = async (req, res) => {
+  const userId = req.userData.userId;
+  try {
+    const products = await Product.find({ user: userId });
+
+    if (!products) {
+      return res.status(404).json({ message: "No products found" });
+    }
+    res.status(200).json({ products });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 exports.getProductById = async (req, res) => {
   const { pid } = req.params;
-  const { id } = req.userData.userId;
+  const userId = req.userData.userId;
 
   try {
-    const user = await User.findById(id);
-
     const product = await Product.findById(pid);
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-
     res.status(200).json({ product });
   } catch (error) {
     return res

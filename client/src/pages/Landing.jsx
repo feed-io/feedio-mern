@@ -1,8 +1,8 @@
 import React from "react";
 
-import HeaderSection from "../components/landing/HeaderSection";
-import CTASection from "../components/landing/CtaSection";
-import FeaturesSection from "../components/landing/FeaturesSection";
+import HeaderSection from "../components/landingPage/HeaderSection";
+import CTASection from "../components/landingPage/CtaSection";
+import FeaturesSection from "../components/landingPage/FeaturesSection";
 
 function LandingPage() {
   return (

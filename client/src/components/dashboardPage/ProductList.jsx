@@ -1,22 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Box, Grid, Typography, Paper } from "@mui/material";
 
 import { AuthContext } from "../../context/auth-context";
-import { UserDataContext } from "../../context/userData-context";
 
 const ProductsList = () => {
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState([]);
   const auth = useContext(AuthContext);
-  const userData = useContext(UserDataContext);
-
-  console.log();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/${userData.productId[0]}`,
+          `http://localhost:8080/api/users/${auth.userId}/products/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -24,7 +21,7 @@ const ProductsList = () => {
           }
         );
 
-        setProducts(response.data.product);
+        setProducts(response.data.products);
       } catch (error) {
         console.log("Error fetching products:", error.message);
       }
@@ -33,12 +30,17 @@ const ProductsList = () => {
     fetchProducts();
   }, []);
 
-  console.log(products);
+  if (products.length === 0) {
+    return <Typography variant="h6">EMPTY</Typography>;
+  }
+
   return (
-    products && (
-      <Grid container spacing={2}>
-        {Object.values(products).map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product}>
+    <Grid container spacing={2}>
+      {products.map((product) => (
+        <Grid item xs={12} sm={6} md={4} key={product._id}>
+          <Link
+            to={`/products/${product._id}`}
+            style={{ textDecoration: "none" }}>
             <Paper elevation={2}>
               <Box
                 sx={{
@@ -49,18 +51,17 @@ const ProductsList = () => {
                   gap: 1,
                 }}>
                 <Typography variant="h6" component="h2">
-                  {product}
+                  {product.name}
                 </Typography>
                 <Typography variant="h6" component="h2">
-                  {product}
+                  {product.imageUrl}
                 </Typography>
-                {/* Add any additional information you want to display here */}
               </Box>
             </Paper>
-          </Grid>
-        ))}
-      </Grid>
-    )
+          </Link>
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 

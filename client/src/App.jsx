@@ -7,13 +7,12 @@ import Landing from "./pages/Landing";
 import Pricing from "./pages/Pricing";
 import FeaturesPage from "./pages/Features";
 import Dashboard from "./pages/Dashboard";
+import ProductProfile from "./pages/ProductProfile";
 import { AuthContext } from "./context/auth-context";
-import { UserDataContext } from "./context/userData-context";
 
 const App = () => {
   const [token, setToken] = useState(false);
   const [userId, setUserId] = useState(false);
-  const [productId, setProductId] = useState([]);
 
   const login = useCallback((uid, token) => {
     setToken(token);
@@ -25,18 +24,13 @@ const App = () => {
     setUserId(null);
   }, []);
 
-  const addProduct = useCallback((newItem) => {
-    if (newItem && !productId.includes(newItem)) {
-      setProductId((previous) => [...previous, newItem]);
-    }
-  }, []);
-  // setProductId([]);
   let routes;
 
   if (token) {
     routes = (
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/products/:productId" element={<ProductProfile />} />
       </Routes>
     );
   } else {
@@ -58,17 +52,11 @@ const App = () => {
         login: login,
         logout: logout,
       }}>
-      <UserDataContext.Provider
-        value={{
-          productId: productId,
-          addProduct: addProduct,
-        }}>
-        <Router>
-          <NavBar />
-          <main>{routes}</main>
-          <Footer />
-        </Router>
-      </UserDataContext.Provider>
+      <Router>
+        <NavBar />
+        <main>{routes}</main>
+        <Footer />
+      </Router>
     </AuthContext.Provider>
   );
 };

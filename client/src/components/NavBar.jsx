@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { AuthContext } from "../context/auth-context";
 
-import AuthModal from "./AuthModal";
+import AuthModal from "./auth/AuthModal";
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
@@ -28,7 +28,15 @@ const NavBar = () => {
         style={{ backgroundColor: "#F5F5F5", color: "#2E3840" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 0.5 }}>
-            Feed
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                marginRight: "1.5rem",
+                color: "inherit",
+              }}>
+              Feed
+            </Link>
           </Typography>
           <Link
             to="/pricing"

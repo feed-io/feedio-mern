@@ -1,8 +1,8 @@
 import React from "react";
 
-import HeaderSection from "../components/pricing/HeaderSection";
-import PricingTiersSection from "../components/pricing/PricingSection";
-import FAQSection from "../components/pricing/FaqSection";
+import HeaderSection from "../components/pricingPage/HeaderSection";
+import PricingTiersSection from "../components/pricingPage/PricingSection";
+import FAQSection from "../components/pricingPage/FaqSection";
 
 const Pricing = () => {
   return (
