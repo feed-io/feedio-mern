@@ -71,7 +71,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <Box
         sx={{
           display: "flex",
@@ -81,34 +81,46 @@ export default function ProfilePage() {
           flexDirection: "column",
           gap: 4,
         }}>
-        <Typography variant="h4" component="h1" textAlign="center">
-          {username}
-        </Typography>
-        <Typography variant="h5" component="h2" textAlign="center">
-          {email}
-        </Typography>
-        <Typography variant="h5" component="h2" textAlign="center">
-          {prodQuantity}
-        </Typography>
-        <Avatar user={user} />
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
-            gap: 2,
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "80%",
+            mb: 3,
           }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleUpdateClick}>
-            Update
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleDeleteClick}>
-            Delete Account
-          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "0.5rem",
+            }}>
+            <Avatar user={user} sx={{ mb: 1 }} />
+            <Typography variant="h4" component="h1">
+              {username}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 2,
+            }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleUpdateClick}>
+              Update
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleDeleteClick}>
+              Delete Account
+            </Button>
+          </Box>
         </Box>
         <Typography variant="h6" component="h3" textAlign="center">
           Spaces
