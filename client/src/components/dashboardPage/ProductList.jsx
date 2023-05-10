@@ -5,9 +5,11 @@ import { Box, Grid, Typography, Paper } from "@mui/material";
 
 import { AuthContext } from "../../context/auth-context";
 
-const ProductsList = () => {
+const ProductsList = (props) => {
   const [products, setProducts] = useState([]);
   const auth = useContext(AuthContext);
+
+  const { refresh } = props;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,7 +30,7 @@ const ProductsList = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [refresh]);
 
   if (products.length === 0) {
     return <Typography variant="h6">EMPTY</Typography>;
@@ -54,7 +56,7 @@ const ProductsList = () => {
                   {product.name}
                 </Typography>
                 <Typography variant="h6" component="h2">
-                  {product.imageUrl}
+                  {/* {product.imageUrl} */}
                 </Typography>
               </Box>
             </Paper>

@@ -10,6 +10,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/auth-context";
 const UpdateModal = (props) => {
   const { onOpen, onClose } = props;
+
   const auth = useContext(AuthContext);
 
   const handleDeleteSubmit = async (e) => {

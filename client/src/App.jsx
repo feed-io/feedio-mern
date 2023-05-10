@@ -8,8 +8,10 @@ import Pricing from "./pages/Pricing";
 import FeaturesPage from "./pages/Features";
 import Dashboard from "./pages/Dashboard";
 import ProductProfile from "./pages/ProductProfile";
+import Profile from "./pages/UserProfile";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
+import ReviewsWidget from "./templates/ReviewsWidget";
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
@@ -22,7 +24,9 @@ const App = () => {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/products/:productId" element={<ProductProfile />} />
+        <Route path="/showRoom" element={<ReviewsWidget />} />
       </Routes>
     );
   } else {

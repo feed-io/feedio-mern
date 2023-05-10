@@ -9,14 +9,16 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { AuthContext } from "../../context/auth-context";
-const UpdateModal = (props) => {
+const CreateModal = (props) => {
   const [newProductName, setNewProductName] = useState("");
   const [newProductImageUrl, setNewProductImageUrl] = useState("");
   const [newProductHeader, setNewProductHeader] = useState("");
   const [newProductContent, setNewProductContent] = useState("");
   const [newProductQuestions, setNewProductQuestions] = useState([]);
   const [newProductRating, setNewProductRating] = useState(0);
-  const { onOpen, onClose } = props;
+  const [refreshProductList, setRefreshProductList] = useState(false);
+
+  const { onOpen, onClose, onProductCreated } = props;
   const auth = useContext(AuthContext);
 
   const handleCreateProductSubmit = async (e) => {
@@ -41,6 +43,7 @@ const UpdateModal = (props) => {
       );
 
       onClose();
+      onProductCreated();
     } catch (error) {
       console.log("Error creating product:", error.message);
     }
@@ -103,4 +106,4 @@ const UpdateModal = (props) => {
   );
 };
 
-export default UpdateModal;
+export default CreateModal;

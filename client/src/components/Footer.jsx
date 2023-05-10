@@ -19,7 +19,7 @@ const Footer = () => {
               rel="noopener"
               color="inherit">
               Facebook
-            </Link>{" "}
+            </Link>
             |
             <Link
               href="https://twitter.com/cleanlynn"

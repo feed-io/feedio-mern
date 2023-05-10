@@ -9,9 +9,12 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { AuthContext } from "../../context/auth-context";
+
 const UpdateModal = (props) => {
   const [updatedEmail, setUpdatedEmail] = useState("");
+  const [updatedUsername, setUpdatedUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const { onOpen, onClose } = props;
   const auth = useContext(AuthContext);
 
@@ -23,6 +26,7 @@ const UpdateModal = (props) => {
         `http://localhost:8080/api/users/${auth.userId}`,
         {
           email: updatedEmail,
+          username: updatedUsername,
         },
         {
           headers: {
@@ -31,6 +35,7 @@ const UpdateModal = (props) => {
         }
       );
       setEmail(updatedEmail);
+      setUsername(updatedUsername);
 
       onClose();
     } catch (error) {
@@ -48,6 +53,13 @@ const UpdateModal = (props) => {
           label="New Email"
           value={updatedEmail}
           onChange={(e) => setUpdatedEmail(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="New Username"
+          value={updatedUsername}
+          onChange={(e) => setUpdatedUsername(e.target.value)}
         />
       </DialogContent>
       <DialogActions>

@@ -85,13 +85,10 @@ const ProductProfile = () => {
     };
 
     await updateProduct(auth.userId, productId, auth.token, updatedProduct);
-    // Re-fetch the product data after updating
-    // You can also update the state directly, but re-fetching ensures that the data is in sync with the server
   };
 
   const handleDelete = async () => {
     await deleteProduct(auth.userId, productId, auth.token);
-    // Redirect to a different page after deleting the product, for example, the user's dashboard
     navigate("/dashboard");
   };
 
@@ -120,10 +117,7 @@ const ProductProfile = () => {
                   Content: {product.content}
                 </Typography>
                 <Typography variant="subtitle1" component="p">
-                  Rating: {product.rating}
-                </Typography>
-                <Typography variant="subtitle1" component="p">
-                  Image URL: {product.imageUrl}
+                  {/* Image URL: {product.imageUrl} */}
                 </Typography>
                 <Typography variant="subtitle1" component="p">
                   Questions:

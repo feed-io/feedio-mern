@@ -1,24 +1,29 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Typography, Box, Button, Fab, Container } from "@mui/material";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import {
+  Typography,
+  Box,
+  Fab,
+  Container,
+  Button,
+  TextField,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
 import ProductList from "../components/dashboardPage/ProductList";
-import UpdateModal from "../components/dashboardPage/UpdateModal";
 import CreateModal from "../components/dashboardPage/CreateModal";
-import DeleteModal from "../components/dashboardPage/DeleteModal";
 import Avatar from "../components/dashboardPage/Avatar";
+import { Link } from "react-router-dom";
 
 export default function ProfilePage() {
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [user, setUser] = useState("");
   const [prodQuantity, setProdQuantity] = useState(0);
-  const [openUpdate, setOpenUpdate] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
   const [openCreateProduct, setOpenCreateProduct] = useState(false);
+  const [refreshProductList, setRefreshProductList] = useState(false);
   const auth = useContext(AuthContext);
+  const codeSnippetRef = useRef(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -33,7 +38,6 @@ export default function ProfilePage() {
         );
 
         setUser(response.data.user);
-        setEmail(response.data.user.email);
         setUsername(response.data.user.username);
         setProdQuantity(response.data.user.products.length);
       } catch (error) {
@@ -43,31 +47,26 @@ export default function ProfilePage() {
     loadData();
   }, []);
 
+  const handleCopyToClipboard = () => {
+    const codeSnippet = codeSnippetRef.current.value;
+    navigator.clipboard.writeText(codeSnippet);
+    alert("Code snippet copied to clipboard");
+  };
+
   const handleCreateProduct = () => {
     handleCreateProductOpen();
   };
 
-  const handleUpdateClick = () => {
-    setOpenUpdate(true);
-  };
-
-  const handleUpdateClose = () => {
-    setOpenUpdate(false);
-  };
-
-  const handleDeleteClick = () => {
-    setOpenDelete(true);
-  };
-
-  const handleDeleteClose = () => {
-    setOpenDelete(false);
-  };
   const handleCreateProductOpen = () => {
     setOpenCreateProduct(true);
   };
 
   const handleCreateProductClose = () => {
     setOpenCreateProduct(false);
+  };
+
+  const handleProductCreated = () => {
+    setRefreshProductList(!refreshProductList);
   };
 
   return (
@@ -102,30 +101,49 @@ export default function ProfilePage() {
               {username}
             </Typography>
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 2,
-            }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleUpdateClick}>
-              Update
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleDeleteClick}>
-              Delete Account
-            </Button>
-          </Box>
+          <Typography>
+            <Link to={`/profile/`} style={{ textDecoration: "none" }}>
+              Profile
+            </Link>
+          </Typography>
+          <Typography>
+            <Link to="/showRoom" style={{ textDecoration: "none" }}>
+              Show Room
+            </Link>
+          </Typography>
+          <div>
+            <Box sx={{ mt: 2 }}>
+              <TextField
+                inputRef={codeSnippetRef}
+                multiline
+                fullWidth
+                rows={8}
+                variant="outlined"
+                value={`<iframe
+  src="http://localhost:3000/reviews"
+  title="Reviews Page"
+  width="100%" 
+  height="800px"
+  style={{
+    border: "none",
+    boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
+    borderRadius: "10px",
+    overflow: "hidden",
+  }}
+/>`}
+              />
+            </Box>
+            <Box sx={{ mt: 1 }}>
+              <Button variant="contained" onClick={handleCopyToClipboard}>
+                Copy to Clipboard
+              </Button>
+            </Box>
+          </div>
         </Box>
         <Typography variant="h6" component="h3" textAlign="center">
           Spaces
         </Typography>
-        <ProductList />
+        <ProductList refresh={refreshProductList} />
         <Fab
           color="primary"
           sx={{
@@ -141,11 +159,8 @@ export default function ProfilePage() {
       <CreateModal
         onOpen={openCreateProduct}
         onClose={handleCreateProductClose}
+        onProductCreated={handleProductCreated}
       />
-      {/* Update user dialog */}
-      <UpdateModal onOpen={openUpdate} onClose={handleUpdateClose} />
-      {/* Delete user dialog */}
-      <DeleteModal onOpen={openDelete} onClose={handleDeleteClose} />
     </Container>
   );
 }

@@ -98,6 +98,7 @@ exports.getUserById = async (req, res) => {
     const userData = {
       userId: user._id,
       username: user.username,
+      email: user.email,
       products: user.products, // Include the products in the response
     };
 
