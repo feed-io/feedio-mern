@@ -12,6 +12,7 @@ import Profile from "./pages/UserProfile";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
 import ReviewsWidget from "./templates/ReviewsWidget";
+import ReviewSpace from "./templates/ReviewSpace";
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/products/:productId" element={<ProductProfile />} />
         <Route path="/showRoom" element={<ReviewsWidget />} />
+        <Route path="/reviewSpace" element={<ReviewSpace />} />
       </Routes>
     );
   } else {

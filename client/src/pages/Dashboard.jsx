@@ -120,7 +120,7 @@ export default function ProfilePage() {
                 rows={8}
                 variant="outlined"
                 value={`<iframe
-  src="http://localhost:3000/reviews"
+  src="http://localhost:3000/showRoom"
   title="Reviews Page"
   width="100%" 
   height="800px"

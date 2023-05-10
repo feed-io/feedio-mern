@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Container, Card, Typography, Box } from "@mui/material";
 
-const ReviewsWidget = () => {
+const ShowRoom = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -18,19 +19,30 @@ const ReviewsWidget = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Reviews Widget</h2>
-      <ul>
-        {/* {reviews.map((review) => ( */}
-        <li key="review._id">
-          <h3>'review.author' - Rating: 'review.rating'/5</h3>
-          <p>'review.content'</p>
-          <small>Posted on: {new Date().toLocaleString()}</small>
-        </li>
-        {/* // ))} */}
-      </ul>
-    </div>
+    <Container maxWidth="md">
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          Welcome to the Show Room!
+        </Typography>
+        <Typography variant="h5" component="h2" gutterBottom>
+          Check out the latest reviews:
+        </Typography>
+        {reviews.map((review) => (
+          <Card key={review._id} sx={{ my: 2, p: 2 }}>
+            <Typography variant="h6" component="div">
+              {review.author} - Rating: {review.rating}/5
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {review.content}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Posted on: {new Date(review.date).toLocaleString()}
+            </Typography>
+          </Card>
+        ))}
+      </Box>
+    </Container>
   );
 };
 
-export default ReviewsWidget;
+export default ShowRoom;
