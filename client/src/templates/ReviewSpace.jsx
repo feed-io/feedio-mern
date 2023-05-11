@@ -19,6 +19,11 @@ const ProductProfile = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [answer, setAnswer] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [content, setContent] = useState("");
+  const [rating, setRating] = useState("");
+
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -26,7 +31,7 @@ const ProductProfile = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/645bce30d8a08978e81a710a`,
+          `http://localhost:8080/api/users/${auth.userId}/products/645beb6528f19b0d9826a6e7`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -48,12 +53,52 @@ const ProductProfile = () => {
   const handleInputChange = (event) => {
     setAnswer(event.target.value);
   };
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleContentChange = (event) => {
+    setContent(event.target.value);
+  };
+
+  const handleRatingChange = (event) => {
+    setRating(event.target.value);
+  };
 
   const handleAnswerSubmit = async (event) => {
     event.preventDefault();
-    // Submit the answer...
-    console.log(answer);
-    setAnswer(""); // Clear the answer field after submission.
+
+    const reviewData = {
+      productId: product._id,
+      name: name,
+      email: email,
+      content: content,
+      rating: rating,
+    };
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/users/${auth.userId}/products/${product._id}/reviews/createReview`,
+        reviewData,
+        {
+          headers: {
+            Authorization: "Bearer " + auth.token,
+          },
+        }
+      );
+
+      console.log(response.data);
+      setName("");
+      setEmail("");
+      setContent("");
+      setRating("");
+    } catch (error) {
+      console.log("Error submitting review:", error.message);
+    }
   };
 
   if (!product) {
@@ -90,20 +135,45 @@ const ProductProfile = () => {
               </ul>
               <form onSubmit={handleAnswerSubmit}>
                 <TextField
-                  label="Your Answer"
+                  label="Your Name"
+                  variant="outlined"
+                  fullWidth
+                  style={{ marginBottom: "1em" }}
+                  value={name}
+                  onChange={handleNameChange}
+                />
+                <TextField
+                  label="Your Email"
+                  variant="outlined"
+                  fullWidth
+                  style={{ marginBottom: "1em" }}
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+                <TextField
+                  label="Your Review"
                   multiline
                   rows={4}
-                  value={answer}
-                  onChange={handleInputChange}
-                  fullWidth
                   variant="outlined"
+                  fullWidth
+                  style={{ marginBottom: "1em" }}
+                  value={content}
+                  onChange={handleContentChange}
+                />
+                <TextField
+                  label="Rating (1-5)"
+                  variant="outlined"
+                  fullWidth
+                  style={{ marginBottom: "1em" }}
+                  value={rating}
+                  onChange={handleRatingChange}
                 />
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
                   style={{ marginTop: "1em" }}>
-                  Submit Answer
+                  Submit Review
                 </Button>
               </form>
             </CardContent>

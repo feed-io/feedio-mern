@@ -33,7 +33,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Define routes
 app.use("/api/users", userRoutes);
 app.use("/api/users/:id/products", productRoutes);
-// application.use("api/users/:id/product/:pid/reviews", reviewRoutes);
+app.use("/api/users/:id/products/:pid/reviews", reviewRoutes);
 
 // Start server
 app.listen(process.env.PORT, () =>
