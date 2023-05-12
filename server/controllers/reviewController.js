@@ -32,3 +32,20 @@ exports.createReview = async (req, res) => {
       .json({ message: "Something went wrong", error: error.message });
   }
 };
+
+exports.getAllReviews = async (req, res) => {
+  const { pid } = req.params;
+
+  try {
+    const product = await Product.findById(pid).populate("reviews");
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({ reviews: product.reviews });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
