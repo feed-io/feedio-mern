@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Typography,
@@ -9,7 +9,6 @@ import {
   Grid,
   Button,
   Divider,
-  Box,
   TextField,
 } from "@mui/material";
 
@@ -18,14 +17,12 @@ import { AuthContext } from "../context/auth-context";
 const ProductProfile = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [answer, setAnswer] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
 
   const auth = useContext(AuthContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -39,8 +36,6 @@ const ProductProfile = () => {
           }
         );
 
-        console.log(response);
-
         setProduct(response.data.product);
       } catch (error) {
         console.log("Error fetching product:", error.message);
@@ -50,9 +45,6 @@ const ProductProfile = () => {
     fetchProduct();
   }, [productId, auth.userId, auth.token]);
 
-  const handleInputChange = (event) => {
-    setAnswer(event.target.value);
-  };
   const handleNameChange = (event) => {
     setName(event.target.value);
   };

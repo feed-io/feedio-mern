@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 export default function ProfilePage() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState("");
-  const [prodQuantity, setProdQuantity] = useState(0);
+  const [productId, setProductId] = useState("");
   const [openCreateProduct, setOpenCreateProduct] = useState(false);
   const [refreshProductList, setRefreshProductList] = useState(false);
   const auth = useContext(AuthContext);
@@ -39,7 +39,7 @@ export default function ProfilePage() {
 
         setUser(response.data.user);
         setUsername(response.data.user.username);
-        setProdQuantity(response.data.user.products.length);
+        setProductId(response.data.user.products[0]._id);
       } catch (error) {
         console.log("Error fetching testimonials data:", error.message);
       }
@@ -107,7 +107,9 @@ export default function ProfilePage() {
             </Link>
           </Typography>
           <Typography>
-            <Link to="/showRoom" style={{ textDecoration: "none" }}>
+            <Link
+              to={`/showRoom/` + productId}
+              style={{ textDecoration: "none" }}>
               Show Room
             </Link>
           </Typography>
@@ -120,7 +122,7 @@ export default function ProfilePage() {
                 rows={8}
                 variant="outlined"
                 value={`<iframe
-  src="http://localhost:3000/showRoom"
+  src="http://localhost:3000/showRoom/${productId}"
   title="Reviews Page"
   width="100%" 
   height="800px"

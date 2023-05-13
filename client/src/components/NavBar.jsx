@@ -39,7 +39,7 @@ const NavBar = () => {
             </Link>
           </Typography>
 
-          {auth.isLoggedIn || (
+          {auth.isLoggedIn ? null : (
             <>
               <Link
                 to="/pricing"

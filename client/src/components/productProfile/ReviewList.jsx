@@ -4,7 +4,7 @@ import { List, ListItem, ListItemText, Typography } from "@mui/material";
 
 const ReviewList = ({ productId, userId, token }) => {
   const [reviews, setReviews] = useState([]);
-  console.log(productId);
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -16,7 +16,7 @@ const ReviewList = ({ productId, userId, token }) => {
             },
           }
         );
-        console.log(response);
+
         setReviews(response.data.reviews);
       } catch (error) {
         console.log("Error fetching reviews:", error.message);

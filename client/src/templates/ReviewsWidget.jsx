@@ -1,22 +1,35 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { Container, Card, Typography, Box } from "@mui/material";
+import axios from "axios";
+
+import { AuthContext } from "../context/auth-context";
 
 const ShowRoom = () => {
   const [reviews, setReviews] = useState([]);
+  const { productId } = useParams();
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/reviews");
-        setReviews(response.data);
+        const response = await axios.get(
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+
+        setReviews(response.data.reviews);
       } catch (error) {
         console.log("Error fetching reviews:", error.message);
       }
     };
 
     fetchData();
-  }, []);
+  }, [productId, auth.userId, auth.token]);
 
   return (
     <Container maxWidth="md">
