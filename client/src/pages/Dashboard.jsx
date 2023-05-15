@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import {
   Typography,
-  Box,
+  Grid,
   Fab,
   Container,
   Button,
@@ -68,60 +68,57 @@ export default function ProfilePage() {
   const handleProductCreated = () => {
     setRefreshProductList(!refreshProductList);
   };
-
   return (
-    <Container maxWidth="md">
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          flexDirection: "column",
-          gap: 4,
-        }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "80%",
-            mb: 3,
-          }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "0.5rem",
-            }}>
-            <Avatar user={user} sx={{ mb: 1 }} />
-            <Typography variant="h4" component="h1">
-              {username}
+    <Grid
+      container
+      display="grid"
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      style={{ minHeight: "100vh", border: "1px solid red" }}
+      spacing={2}>
+      {/* <Grid item xs={12} style={{ border: "1px solid green" }}> */}
+      {/* <Grid
+          container
+          justifyContent="space-between"
+          alignItems="center"
+          style={{ border: "1px solid yellow" }}>
+          <Grid item>
+            <Grid
+              container
+              display="grid"
+              direction="column"
+              alignItems="center">
+              <Avatar user={user} sx={{ mb: 1 }} />
+              <Typography variant="h4" component="h1">
+                {username}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Typography>
+              <Link to={`/profile/`} style={{ textDecoration: "none" }}>
+                Profile
+              </Link>
             </Typography>
-          </Box>
-          <Typography>
-            <Link to={`/profile/`} style={{ textDecoration: "none" }}>
-              Profile
-            </Link>
-          </Typography>
-          <Typography>
-            <Link
-              to={`/showRoom/` + productId}
-              style={{ textDecoration: "none" }}>
-              Show Room
-            </Link>
-          </Typography>
-          <div>
-            <Box sx={{ mt: 2 }}>
-              <TextField
-                inputRef={codeSnippetRef}
-                multiline
-                fullWidth
-                rows={8}
-                variant="outlined"
-                value={`<iframe
+          </Grid>
+          <Grid item>
+            <Typography>
+              <Link
+                to={`/showRoom/` + productId}
+                style={{ textDecoration: "none" }}>
+                Show Room
+              </Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              inputRef={codeSnippetRef}
+              multiline
+              fullWidth
+              rows={8}
+              variant="outlined"
+              value={`<iframe
   src="http://localhost:3000/showRoom/${productId}"
   title="Reviews Page"
   width="100%" 
@@ -133,36 +130,41 @@ export default function ProfilePage() {
     overflow: "hidden",
   }}
 />`}
-              />
-            </Box>
-            <Box sx={{ mt: 1 }}>
-              <Button variant="contained" onClick={handleCopyToClipboard}>
-                Copy to Clipboard
-              </Button>
-            </Box>
-          </div>
-        </Box>
-        <Typography variant="h6" component="h3" textAlign="center">
-          Spaces
-        </Typography>
-        <ProductList refresh={refreshProductList} />
-        <Fab
-          color="primary"
-          sx={{
-            position: "fixed",
-            bottom: 4,
-            right: 4,
-          }}
-          onClick={handleCreateProduct}>
-          <AddIcon />
-        </Fab>
-      </Box>
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" onClick={handleCopyToClipboard}>
+              Copy to Clipboard
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid> */}
+      {/* <Grid style={{ border: "1px solid blue" }}>
+        <Grid item xs={12}>
+          <Typography variant="h6" component="h3" textAlign="center">
+            Spaces
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <ProductList refresh={refreshProductList} />
+        </Grid>
+      </Grid> */}
+      <Fab
+        color="primary"
+        style={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+        }}
+        onClick={handleCreateProduct}>
+        <AddIcon />
+      </Fab>
       {/* Create product dialog */}
       <CreateModal
         onOpen={openCreateProduct}
         onClose={handleCreateProductClose}
         onProductCreated={handleProductCreated}
       />
-    </Container>
+    </Grid>
   );
 }
