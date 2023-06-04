@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Typography, Box, Grid } from "@material-ui/core";
+import { Container, Typography, Box, Grid } from "@mui/material";
 
 const FeaturesSection = () => {
   return (

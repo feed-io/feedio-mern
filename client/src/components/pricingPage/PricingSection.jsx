@@ -8,7 +8,7 @@ import {
   CardActions,
   Button,
   Grid,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const PricingTiersSection = () => {
   const tiers = [

@@ -9,7 +9,7 @@ import {
   TextField,
   Toolbar,
   Paper,
-} from "@material-ui/core";
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 

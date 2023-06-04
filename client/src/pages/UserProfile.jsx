@@ -1,12 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import {
-  Typography,
-  Box,
-  Button,
-  Container,
-  Paper,
-  Grid,
-} from "@material-ui/core";
+import { Typography, Box, Button, Container, Paper, Grid } from "@mui/material";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";

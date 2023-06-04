@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { List, ListItem, ListItemText, Typography } from "@material-ui/core";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
 
 const ReviewList = ({ productId, userId, token }) => {
   const [reviews, setReviews] = useState([]);

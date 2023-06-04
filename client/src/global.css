@@ -12,13 +12,3 @@ body {
 #root {
   height: 100%;
 }
-
-.app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-
-.content {
-  flex: 1;
-}

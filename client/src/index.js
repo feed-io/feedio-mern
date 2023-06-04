@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThemeProvider } from "@material-ui/core";
-import "./global.css";
+import { ThemeProvider } from "@mui/material/styles";
+
 import App from "./App";
-import { theme } from "../src/themes/theme";
+import { theme } from "./themes/theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

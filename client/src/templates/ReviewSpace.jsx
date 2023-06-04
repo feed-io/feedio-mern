@@ -10,7 +10,7 @@ import {
   Button,
   Divider,
   TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { AuthContext } from "../context/auth-context";
 

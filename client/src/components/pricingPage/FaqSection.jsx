@@ -6,7 +6,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-} from "@material-ui/core";
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const FAQSection = () => {
