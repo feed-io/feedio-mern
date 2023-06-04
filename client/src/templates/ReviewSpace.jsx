@@ -10,7 +10,7 @@ import {
   Button,
   Divider,
   TextField,
-} from "@mui/material";
+} from "@material-ui/core";
 
 import { AuthContext } from "../context/auth-context";
 
@@ -96,8 +96,6 @@ const ProductProfile = () => {
   if (!product) {
     return <Typography>Loading...</Typography>;
   }
-
-  // existing code...
 
   return (
     <Container maxWidth="lg">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@material-ui/core";
 import WallOfLoveWidget from "../components/featuresPage/WallOfLoveWidget";
 import EffortlessTestimonialCollection from "../components/featuresPage/EffortlessTestimonialCollection";
 import CustomizableDesign from "../components/featuresPage/CustomizableDesign";

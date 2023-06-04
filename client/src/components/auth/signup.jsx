@@ -10,13 +10,13 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { AuthContext } from "../../context/auth-context";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@material-ui/core/Avatar";
 
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
 
-import Box from "@mui/material/Box";
+import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const SignUp = (props) => {

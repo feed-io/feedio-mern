@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from "@mui/material";
+} from "@material-ui/core";
 import axios from "axios";
 import { AuthContext } from "../../context/auth-context";
 

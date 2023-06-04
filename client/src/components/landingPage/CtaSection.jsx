@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Typography, Button, Box } from "@mui/material";
+import { Container, Typography, Button, Box } from "@material-ui/core";
 
 const CTASection = () => {
   return (

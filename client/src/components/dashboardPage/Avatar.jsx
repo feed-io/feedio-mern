@@ -1,6 +1,6 @@
 // AvatarComponent.js
 import React from "react";
-import { Avatar as MuiAvatar } from "@mui/material";
+import { Avatar as MuiAvatar } from "@material-ui/core";
 import { createAvatar } from "@dicebear/avatars";
 import * as style from "@dicebear/avatars-avataaars-sprites";
 
