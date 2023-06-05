@@ -26,7 +26,7 @@ export default function UserProfile() {
             },
           }
         );
-        console.log(response);
+
         setUser(response.data.user);
         setEmail(response.data.user.email);
         setUsername(response.data.user.username);
@@ -54,7 +54,7 @@ export default function UserProfile() {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container>
       <Box
         sx={{
           display: "flex",

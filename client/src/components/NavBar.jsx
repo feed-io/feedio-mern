@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: "none",
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.fontFamily,
+    // fontFamily: theme.typography.fontFamily,
     margin: "0px 10px",
   },
   box: {
@@ -39,10 +39,10 @@ const NavBar = () => {
   return (
     <>
       <AppBar
-        className={classes.header}
         sx={{
           backgroundColor: (theme) => theme.palette.background.default,
           boxShadow: "none",
+          position: "static",
         }}>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h6">

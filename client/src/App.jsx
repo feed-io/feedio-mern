@@ -13,6 +13,7 @@ import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
 import ReviewsWidget from "./templates/ReviewsWidget";
 import ReviewSpace from "./templates/ReviewSpace";
+import { Box, Container } from "@mui/material";
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
@@ -52,7 +53,9 @@ const App = () => {
       }}>
       <Router>
         <NavBar />
-        <main>{routes}</main>
+        <Container>
+          <main>{routes}</main>
+        </Container>
         <Footer />
       </Router>
     </AuthContext.Provider>
