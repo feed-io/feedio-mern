@@ -1,39 +1,47 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-
+import {
+  AppBar,
+  Avatar,
+  Toolbar,
+  Typography,
+  Box,
+  styled,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { AuthContext } from "../context/auth-context";
 import AuthModal from "./auth/AuthModal";
 
-const useStyles = makeStyles((theme) => ({
-  toolbar: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  link: {
-    textDecoration: "none",
-    color: theme.palette.text.primary,
-    // fontFamily: theme.typography.fontFamily,
-    margin: "0px 10px",
-  },
-  box: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
+const StyledToolbar = styled(Toolbar)({
+  display: "flex",
+  justifyContent: "space-between",
+});
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  textDecoration: "none",
+  color: theme.palette.text.primary,
+  margin: "0px 10px",
+}));
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: "20px",
 }));
 
 const NavBar = () => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
   const auth = useContext(AuthContext);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpenModal = () => {
+    setOpenModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -44,42 +52,50 @@ const NavBar = () => {
           boxShadow: "none",
           position: "static",
         }}>
-        <Toolbar className={classes.toolbar}>
+        <StyledToolbar>
           <Typography variant="h6">
-            <Link to="/" className={classes.link}>
-              Feedio
-            </Link>
+            <StyledLink to="/">Feedio</StyledLink>
           </Typography>
-          <div className={classes.box}>
+          <StyledBox>
             {auth.isLoggedIn ? null : (
               <>
-                <Link to="/pricing" className={classes.link}>
-                  Pricing
-                </Link>
-                <Link to="/features" className={classes.link}>
-                  Features
-                </Link>
+                <StyledLink to="/pricing">Pricing</StyledLink>
+                <StyledLink to="/features">Features</StyledLink>
               </>
             )}
-          </div>
+          </StyledBox>
 
           {!auth.isLoggedIn ? (
-            <Link onClick={handleOpen} className={classes.link}>
-              Login
-            </Link>
+            <StyledLink onClick={handleOpenModal}>Login</StyledLink>
           ) : (
-            <div className={classes.box}>
-              <Link to="/dashboard" className={classes.link}>
-                Dashboard
-              </Link>
-              <Link to="/" onClick={auth.logout} className={classes.link}>
+            <StyledBox onClick={(e) => setOpenMenu(true)}>
+              <StyledLink to="/dashboard">Dashboard</StyledLink>
+              <StyledLink to="/" onClick={auth.logout}>
                 Logout
-              </Link>
-            </div>
+              </StyledLink>
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            </StyledBox>
           )}
-        </Toolbar>
+        </StyledToolbar>
       </AppBar>
-      <AuthModal open={open} handleClose={handleClose} />
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        open={openMenu}
+        onClose={(e) => setOpenMenu(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}>
+        <MenuItem onClick={(e) => setOpenMenu(false)}>Profile</MenuItem>
+        <MenuItem onClick={(e) => setOpenMenu(false)}>My account</MenuItem>
+        <MenuItem onClick={() => setOpenMenu(false)}>Logout</MenuItem>
+      </Menu>
+      <AuthModal open={openModal} handleClose={handleCloseModal} />
     </>
   );
 };
