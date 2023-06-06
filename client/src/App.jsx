@@ -52,11 +52,13 @@ const App = () => {
         logout: logout,
       }}>
       <Router>
-        <NavBar />
-        <Container>
-          <main>{routes}</main>
-        </Container>
-        <Footer />
+        <Box display="flex" flexDirection="column" minHeight="100vh">
+          <NavBar />
+          <Box flex="1" pt={2} pb={2} px={2}>
+            <main>{routes}</main>
+          </Box>
+          <Footer />
+        </Box>
       </Router>
     </AuthContext.Provider>
   );

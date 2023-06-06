@@ -8,7 +8,7 @@ const Footer = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
             <Typography variant="h6">
-              Cleanlynn © 2023. All rights reserved.
+              Feedio © 2023. All rights reserved.
             </Typography>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -47,7 +47,7 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} md={4}>
             <Typography variant="h6">Get in touch:</Typography>
-            <Typography>Email: support@cleanlynn.com</Typography>
+            <Typography>Email: support@feddio.com</Typography>
             <Typography>Phone: +1 (800) 123-4567</Typography>
           </Grid>
         </Grid>
