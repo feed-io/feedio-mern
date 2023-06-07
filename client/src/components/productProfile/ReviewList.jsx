@@ -1,15 +1,37 @@
 import React, { useEffect, useState } from "react";
+import { styled } from "@mui/system";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
-  List,
   Typography,
+  Rating,
+  Avatar,
+  Container,
+  Grid,
 } from "@mui/material";
 import axios from "axios";
 
+const StyledRating = styled(Rating)({
+  "& .MuiRating-iconFilled": {
+    color: "#ff6d75",
+  },
+});
+
+const StyledCard = styled(Card)({
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+});
+
+const StyledCardMedia = styled(CardMedia)({
+  height: 140,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
 const ReviewList = ({ productId, userId, token }) => {
   const [reviews, setReviews] = useState([]);
 
@@ -32,32 +54,46 @@ const ReviewList = ({ productId, userId, token }) => {
     };
 
     fetchReviews();
-  }, [userId, token]);
+  }, [userId, token, productId]);
 
   return (
-    <List>
-      {reviews.length === 0 ? (
-        <Typography variant="subtitle1">No reviews yet</Typography>
-      ) : (
-        reviews.map((review) => (
-          <Card key={review._id}>
-            <CardMedia sx={{ height: 140 }} />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {review.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {review.content}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Share</Button>
-              <Button size="small">Learn More</Button>
-            </CardActions>
-          </Card>
-        ))
-      )}
-    </List>
+    <Container>
+      <Grid container spacing={2}>
+        {reviews.length === 0 ? (
+          <Typography variant="subtitle1">No reviews yet</Typography>
+        ) : (
+          reviews.map((review) => (
+            <Grid item xs={12} sm={6} md={4} key={review._id}>
+              <StyledCard>
+                <StyledCardMedia>
+                  <Avatar
+                    alt={review.name}
+                    src={review.avatar}
+                    sx={{ width: 80, height: 80 }}
+                  />
+                </StyledCardMedia>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {review.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {review.content}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <StyledRating
+                    name="customized-color"
+                    value={review.rating}
+                    readOnly
+                    icon={<FavoriteIcon fontSize="inherit" />}
+                  />
+                </CardActions>
+              </StyledCard>
+            </Grid>
+          ))
+        )}
+      </Grid>
+    </Container>
   );
 };
 
