@@ -11,9 +11,9 @@ import Avatar from "../components/dashboardPage/Avatar";
 import styled from "@emotion/styled";
 
 const StyledFab = styled(Fab)({
-  position: "fixed",
-  bottom: 16,
-  right: 16,
+  position: "absolute",
+  bottom: 225,
+  right: 75,
 });
 
 const StyledBox = styled(Box)({

@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  List,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
 
 const ReviewList = ({ productId, userId, token }) => {
   const [reviews, setReviews] = useState([]);
@@ -32,9 +40,21 @@ const ReviewList = ({ productId, userId, token }) => {
         <Typography variant="subtitle1">No reviews yet</Typography>
       ) : (
         reviews.map((review) => (
-          <ListItem key={review._id}>
-            <ListItemText primary={review.name} secondary={review.content} />
-          </ListItem>
+          <Card key={review._id}>
+            <CardMedia sx={{ height: 140 }} />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {review.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {review.content}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Share</Button>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         ))
       )}
     </List>

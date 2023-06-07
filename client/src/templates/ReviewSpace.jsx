@@ -28,7 +28,7 @@ const ProductProfile = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/645beb6528f19b0d9826a6e7`,
+          `http://localhost:8080/api/users/${auth.userId}/products/6480c44ca615561a9d55fca8`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,

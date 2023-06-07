@@ -69,10 +69,6 @@ const NavBar = () => {
             <StyledLink onClick={handleOpenModal}>Login</StyledLink>
           ) : (
             <StyledBox onClick={(e) => setOpenMenu(true)}>
-              <StyledLink to="/dashboard">Dashboard</StyledLink>
-              <StyledLink to="/" onClick={auth.logout}>
-                Logout
-              </StyledLink>
               <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
             </StyledBox>
           )}
@@ -91,9 +87,21 @@ const NavBar = () => {
           vertical: "top",
           horizontal: "right",
         }}>
-        <MenuItem onClick={(e) => setOpenMenu(false)}>Profile</MenuItem>
-        <MenuItem onClick={(e) => setOpenMenu(false)}>My account</MenuItem>
-        <MenuItem onClick={() => setOpenMenu(false)}>Logout</MenuItem>
+        <MenuItem
+          component={Link}
+          to="/dashboard"
+          onClick={(e) => setOpenMenu(false)}>
+          Dashboard
+        </MenuItem>
+        <MenuItem
+          component={Link}
+          to="/"
+          onClick={() => {
+            setOpenMenu(false);
+            auth.logout();
+          }}>
+          Logout
+        </MenuItem>
       </Menu>
       <AuthModal open={openModal} handleClose={handleCloseModal} />
     </>

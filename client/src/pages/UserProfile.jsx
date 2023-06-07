@@ -1,11 +1,29 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Typography, Box, Button, Container, Paper, Grid } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Button as MuiButton,
+  Container,
+  Avatar,
+} from "@mui/material";
+import { styled } from "@mui/system";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
-import Avatar from "../components/dashboardPage/Avatar";
 import UpdateModal from "../components/dashboardPage/UpdateModal";
 import DeleteModal from "../components/dashboardPage/DeleteModal";
+
+const StyledBox = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "50px",
+});
+
+const StyledButton = styled(MuiButton)(({ theme }) => ({
+  margin: theme.spacing(1),
+}));
 
 export default function UserProfile() {
   const [email, setEmail] = useState("");
@@ -55,68 +73,32 @@ export default function UserProfile() {
 
   return (
     <Container>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          flexDirection: "column",
-          gap: 4,
-        }}>
-        <Paper
-          elevation={3}
-          sx={{
-            width: "100%",
-            p: 4,
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "0.5rem",
-            }}>
-            <Avatar user={user} sx={{ mb: 1 }} />
-          </Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" component="h3">
-                Email: {email}
-              </Typography>
-              <Typography variant="subtitle1" component="h3">
-                Username: {username}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mt: 4,
-            }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleEditOpen}>
-              Edit Profile
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleDeleteOpen}>
-              Delete Account
-            </Button>
-          </Box>
-        </Paper>
-        <UpdateModal onOpen={openEdit} onClose={handleEditClose} />
-        <DeleteModal onOpen={openDelete} onClose={handleDeleteClose} />
-      </Box>
+      <StyledBox>
+        <Avatar
+          alt={username}
+          src={user.image}
+          sx={{ width: 120, height: 120 }}
+        />
+        <Typography variant="h5" component="div" sx={{ mt: 2 }}>
+          {username}
+        </Typography>
+        <Typography variant="subtitle1" component="div">
+          {email}
+        </Typography>
+        <Box sx={{ mt: 2 }}>
+          <StyledButton variant="outlined" onClick={handleEditOpen}>
+            Edit Profile
+          </StyledButton>
+          <StyledButton
+            variant="outlined"
+            onClick={handleDeleteOpen}
+            color="error">
+            Delete Account
+          </StyledButton>
+        </Box>
+      </StyledBox>
+      <UpdateModal onOpen={openEdit} onClose={handleEditClose} />
+      <DeleteModal onOpen={openDelete} onClose={handleDeleteClose} />
     </Container>
   );
 }

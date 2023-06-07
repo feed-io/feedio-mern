@@ -8,7 +8,7 @@ const Product = require("../models/Product");
 dotenv.config();
 
 exports.registerUser = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -19,7 +19,7 @@ exports.registerUser = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = new User({
-      username,
+      name,
       email,
       password: hashedPassword,
     });
@@ -97,7 +97,7 @@ exports.getUserById = async (req, res) => {
 
     const userData = {
       userId: user._id,
-      username: user.username,
+      name: user.name,
       email: user.email,
       products: user.products, // Include the products in the response
     };
@@ -112,7 +112,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     const user = await User.findByIdAndUpdate(id);
@@ -121,8 +121,8 @@ exports.updateUser = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (username) {
-      user.username = username;
+    if (name) {
+      user.name = name;
     }
 
     if (email) {
