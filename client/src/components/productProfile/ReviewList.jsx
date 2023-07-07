@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/system";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Card,
   CardActions,
@@ -11,7 +10,10 @@ import {
   Avatar,
   Container,
   Grid,
+  IconButton,
 } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 
 const StyledRating = styled(Rating)({
@@ -87,6 +89,9 @@ const ReviewList = ({ productId, userId, token }) => {
                     readOnly
                     icon={<FavoriteIcon fontSize="inherit" />}
                   />
+                  <IconButton>
+                    <DeleteIcon />
+                  </IconButton>
                 </CardActions>
               </StyledCard>
             </Grid>

@@ -35,7 +35,7 @@ const ProductsList = (props) => {
   if (products.length === 0) {
     return <Typography variant="h6">EMPTY</Typography>;
   }
-
+  console.log(products);
   return (
     <Grid container spacing={2}>
       {products.map((product) => (
@@ -43,7 +43,12 @@ const ProductsList = (props) => {
           <Link
             to={`/products/${product._id}`}
             style={{ textDecoration: "none" }}>
-            <Paper elevation={2}>
+            <Paper
+              sx={(theme) => ({
+                borderRadius: 5,
+                backgroundColor: theme.palette.background.default,
+                color: "white",
+              })}>
               <Box
                 sx={{
                   display: "flex",
@@ -55,8 +60,8 @@ const ProductsList = (props) => {
                 <Typography variant="h6" component="h2">
                   {product.name}
                 </Typography>
-                <Typography variant="h6" component="h2">
-                  {/* {product.imageUrl} */}
+                <Typography variant="p">
+                  Reviews: {product.reviews.length}
                 </Typography>
               </Box>
             </Paper>

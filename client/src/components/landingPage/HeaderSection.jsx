@@ -15,7 +15,7 @@ const HeaderSection = () => {
             component="h1"
             gutterBottom
             sx={{ fontWeight: "bold" }}>
-            Share the Love with Testimonia.ly
+            Share the Love with Feedio
           </Typography>
           <Typography
             variant="h6"
@@ -23,7 +23,7 @@ const HeaderSection = () => {
             gutterBottom
             sx={{ color: "gray" }}>
             Showcase your customer success stories and build trust with our
-            beautifully designed Wall of Love.
+            beautifully designed Show Room page.
           </Typography>
           <Button
             variant="contained"

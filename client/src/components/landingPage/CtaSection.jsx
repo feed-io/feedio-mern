@@ -1,5 +1,30 @@
 import React from "react";
 import { Container, Typography, Button, Box } from "@mui/material";
+import { styled } from "@mui/system";
+
+const StyledImage = styled("img")({
+  borderRadius: "16px",
+});
+
+const HeaderTypography = styled(Typography)(({ theme }) => ({
+  fontWeight: "bold",
+  color: theme.palette.text.primary,
+}));
+
+const BodyTypography = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  padding: "12px 36px",
+  borderRadius: "24px",
+  fontWeight: "600",
+  backgroundColor: theme.palette.background.default,
+  color: theme.palette.primary.contrastText,
+  "&:hover": {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
 
 const CTASection = () => {
   return (
@@ -10,10 +35,9 @@ const CTASection = () => {
         alignItems="center"
         py={8}>
         <Box>
-          <img
+          <StyledImage
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrQiX4ELo5VzbWMbWxQV3VpUibCQfLK1RKsw&usqp=CAU"
             alt=""
-            style={{ borderRadius: "16px" }}
           />
         </Box>
         <Box
@@ -21,32 +45,16 @@ const CTASection = () => {
           flexDirection="column"
           justifyContent="center"
           alignItems="flex-end">
-          <Typography
-            variant="h4"
-            component="h2"
-            gutterBottom
-            sx={{ fontWeight: "bold" }}>
-            Start Building Trust with Your Wall of Love
-          </Typography>
-          <Typography
-            variant="h6"
-            component="p"
-            gutterBottom
-            sx={{ color: "gray" }}>
-            Experience the power of customer testimonials and let your Wall of
-            Love speak for your brand.
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            sx={{
-              padding: "12px 36px",
-              borderRadius: "24px",
-              fontWeight: "600",
-            }}>
-            Create Your Wall Now
-          </Button>
+          <HeaderTypography variant="h4" component="h2" gutterBottom>
+            Start Building Trust with your Show Room
+          </HeaderTypography>
+          <BodyTypography variant="h6" component="p" gutterBottom>
+            Experience the power of customer testimonials and let your Show Room
+            speak for your brand.
+          </BodyTypography>
+          <StyledButton variant="contained" size="large">
+            Create Your Show Room Now
+          </StyledButton>
         </Box>
       </Box>
     </Container>

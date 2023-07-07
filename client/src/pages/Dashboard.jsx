@@ -10,11 +10,12 @@ import CreateModal from "../components/dashboardPage/CreateModal";
 import Avatar from "../components/dashboardPage/Avatar";
 import styled from "@emotion/styled";
 
-const StyledFab = styled(Fab)({
+const StyledFab = styled(Fab)(({ theme }) => ({
   position: "absolute",
-  bottom: 225,
-  right: 75,
-});
+  backgroundColor: theme.palette.secondary.main,
+  bottom: "225px",
+  right: "75px",
+}));
 
 const StyledBox = styled(Box)({
   display: "flex",
@@ -106,9 +107,16 @@ const Dashboard = () => {
             Spaces
           </Typography>
         </Box>
-        <Box>
-          <ProductList refresh={refreshProductList} />
-        </Box>
+        <Container
+          sx={{
+            height: "50vh",
+            border: "#E0E0E0 1px solid",
+            borderRadius: 5,
+          }}>
+          <Box sx={{ padding: 3 }}>
+            <ProductList refresh={refreshProductList} />
+          </Box>
+        </Container>
       </Box>
       <Box>
         <StyledFab color="primary" onClick={handleCreateProduct}>

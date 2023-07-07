@@ -54,7 +54,14 @@ const App = () => {
       <Router>
         <Box display="flex" flexDirection="column" minHeight="100vh">
           <NavBar />
-          <Box flex="1" pt={2} pb={2} px={2}>
+          <Box
+            flex="1"
+            pt={2}
+            pb={2}
+            px={2}
+            sx={(theme) => ({
+              backgroundColor: theme.palette.background.default,
+            })}>
             <main>{routes}</main>
           </Box>
           <Footer />

@@ -10,7 +10,7 @@ const FeaturesSection = () => {
           component="h2"
           gutterBottom
           sx={{ textAlign: "center", fontWeight: "bold" }}>
-          Why Choose Testimonia.ly for Your Wall of Love?
+          Why Choose Feedio for Show Room?
         </Typography>
         <Grid container spacing={4}>
           {[

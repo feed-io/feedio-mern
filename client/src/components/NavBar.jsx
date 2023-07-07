@@ -20,7 +20,7 @@ const StyledToolbar = styled(Toolbar)({
 
 const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
-  color: theme.palette.text.primary,
+  color: theme.palette.text.secondary,
   margin: "0px 10px",
 }));
 

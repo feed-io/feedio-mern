@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { ThemeProvider, GlobalStyles } from "@mui/material";
 
 import App from "./App";
-import { theme } from "./themes/theme";
+import theme from "./themes/theme";
 
 const globalStyles = {
   body: {

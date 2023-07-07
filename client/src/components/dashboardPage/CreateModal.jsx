@@ -87,14 +87,6 @@ const CreateModal = (props) => {
           label="Questions (comma-separated)"
           onChange={(e) => setNewProductQuestions(e.target.value.split(","))}
         />
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Rating"
-          type="number"
-          value={newProductRating}
-          onChange={(e) => setNewProductRating(parseFloat(e.target.value))}
-        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
