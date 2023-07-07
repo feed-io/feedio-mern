@@ -72,7 +72,7 @@ exports.getProductById = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   const { id, pid } = req.params;
   const { name, imageUrl, header, content, questions } = req.body;
-  console.log(req);
+
   try {
     const product = await Product.findByIdAndUpdate(
       pid,

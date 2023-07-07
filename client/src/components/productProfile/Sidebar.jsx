@@ -77,14 +77,14 @@ const Sidebar = (props) => {
     setUpdateModalOpen(false);
   };
 
-  const handleProductUpdate = (updatedProduct) => {
-    setCurrentProductName(updatedProduct);
+  const handleProductUpdate = (updatedProductName) => {
+    setCurrentProductName(updatedProductName.data.product.name);
     handleCloseUpdateModal();
   };
 
   useEffect(() => {
-    setCurrentProductName(props.product);
-  }, [props.product]);
+    setCurrentProductName(props.product.name);
+  }, [props.product.name]);
 
   const handleDelete = async () => {
     await deleteProduct(auth.userId, props.product._id, auth.token);

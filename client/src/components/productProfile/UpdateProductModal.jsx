@@ -11,19 +11,19 @@ import axios from "axios";
 import { AuthContext } from "../../context/auth-context";
 
 const UpdateProductModal = (props) => {
-  const { product, open, onClose, onProductUpdate } = props;
+  const { open, onClose, onProductUpdate } = props;
   const auth = useContext(AuthContext);
-  const [updatedProductName, setUpdatedProductName] = useState();
-  const [updatedProductImageUrl, setUpdatedProductImageUrl] = useState();
-  const [updatedProductHeader, setUpdatedProductHeader] = useState();
-  const [updatedProductContent, setUpdatedProductContent] = useState();
-  const [updatedProductQuestions, setUpdatedProductQuestions] = useState();
+  const [updatedProductName, setUpdatedProductName] = useState("");
+  const [updatedProductImageUrl, setUpdatedProductImageUrl] = useState("");
+  const [updatedProductHeader, setUpdatedProductHeader] = useState("");
+  const [updatedProductContent, setUpdatedProductContent] = useState("");
+  const [updatedProductQuestions, setUpdatedProductQuestions] = useState([]);
 
   const handleUpdateProductSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}`,
         {
           name: updatedProductName,
@@ -40,7 +40,7 @@ const UpdateProductModal = (props) => {
       );
 
       onClose();
-      onProductUpdate();
+      onProductUpdate(response);
     } catch (error) {
       console.log("Error updating product:", error.message);
     }
