@@ -35,7 +35,7 @@ const ProductsList = (props) => {
   if (products.length === 0) {
     return <Typography variant="h6">EMPTY</Typography>;
   }
-  console.log(products);
+
   return (
     <Grid container spacing={2}>
       {products.map((product) => (

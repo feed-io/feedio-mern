@@ -58,6 +58,22 @@ const ReviewList = ({ productId, userId, token }) => {
     fetchReviews();
   }, [userId, token, productId]);
 
+  const handleDelete = async (reviewId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8080/api/users/${userId}/products/${productId}/reviews/${reviewId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      setReviews(reviews.filter((review) => review._id !== reviewId));
+    } catch (error) {
+      console.log("Error deleting review:", error.message);
+    }
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
@@ -89,7 +105,7 @@ const ReviewList = ({ productId, userId, token }) => {
                     readOnly
                     icon={<FavoriteIcon fontSize="inherit" />}
                   />
-                  <IconButton>
+                  <IconButton onClick={() => handleDelete(review._id)}>
                     <DeleteIcon />
                   </IconButton>
                 </CardActions>
