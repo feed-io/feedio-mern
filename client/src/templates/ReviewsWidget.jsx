@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Card, Typography, Box } from "@mui/material";
-import axios from "axios";
 
 import Grid from "@mui/material/Grid";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
 
@@ -38,7 +38,6 @@ const ShowRoom = () => {
   return (
     <>
       <main>
-        {/* Hero unit */}
         <Box
           sx={{
             bgcolor: "background.paper",
@@ -66,7 +65,6 @@ const ShowRoom = () => {
           </Container>
         </Box>
         <Container sx={{ py: 8, bgcolor: "background.paper" }} maxWidth="md">
-          {/* End hero unit */}
           <Grid container spacing={4}>
             {reviews.map((review) => (
               <Grid item xs={12} sm={6} md={4}>
@@ -79,7 +77,6 @@ const ShowRoom = () => {
                   <CardMedia
                     component="div"
                     sx={{
-                      // 16:9
                       pt: "56.25%",
                     }}
                     image="https://source.unsplash.com/random?wallpapers"

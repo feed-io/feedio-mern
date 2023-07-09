@@ -29,7 +29,7 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/products/:productId" element={<ProductProfile />} />
         <Route path="/showRoom/:productId" element={<ReviewsWidget />} />
-        <Route path="/reviewSpace" element={<ReviewSpace />} />
+        <Route path="/reviewSpace/:productId" element={<ReviewSpace />} />
       </Routes>
     );
   } else {
