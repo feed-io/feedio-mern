@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Box } from "@mui/material";
 
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -8,12 +9,12 @@ import Pricing from "./pages/Pricing";
 import FeaturesPage from "./pages/Features";
 import Dashboard from "./pages/Dashboard";
 import ProductProfile from "./pages/ProductProfile";
-import Profile from "./pages/UserProfile";
+import Profile from "./components/userProfile/UserProfile";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
 import ReviewsWidget from "./templates/ReviewsWidget";
 import ReviewSpace from "./templates/ReviewSpace";
-import { Box, Container } from "@mui/material";
+import Membership from "./components/settings/Membership";
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
@@ -27,6 +28,8 @@ const App = () => {
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/membership" element={<Membership />} />
+
         <Route path="/products/:productId" element={<ProductProfile />} />
         <Route path="/showRoom/:productId" element={<ReviewsWidget />} />
         <Route path="/reviewSpace/:productId" element={<ReviewSpace />} />

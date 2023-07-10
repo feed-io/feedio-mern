@@ -91,12 +91,12 @@ const Dashboard = () => {
       <Box sx={{ display: "flex", justifyContent: "center", gap: "8px" }}>
         <Box>
           <Typography>
-            <StyledLink to={`/profile/`}>Profile</StyledLink>
+            <StyledLink to={`/profile/`}>User</StyledLink>
           </Typography>
         </Box>
         <Box>
           <Typography>
-            <StyledLink>Settings</StyledLink>
+            <StyledLink to={`/membership/`}>Membership</StyledLink>
           </Typography>
         </Box>
       </Box>

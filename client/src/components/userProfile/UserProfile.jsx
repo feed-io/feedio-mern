@@ -9,9 +9,9 @@ import {
 import { styled } from "@mui/system";
 import axios from "axios";
 
-import { AuthContext } from "../context/auth-context";
-import UpdateModal from "../components/dashboardPage/UpdateModal";
-import DeleteModal from "../components/dashboardPage/DeleteModal";
+import { AuthContext } from "../../context/auth-context";
+import UpdateModal from "../dashboardPage/UpdateModal";
+import DeleteModal from "../dashboardPage/DeleteModal";
 
 const StyledBox = styled(Box)({
   display: "flex",

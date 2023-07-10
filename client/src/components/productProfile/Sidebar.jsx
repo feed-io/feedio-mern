@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -39,11 +39,14 @@ const StyledListItem = styled(ListItem)({
   padding: 10,
 });
 
+const CenteredListItem = styled(ListItem)({
+  justifyContent: "center",
+});
+
 const Sidebar = (props) => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const codeSnippetRef = useRef(null);
-  const linkRef = useRef(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [currentProductName, setCurrentProductName] = useState(
     props.product.name
@@ -114,10 +117,10 @@ const Sidebar = (props) => {
               <ListItemIcon>
                 <TheatersIcon />
               </ListItemIcon>
-              <ListItemText primary="Show Room" />
+              <ListItemText primary="To show room" />
             </ListItemButton>
           </StyledListItem>
-          <ListItem disablePadding>
+          <CenteredListItem disablePadding>
             <StyledBox>
               <TextField
                 multiline
@@ -132,8 +135,16 @@ const Sidebar = (props) => {
                 Copy snippet
               </StyledButton>
             </StyledBox>
-          </ListItem>
-          <ListItem disablePadding>
+          </CenteredListItem>
+          <CenteredListItem disablePadding>
+            <StyledBox>
+              <TextField
+                variant="outlined"
+                value={`http://localhost:3000/reviewSpace/${props.product._id}`}
+              />
+            </StyledBox>
+          </CenteredListItem>
+          <CenteredListItem disablePadding>
             <StyledBox>
               <StyledButton
                 variant="contained"
@@ -141,7 +152,7 @@ const Sidebar = (props) => {
                 Copy Link
               </StyledButton>
             </StyledBox>
-          </ListItem>
+          </CenteredListItem>
           <StyledListItem disablePadding>
             <ListItemButton
               component={Button}
@@ -149,7 +160,7 @@ const Sidebar = (props) => {
               <ListItemIcon>
                 <QuizIcon />
               </ListItemIcon>
-              <ListItemText primary="Form" />
+              <ListItemText primary="To Form" />
             </ListItemButton>
           </StyledListItem>
           <StyledListItem disablePadding>

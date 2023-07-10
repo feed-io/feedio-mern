@@ -9,6 +9,7 @@ const productSchema = new Schema({
   imageUrl: { type: String, required: false },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review", required: true }],
+  payments: [{ type: Schema.Types.ObjectId, ref: "Payment" }],
 });
 
 module.exports = mongoose.model("Product", productSchema);
