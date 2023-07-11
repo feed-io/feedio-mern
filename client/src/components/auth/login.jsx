@@ -3,15 +3,11 @@ import React, { useState, useContext } from "react";
 import { Button, TextField, Grid, Typography, Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import { AuthContext } from "../../context/auth-context";
-
 import Avatar from "@mui/material/Avatar";
-
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 

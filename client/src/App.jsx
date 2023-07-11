@@ -15,9 +15,12 @@ import { useAuth } from "./hooks/auth-hook";
 import ReviewsWidget from "./templates/ReviewsWidget";
 import ReviewSpace from "./templates/ReviewSpace";
 import Membership from "./components/settings/Membership";
+import Success from "./components/settings/Success";
+import Cancel from "./components/settings/Cancelation";
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
+
   let routes;
 
   if (token) {
@@ -29,7 +32,8 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/membership" element={<Membership />} />
-
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
         <Route path="/products/:productId" element={<ProductProfile />} />
         <Route path="/showRoom/:productId" element={<ReviewsWidget />} />
         <Route path="/reviewSpace/:productId" element={<ReviewSpace />} />

@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+const helmet = require("helmet");
 
 const userRoutes = require("./routes/users-route");
 const productRoutes = require("./routes/products-route");
@@ -12,16 +14,32 @@ dotenv.config();
 
 const app = express();
 
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' https://js.stripe.com"
-  );
-  next();
-});
-
 app.use(cors());
-app.use(express.json());
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:"],
+      connectSrc: [
+        "'self'",
+        "https://api.stripe.com",
+        "ws://localhost:3000/ws",
+      ],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+    },
+  })
+);
+
+app.use(
+  bodyParser.json({
+    verify: function (req, res, buf) {
+      req.rawBody = buf.toString();
+    },
+  })
+);
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,

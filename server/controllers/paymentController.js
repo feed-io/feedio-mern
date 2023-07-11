@@ -1,45 +1,72 @@
 const Payment = require("../models/Payment");
 const User = require("../models/user");
 
-exports.createPayment = async (req, res) => {
-  const { productId, amount, transactionId } = req.body;
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+exports.createCheckoutSession = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const newPayment = new Payment({
-      user: id,
-      product: productId,
-      amount,
-      transactionId,
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price: process.env.PRICE_ID,
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+      success_url: `http://localhost:3000/success`,
+      cancel_url: `http://localhost:3000/cancel`,
+      metadata: {
+        userId: id,
+      },
     });
 
-    await newPayment.save();
-
-    const user = await User.findById(id);
-    user.payments.push(newPayment._id);
-    await user.save();
-
-    res.status(201).json({
-      message: "Payment created successfully",
-      payment: newPayment,
-    });
+    res.json({ id: session.id });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    console.log(error);
+    res.status(500).send({
+      error: "An error occurred while trying to create a checkout session.",
+    });
   }
 };
 
-exports.getAllPayments = async (req, res) => {
-  const { id } = req.params; // User ID from params
+exports.handleStripeWebhook = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const sig = req.headers["stripe-signature"];
+  let event;
 
   try {
-    // Get user and populate payments
-    const user = await User.findById(id).populate("payments");
-    res.status(200).json({ payments: user.payments });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    event = stripe.webhooks.constructEvent(
+      req.rawBody,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
+
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+
+    const payment = new Payment({
+      amount: session.amount_total,
+      transactionId: session.payment_intent,
+      status: session.payment_status,
+      currency: session.currency,
+      stripePaymentId: session.id,
+    });
+
+    await payment.save();
+
+    const user = await User.findById(session.metadata.userId);
+    user.payments.push(payment._id);
+    user.membershipStatus = "premium";
+    await user.save();
+  }
+
+  res.json({ received: true });
 };

@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 
-const paymentController = require("../controllers/paymentController");
 const checkAuth = require("../middleware/check-auth");
+const paymentController = require("../controllers/paymentController");
 
 router.use(checkAuth);
-router.post("/", paymentController.createPayment);
-// router.get("/", paymentController.getAllPayments);
+
+router.post(
+  "/create-checkout-session",
+  paymentController.createCheckoutSession
+);
+router.post("/webhook", paymentController.handleStripeWebhook);
 
 module.exports = router;
