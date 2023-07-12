@@ -33,8 +33,6 @@ exports.createCheckoutSession = async (req, res) => {
 };
 
 exports.handleStripeWebhook = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
   const sig = req.headers["stripe-signature"];
   let event;
 
@@ -49,24 +47,31 @@ exports.handleStripeWebhook = async (req, res) => {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-
-    const payment = new Payment({
-      amount: session.amount_total,
-      transactionId: session.payment_intent,
-      status: session.payment_status,
-      currency: session.currency,
-      stripePaymentId: session.id,
-    });
-
-    await payment.save();
-
-    const user = await User.findById(session.metadata.userId);
-    user.payments.push(payment._id);
-    user.membershipStatus = "premium";
-    await user.save();
-  }
-
   res.json({ received: true });
+
+  try {
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+
+      const payment = new Payment({
+        amount: session.amount_total,
+        transactionId: session.payment_intent,
+        status: session.payment_status,
+        currency: session.currency,
+        stripePaymentId: session.id,
+        user: session.metadata.userId,
+      });
+
+      await payment.save();
+
+      const user = await User.findById(session.metadata.userId);
+
+      user.payments.push(payment._id);
+      user.membershipStatus = "premium";
+      await user.save();
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send(`Webhook Error: ${error.message}`);
+  }
 };

@@ -4,12 +4,19 @@ const router = express.Router({ mergeParams: true });
 const checkAuth = require("../middleware/check-auth");
 const paymentController = require("../controllers/paymentController");
 
-router.use(checkAuth);
+router.use((req, res, next) => {
+  if (req.path === "/webhook") {
+    next();
+  } else {
+    checkAuth(req, res, next);
+  }
+});
 
 router.post(
   "/create-checkout-session",
   paymentController.createCheckoutSession
 );
+
 router.post("/webhook", paymentController.handleStripeWebhook);
 
 module.exports = router;

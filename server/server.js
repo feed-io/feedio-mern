@@ -9,6 +9,7 @@ const userRoutes = require("./routes/users-route");
 const productRoutes = require("./routes/products-route");
 const reviewRoutes = require("./routes/reviews-route");
 const paymentRoutes = require("./routes/payments-route");
+const paymentController = require("./controllers/paymentController");
 
 dotenv.config();
 
@@ -20,15 +21,22 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      imgSrc: ["'self'", "data:"],
       connectSrc: [
         "'self'",
-        "https://api.stripe.com",
-        "ws://localhost:3000/ws",
+        "'unsafe-inline'",
+        "https://*.stripe.com",
+        "https://*.stripe.network",
       ],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://*.stripe.com",
+        "https://*.stripe.network",
+      ],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "'unsafe-inline'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "'unsafe-inline'", "https://*.stripe.com"],
+      frameSrc: ["'self'", "'unsafe-inline'", "https://*.stripe.com"],
     },
   })
 );
@@ -50,6 +58,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/users/:id/products", productRoutes);
 app.use("/api/users/:id/products/:pid/reviews", reviewRoutes);
 app.use("/api/users/:id/payments", paymentRoutes);
+app.post("/api/payments/webhook", paymentController.handleStripeWebhook);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)
