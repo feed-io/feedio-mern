@@ -37,7 +37,12 @@ exports.registerUser = async (req, res, next) => {
         .status(500)
         .json({ message: "Something went ttoken", error: error });
     }
-    res.status(201).json({ userId: newUser._id, email: newUser.email, token });
+    res.status(201).json({
+      userId: newUser._id,
+      email: newUser.email,
+      token,
+      membershipStatus: newUser.membershipStatus,
+    });
   } catch (error) {
     return res
       .status(500)
@@ -78,11 +83,11 @@ exports.loginUser = async (req, res, next) => {
       userId: existingUser._id,
       email: existingUser.email,
       token,
+      membershipStatus: existingUser.membershipStatus,
       products: existingUser.products,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -99,7 +104,8 @@ exports.getUserById = async (req, res) => {
       userId: user._id,
       name: user.name,
       email: user.email,
-      products: user.products, // Include the products in the response
+      membershipStatus: user.membershipStatus,
+      products: user.products,
     };
 
     res.status(200).json({ user: userData });

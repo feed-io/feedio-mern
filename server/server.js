@@ -17,29 +17,29 @@ const app = express();
 
 app.use(cors());
 
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      connectSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "https://*.stripe.com",
-        "https://*.stripe.network",
-      ],
-      scriptSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "https://*.stripe.com",
-        "https://*.stripe.network",
-      ],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "'unsafe-inline'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "'unsafe-inline'", "https://*.stripe.com"],
-      frameSrc: ["'self'", "'unsafe-inline'", "https://*.stripe.com"],
-    },
-  })
-);
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       connectSrc: [
+//         "'self'",
+//         "'unsafe-inline'",
+//         "https://*.stripe.com",
+//         "https://*.stripe.network",
+//       ],
+//       scriptSrc: [
+//         "'self'",
+//         "'unsafe-inline'",
+//         "https://*.stripe.com",
+//         "https://*.stripe.network",
+//       ],
+//       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+//       fontSrc: ["'self'", "'unsafe-inline'", "https://fonts.gstatic.com"],
+//       imgSrc: ["'self'", "'unsafe-inline'", "https://*.stripe.com"],
+//       frameSrc: ["'self'", "'unsafe-inline'", "https://*.stripe.com"],
+//     },
+//   })
+// );
 
 app.use(
   bodyParser.json({

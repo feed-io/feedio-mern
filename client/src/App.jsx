@@ -19,7 +19,14 @@ import Success from "./components/settings/Success";
 import Cancel from "./components/settings/Cancelation";
 
 const App = () => {
-  const { token, login, logout, userId } = useAuth();
+  const {
+    token,
+    login,
+    logout,
+    userId,
+    membershipStatus,
+    updateMembershipStatus,
+  } = useAuth();
 
   let routes;
 
@@ -57,6 +64,8 @@ const App = () => {
         userId: userId,
         login: login,
         logout: logout,
+        membershipStatus: membershipStatus,
+        updateMembershipStatus: updateMembershipStatus,
       }}>
       <Router>
         <Box display="flex" flexDirection="column" minHeight="100vh">

@@ -8,8 +8,6 @@ import Avatar from "@mui/material/Avatar";
 
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
@@ -39,7 +37,11 @@ const SignUp = (props) => {
         }
       );
       console.log(formData);
-      auth.login(response.data.userId, response.data.token);
+      auth.login(
+        response.data.userId,
+        response.data.token,
+        response.data.membershipStatus
+      );
       navigate("/dashboard");
       handleClose();
     } catch (error) {

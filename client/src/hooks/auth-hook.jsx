@@ -6,10 +6,12 @@ export const useAuth = () => {
   const [token, setToken] = useState(false);
   const [tokenExpDate, setTokenExpDate] = useState();
   const [userId, setUserId] = useState(false);
+  const [membershipStatus, setMembershipStatus] = useState("free");
 
-  const login = useCallback((uid, token, expirationDate) => {
+  const login = useCallback((uid, token, membershipStatus, expirationDate) => {
     setToken(token);
     setUserId(uid);
+    setMembershipStatus(membershipStatus);
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
     setTokenExpDate(tokenExpirationDate);
@@ -18,6 +20,7 @@ export const useAuth = () => {
       JSON.stringify({
         userId: uid,
         token: token,
+        membershipStatus: membershipStatus,
         expiration: tokenExpirationDate.toISOString(),
       })
     );
@@ -27,7 +30,12 @@ export const useAuth = () => {
     setToken(null);
     setTokenExpDate(null);
     setUserId(null);
+    setMembershipStatus("free");
     localStorage.removeItem("userData");
+  }, []);
+
+  const updateMembershipStatus = useCallback((status) => {
+    setMembershipStatus(status);
   }, []);
 
   useEffect(() => {
@@ -50,6 +58,7 @@ export const useAuth = () => {
       login(
         storedData.userId,
         storedData.token,
+        storedData.membershipStatus,
         new Date(storedData.expiration)
       );
     }
@@ -60,5 +69,7 @@ export const useAuth = () => {
     login,
     logout,
     userId,
+    membershipStatus,
+    updateMembershipStatus,
   };
 };

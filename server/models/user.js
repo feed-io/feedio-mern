@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
   payments: [{ type: Schema.Types.ObjectId, ref: "Payment" }],
   membershipStatus: { type: String, default: "free" },
+  stripeSubscriptionId: { type: String },
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -68,10 +68,39 @@ exports.handleStripeWebhook = async (req, res) => {
 
       user.payments.push(payment._id);
       user.membershipStatus = "premium";
+      user.stripeSubscriptionId = session.subscription;
       await user.save();
     }
   } catch (error) {
     console.log(error);
     return res.status(400).send(`Webhook Error: ${error.message}`);
+  }
+};
+
+exports.cancelSubscription = async (req, res) => {
+  const { id } = req.params; // user id
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const { stripeSubscriptionId } = user;
+
+    const deletedSubscription = await stripe.subscriptions.del(
+      stripeSubscriptionId
+    );
+
+    user.membershipStatus = "free";
+    await user.save();
+
+    res.json({ message: "Subscription cancelled successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while cancelling subscription" });
   }
 };

@@ -30,7 +30,11 @@ const Login = (props) => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      auth.login(response.data.userId, response.data.token);
+      auth.login(
+        response.data.userId,
+        response.data.token,
+        response.data.membershipStatus
+      );
       navigate("/dashboard");
       handleClose();
     } catch (error) {

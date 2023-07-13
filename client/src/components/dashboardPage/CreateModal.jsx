@@ -16,7 +16,6 @@ const CreateModal = (props) => {
   const [newProductContent, setNewProductContent] = useState("");
   const [newProductQuestions, setNewProductQuestions] = useState([]);
   const [newProductRating, setNewProductRating] = useState(0);
-  const [refreshProductList, setRefreshProductList] = useState(false);
 
   const { onOpen, onClose, onProductCreated } = props;
   const auth = useContext(AuthContext);

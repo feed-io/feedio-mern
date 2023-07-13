@@ -30,7 +30,7 @@ const ProductsList = (props) => {
     };
 
     fetchProducts();
-  }, [refresh]);
+  }, [refresh, auth.token, auth.userId]);
 
   if (products.length === 0) {
     return <Typography variant="h6">EMPTY</Typography>;
