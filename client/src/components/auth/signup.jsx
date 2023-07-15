@@ -1,42 +1,33 @@
-// src/components/SignUp.js
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Grid, Typography, Container } from "@mui/material";
 import axios from "axios";
-import { AuthContext } from "../../context/auth-context";
 import Avatar from "@mui/material/Avatar";
-
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-const SignUp = (props) => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+import { AuthContext } from "../../context/auth-context";
+import useValidation from "../../hooks/validation-hook";
 
+const SignUp = (props) => {
+  const { values, errors, handleChange } = useValidation();
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { handleClose } = props;
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8080/api/users/register",
-        formData,
+        values,
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(formData);
+
       auth.login(
         response.data.userId,
         response.data.token,
@@ -74,8 +65,10 @@ const SignUp = (props) => {
                 fullWidth
                 id="name"
                 label="Name"
-                value={formData.name}
+                value={values.name}
                 onChange={handleChange}
+                error={!!errors.name}
+                helperText={errors.name}
                 autoFocus
               />
             </Grid>
@@ -87,8 +80,10 @@ const SignUp = (props) => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                value={formData.email}
+                value={values.email}
                 onChange={handleChange}
+                error={!!errors.email}
+                helperText={errors.email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -100,8 +95,25 @@ const SignUp = (props) => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
-                value={formData.password}
+                value={values.password}
                 onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="passwordConfirm"
+                label="Confirm Password"
+                type="password"
+                id="passwordConfirm"
+                autoComplete="new-password"
+                value={values.passwordConfirm}
+                onChange={handleChange}
+                error={!!errors.passwordConfirm}
+                helperText={errors.passwordConfirm}
               />
             </Grid>
             <Grid item xs={12}>

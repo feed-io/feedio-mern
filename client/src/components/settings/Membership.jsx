@@ -1,110 +1,101 @@
-// import React, { useContext } from "react";
-// import { Button } from "@mui/material";
-// import axios from "axios";
-// import { AuthContext } from "../../context/auth-context";
-
-// const Membership = () => {
-//   const auth = useContext(AuthContext);
-
-//   const handleCheckout = async () => {
-//     const response = await axios.post(
-//       `http://localhost:8080/api/users/${auth.userId}/payments/create-checkout-session`,
-//       {},
-//       {
-//         headers: {
-//           Authorization: "Bearer " + auth.token,
-//         },
-//       }
-//     );
-
-//     if (response.data && response.data.id) {
-//       const { id } = response.data;
-//       const stripe = window.Stripe(
-//         "pk_test_51NS5wyCbn1CFQkB8htl9FOMk96NaBH1os6POnhCtrvd1kvwkslsGKyz9aevuvRKIZxDlLnqPA1ofvHxdy41D8Gum00X6521Cyl"
-//       );
-//       stripe.redirectToCheckout({ sessionId: id });
-//     }
-//   };
-
-//   const handleUnsubscribe = async () => {
-//     try {
-//       const response = await axios.post(
-//         `http://localhost:8080/api/users/${auth.userId}/payments/cancel-subscription`,
-//         {},
-//         {
-//           headers: {
-//             Authorization: "Bearer " + auth.token,
-//           },
-//         }
-//       );
-
-//       // console.log(response);
-//     } catch (error) {
-//       // Handle the error
-//       console.error(error);
-//     }
-//   };
-
-//   const subscribeButton = (
-//     <Button variant="contained" color="primary" onClick={handleCheckout}>
-//       Subscribe
-//     </Button>
-//   );
-
-//   const unsubscribeButton = (
-//     <Button variant="contained" color="primary" onClick={handleUnsubscribe}>
-//       unsubscribe
-//     </Button>
-//   );
-//   console.log(auth);
-//   return (
-//     <div>
-//       <h2>Premium Membership</h2>
-//       <p>Enjoy unlimited access to all our features.</p>
-//       {auth.membershipStatus === "free" ? subscribeButton : unsubscribeButton}
-//     </div>
-//   );
-// };
-
-// export default Membership;
-
-import React, { useContext, useState } from "react";
-import { Button, Radio, FormControlLabel, Typography } from "@mui/material";
+import React, { useContext, useState, useEffect } from "react";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  Typography,
+  Box,
+} from "@mui/material";
+import { styled } from "@mui/system";
 import axios from "axios";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../../context/auth-context";
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: theme.spacing(2),
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+}));
+
+const tiers = [
+  {
+    title: "Free",
+    price: "0€",
+    description: ["1 space", "3 reviews"],
+    buttonText: "Get started",
+    buttonVariant: "outlined",
+  },
+  {
+    title: "Premium",
+    subheader: "Most popular",
+    price: "10€",
+    description: ["5 spaces", "20 reviews", "Priority email support"],
+    buttonText: "Free trial",
+    buttonVariant: "contained",
+  },
+];
 
 const AccountDashboard = () => {
   const auth = useContext(AuthContext);
-  const [selectedPlan, setSelectedPlan] = useState("");
+  const { userId, token, membershipStatus } = auth;
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
-  const handleRadioChange = (event) => {
-    setSelectedPlan(event.target.value);
-  };
-
-  const handleCheckout = async () => {
-    const response = await axios.post(
-      `http://localhost:8080/api/users/${auth.userId}/payments/create-checkout-session`,
-      {},
-      {
-        headers: {
-          Authorization: "Bearer " + auth.token,
-        },
-      }
-    );
-
-    if (response.data && response.data.id) {
-      const { id } = response.data;
-      const stripe = window.Stripe(
-        "pk_test_51NS5wyCbn1CFQkB8htl9FOMk96NaBH1os6POnhCtrvd1kvwkslsGKyz9aevuvRKIZxDlLnqPA1ofvHxdy41D8Gum00X6521Cyl"
+  const handleCheckout = async (plan) => {
+    if (plan === "Free") {
+      navigate("/dashboard");
+    } else {
+      const response = await axios.post(
+        `http://localhost:8080/api/users/${userId}/payments/create-checkout-session`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
-      await stripe.redirectToCheckout({ sessionId: id });
+
+      if (response.data && response.data.id) {
+        const { id } = response.data;
+        const stripe = window.Stripe(
+          "pk_test_51NS5wyCbn1CFQkB8htl9FOMk96NaBH1os6POnhCtrvd1kvwkslsGKyz9aevuvRKIZxDlLnqPA1ofvHxdy41D8Gum00X6521Cyl"
+        );
+        await stripe.redirectToCheckout({ sessionId: id });
+      }
     }
   };
 
   const handleUnsubscribe = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/users/${auth.userId}/payments/cancel-subscription`,
+        `http://localhost:8080/api/users/${userId}/payments/cancel-subscription`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (response.status === 200) {
+        auth.updateMembershipStatus("free");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleManageBilling = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/users/${userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {
@@ -112,66 +103,99 @@ const AccountDashboard = () => {
           },
         }
       );
-      if (response.status === 200) {
-        // The unsubscription was successful.
-        // Update the membership status.
-      }
+
       console.log(response);
+      if (response.data && response.data.url) {
+        window.location.href = response.data.url;
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  return (
-    <div>
-      <Typography variant="h4">Account Dashboard</Typography>
-      <Typography variant="body1">Hi {auth.email}</Typography>
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/users/${userId}`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data && response.data.user) {
+          setEmail(response.data.user.email);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserData();
+  }, [userId, token]);
 
-      {auth.membershipStatus === "free" ? (
-        <div>
-          <Typography variant="body1">
-            You are currently not on any plan. Purchase a subscription below.
-          </Typography>
-          <FormControlLabel
-            control={
-              <Radio
-                checked={selectedPlan === "basic"}
-                onChange={handleRadioChange}
-                value="basic"
-                name="plan"
-              />
-            }
-            label="Basic for $10"
-          />
-          <FormControlLabel
-            control={
-              <Radio
-                checked={selectedPlan === "pro"}
-                onChange={handleRadioChange}
-                value="pro"
-                name="plan"
-              />
-            }
-            label="Pro for $12"
-          />
-          <Button variant="contained" color="primary" onClick={handleCheckout}>
-            Subscribe
-          </Button>
-        </div>
+  return (
+    <StyledBox>
+      <Typography variant="h4" gutterBottom>
+        Account Dashboard
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        Hi {email}
+      </Typography>
+
+      {membershipStatus === "free" ? (
+        <Grid container spacing={4}>
+          {tiers.map((tier) => (
+            <Grid item xs={12} sm={6} md={4} key={tier.title}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h5" color="text.secondary">
+                    {tier.title}
+                  </Typography>
+                  <Typography variant="h2">{tier.price}</Typography>
+                  {tier.description.map((desc, index) => (
+                    <Typography key={index}>{desc}</Typography>
+                  ))}
+                </CardContent>
+                <CardActions>
+                  <StyledButton
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleCheckout(tier.title)}>
+                    {tier.buttonText}
+                  </StyledButton>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       ) : (
         <div>
-          <Typography variant="body1">
-            You are currently on the {auth.membershipStatus} plan
+          <Typography variant="body1" gutterBottom>
+            You are currently on the {membershipStatus} plan
           </Typography>
-          <Button
+          <StyledButton
+            variant="contained"
+            color="primary"
+            onClick={handleManageBilling}>
+            Manage Billing
+          </StyledButton>
+          <StyledButton
             variant="contained"
             color="primary"
             onClick={handleUnsubscribe}>
             Unsubscribe
-          </Button>
+          </StyledButton>
         </div>
       )}
-    </div>
+      <Button
+        variant="contained"
+        color="secondary"
+        component={RouterLink}
+        to="/dashboard">
+        Go to Dashboard
+      </Button>
+    </StyledBox>
   );
 };
 

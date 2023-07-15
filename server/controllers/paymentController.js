@@ -7,7 +7,23 @@ exports.createCheckoutSession = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.stripeCustomerId) {
+      const customer = await stripe.customers.create({
+        email: user.email,
+      });
+
+      user.stripeCustomerId = customer.id;
+      await user.save();
+    }
+
     const session = await stripe.checkout.sessions.create({
+      customer: user.stripeCustomerId,
       payment_method_types: ["card"],
       line_items: [
         {
@@ -16,6 +32,9 @@ exports.createCheckoutSession = async (req, res) => {
         },
       ],
       mode: "subscription",
+      subscription_data: {
+        trial_period_days: 14,
+      },
       success_url: `http://localhost:3000/success`,
       cancel_url: `http://localhost:3000/cancel`,
       metadata: {
@@ -28,6 +47,30 @@ exports.createCheckoutSession = async (req, res) => {
     console.log(error);
     res.status(500).send({
       error: "An error occurred while trying to create a checkout session.",
+    });
+  }
+};
+
+exports.createCustomerPortalSession = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: user.stripeCustomerId,
+      return_url: "http://localhost:3000/dashboard",
+    });
+
+    res.json({ url: session.url });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "An error occurred while creating the customer portal session",
     });
   }
 };
@@ -78,7 +121,7 @@ exports.handleStripeWebhook = async (req, res) => {
 };
 
 exports.cancelSubscription = async (req, res) => {
-  const { id } = req.params; // user id
+  const { id } = req.params;
 
   try {
     const user = await User.findById(id);
@@ -89,9 +132,7 @@ exports.cancelSubscription = async (req, res) => {
 
     const { stripeSubscriptionId } = user;
 
-    const deletedSubscription = await stripe.subscriptions.del(
-      stripeSubscriptionId
-    );
+    await stripe.subscriptions.del(stripeSubscriptionId);
 
     user.membershipStatus = "free";
     await user.save();

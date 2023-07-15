@@ -8,6 +8,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import axios from "axios";
+
 import { AuthContext } from "../../context/auth-context";
 
 const UpdateProductModal = (props) => {

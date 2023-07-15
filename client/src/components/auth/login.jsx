@@ -1,9 +1,7 @@
-// src/components/Login.js
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Button, TextField, Grid, Typography, Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/auth-context";
 import Avatar from "@mui/material/Avatar";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -11,22 +9,21 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
+import { AuthContext } from "../../context/auth-context";
+import useValidation from "../../hooks/validation-hook";
+
 const Login = (props) => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const { values, errors, handleChange } = useValidation();
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { handleClose } = props;
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8080/api/users/login",
-        formData,
+        values,
         { headers: { "Content-Type": "application/json" } }
       );
 
@@ -57,7 +54,7 @@ const Login = (props) => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -66,8 +63,10 @@ const Login = (props) => {
             label="Email Address"
             name="email"
             autoComplete="email"
-            value={formData.email}
+            value={values.email}
             onChange={handleChange}
+            error={!!errors.email}
+            helperText={errors.email}
             autoFocus
           />
           <TextField
@@ -79,8 +78,10 @@ const Login = (props) => {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={formData.password}
+            value={values.password}
             onChange={handleChange}
+            error={!!errors.password}
+            helperText={errors.password}
           />
           <Box sx={{ padding: "10px" }}>
             <FormControlLabel

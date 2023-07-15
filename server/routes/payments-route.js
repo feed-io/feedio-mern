@@ -16,6 +16,10 @@ router.post(
   "/create-checkout-session",
   paymentController.createCheckoutSession
 );
+router.post(
+  "/create-customer-portal-session",
+  paymentController.createCustomerPortalSession
+);
 router.post("/cancel-subscription", paymentController.cancelSubscription);
 router.post("/webhook", paymentController.handleStripeWebhook);
 

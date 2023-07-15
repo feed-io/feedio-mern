@@ -5,9 +5,11 @@ import {
   Button as MuiButton,
   Container,
   Avatar,
+  Button,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
+import { Link as RouterLink } from "react-router-dom";
 
 import { AuthContext } from "../../context/auth-context";
 import UpdateModal from "../dashboardPage/UpdateModal";
@@ -95,6 +97,13 @@ export default function UserProfile() {
             color="error">
             Delete Account
           </StyledButton>
+          <Button
+            variant="contained"
+            color="secondary"
+            component={RouterLink}
+            to="/dashboard">
+            Go to Dashboard
+          </Button>
         </Box>
       </StyledBox>
       <UpdateModal onOpen={openEdit} onClose={handleEditClose} />

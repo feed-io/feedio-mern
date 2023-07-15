@@ -12,12 +12,12 @@ const theme = createTheme({
       main: "#f44336",
     },
     background: {
-      default: "#023C40",
+      default: "#E1FAF9",
       secondary: "#E1FAF9",
     },
     text: {
       primary: "#000000",
-      secondary: "#f5f5f5",
+      secondary: "#000000",
     },
     success: {
       main: "#4caf50",

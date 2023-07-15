@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+
 import { AuthContext } from "../context/auth-context";
 import AuthModal from "./auth/AuthModal";
 

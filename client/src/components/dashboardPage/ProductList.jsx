@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { Box, Grid, Typography, Paper } from "@mui/material";
+import axios from "axios";
 
 import { AuthContext } from "../../context/auth-context";
 
@@ -47,7 +47,7 @@ const ProductsList = (props) => {
               sx={(theme) => ({
                 borderRadius: 5,
                 backgroundColor: theme.palette.background.default,
-                color: "white",
+                color: "black",
               })}>
               <Box
                 sx={{

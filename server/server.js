@@ -54,6 +54,11 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
 });
 
+app.use((req, res, next) => {
+  console.log(`${req.method} request to ${req.url}`);
+  next();
+});
+
 app.use("/api/users", userRoutes);
 app.use("/api/users/:id/products", productRoutes);
 app.use("/api/users/:id/products/:pid/reviews", reviewRoutes);

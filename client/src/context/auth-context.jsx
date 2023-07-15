@@ -7,4 +7,5 @@ export const AuthContext = createContext({
   membershipStatus: "free",
   login: () => {},
   logout: () => {},
+  updateMembershipStatus: () => {},
 });

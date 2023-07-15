@@ -1,4 +1,3 @@
-// AvatarComponent.js
 import React from "react";
 import { Avatar as MuiAvatar } from "@mui/material";
 import { createAvatar } from "@dicebear/avatars";

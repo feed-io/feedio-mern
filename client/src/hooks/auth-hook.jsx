@@ -36,6 +36,14 @@ export const useAuth = () => {
 
   const updateMembershipStatus = useCallback((status) => {
     setMembershipStatus(status);
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        ...storedData,
+        membershipStatus: status,
+      })
+    );
   }, []);
 
   useEffect(() => {

@@ -8,7 +8,9 @@ import {
   DialogActions,
 } from "@mui/material";
 import axios from "axios";
+
 import { AuthContext } from "../../context/auth-context";
+
 const CreateModal = (props) => {
   const [newProductName, setNewProductName] = useState("");
   const [newProductImageUrl, setNewProductImageUrl] = useState("");

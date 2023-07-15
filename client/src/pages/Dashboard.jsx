@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Typography, Fab, Container, Box, Divider } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import styled from "@emotion/styled";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
 import ProductList from "../components/dashboardPage/ProductList";
 import CreateModal from "../components/dashboardPage/CreateModal";
 import Avatar from "../components/dashboardPage/Avatar";
-import styled from "@emotion/styled";
 
 const StyledFab = styled(Fab)(({ theme }) => ({
   position: "absolute",

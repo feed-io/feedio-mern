@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   payments: [{ type: Schema.Types.ObjectId, ref: "Payment" }],
   membershipStatus: { type: String, default: "free" },
   stripeSubscriptionId: { type: String },
+  stripeCustomerId: { type: String },
 });
 
 module.exports = mongoose.model("User", userSchema);
