@@ -19,6 +19,7 @@ const SignUp = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(values);
     try {
       const response = await axios.post(
         "http://localhost:8080/api/users/register",
@@ -28,6 +29,7 @@ const SignUp = (props) => {
         }
       );
 
+      console.log(response);
       auth.login(
         response.data.userId,
         response.data.token,
@@ -57,21 +59,21 @@ const SignUp = (props) => {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
                 name="name"
                 required
                 fullWidth
-                id="name"
-                label="Name"
+                id="username"
+                label="Username"
                 value={values.name}
                 onChange={handleChange}
                 error={!!errors.name}
                 helperText={errors.name}
                 autoFocus
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 required

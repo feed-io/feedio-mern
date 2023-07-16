@@ -8,19 +8,30 @@ module.exports = (req, res, next) => {
     return next();
   }
 
+  let token;
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    token = req.headers.authorization.split(" ")[1];
     if (!token) {
-      throw new Error("Error no token");
+      return res
+        .status(401)
+        .json({ message: "Authentication failed: No token provided" });
     }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(401)
+      .json({ message: "Authentication failed: Error retrieving token" });
+  }
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (error) {
     console.log(error);
     return res
       .status(401)
-      .json({ message: "Authentication failed: " + error.message });
+      .json({ message: "Authentication failed: Invalid token" });
   }
 };

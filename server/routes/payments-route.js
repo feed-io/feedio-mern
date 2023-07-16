@@ -1,8 +1,9 @@
 const express = require("express");
-const router = express.Router({ mergeParams: true });
 
 const checkAuth = require("../middleware/check-auth");
 const paymentController = require("../controllers/paymentController");
+
+const router = express.Router({ mergeParams: true });
 
 router.use((req, res, next) => {
   if (req.path === "/webhook") {
@@ -21,6 +22,7 @@ router.post(
   paymentController.createCustomerPortalSession
 );
 router.post("/cancel-subscription", paymentController.cancelSubscription);
+
 router.post("/webhook", paymentController.handleStripeWebhook);
 
 module.exports = router;

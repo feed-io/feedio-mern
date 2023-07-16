@@ -2,17 +2,17 @@ import { useState } from "react";
 
 function useValidation() {
   const [values, setValues] = useState({
-    username: "",
+    // username: "",
     email: "",
     password: "",
-    passwordConfirm: "", // Add passwordConfirm initial state
+    passwordConfirm: "",
   });
 
   const [errors, setErrors] = useState({
-    username: "",
+    // username: "",
     email: "",
     password: "",
-    passwordConfirm: "", // Add passwordConfirm initial error state
+    passwordConfirm: "",
   });
 
   const handleChange = (event) => {
@@ -24,12 +24,12 @@ function useValidation() {
     });
 
     switch (name) {
-      case "username":
-        setErrors({
-          ...errors,
-          username: value ? "" : "Username is required",
-        });
-        break;
+      //   case "username":
+      //     setErrors({
+      //       ...errors,
+      //       username: value ? "" : "Username is required",
+      //     });
+      //     break;
       case "email":
         setErrors({
           ...errors,
