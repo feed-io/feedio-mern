@@ -41,7 +41,7 @@ const Dashboard = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/all`,
+          `https://feedio-server.vercel.app/api/users/${auth.userId}/products/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -62,7 +62,7 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}`,
+          `https://feedio-server.vercel.app/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -86,7 +86,7 @@ const Dashboard = () => {
   const handleManageBilling = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/users/${auth.userId}/payments/create-customer-portal-session`,
+        `https://feedio-server.vercel.app/api/users/${auth.userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {

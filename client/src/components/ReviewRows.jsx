@@ -29,7 +29,7 @@ const ReviewRows = ({ productId, userId, token }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${userId}/products/${productId}/reviews/${productId}/all`,
+          `https://feedio-server.vercel.app/api/users/${userId}/products/${productId}/reviews/${productId}/all`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -49,7 +49,7 @@ const ReviewRows = ({ productId, userId, token }) => {
   const handleDelete = async (reviewId) => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/users/${userId}/products/${productId}/reviews/${reviewId}`,
+        `https://feedio-server.vercel.app/api/users/${userId}/products/${productId}/reviews/${reviewId}`,
         {
           headers: {
             Authorization: "Bearer " + token,

@@ -14,7 +14,7 @@ import SubscriptionPage from "./pages/SubscriptionPage";
 import RoomPage from "./pages/RoomPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import ReviewsWidget from "./templates/ReviewsWidget";
-import ReviewSpace from "./templates/ReviewSpace";
+import FeedbackPage from "./templates/FeedbackPage";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
 
@@ -43,7 +43,7 @@ const App = () => {
         <Route path="/cancel" element={<CancelationPage />} />
         <Route path="/products/:productId" element={<RoomPage />} />
         <Route path="/showRoom/:productId" element={<ReviewsWidget />} />
-        <Route path="/reviewSpace/:productId" element={<ReviewSpace />} />
+        <Route path="/reviewSpace/:productId" element={<FeedbackPage />} />
       </Routes>
     );
   } else {

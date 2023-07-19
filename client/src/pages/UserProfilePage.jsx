@@ -23,7 +23,7 @@ const UserProfilePage = () => {
     const loadData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}`,
+          `https://feedio-server.vercel.app/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -45,7 +45,7 @@ const UserProfilePage = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `http://localhost:8080/api/users/${auth.userId}`,
+        `https://feedio-server.vercel.app/api/users/${auth.userId}`,
         {
           email: email,
           username: username,

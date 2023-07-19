@@ -49,7 +49,7 @@ const CreateRoomForm = (props) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/users/${auth.userId}/products/createProduct`,
+        `https://feedio-server.vercel.app/api/users/${auth.userId}/products/createProduct`,
         {
           name: newProductName,
           // imageUrl: newProductImageUrl,

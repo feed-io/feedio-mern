@@ -21,7 +21,7 @@ const DeleteUserModal = (props) => {
     // e.preventDefault();
 
     // try {
-    //   await axios.delete(`http://localhost:8080/api/users/${auth.userId}`, {
+    //   await axios.delete(`https://feedio-server.vercel.app/api/users/${auth.userId}`, {
     //     headers: {
     //       Authorization: "Bearer " + auth.token,
     //     },

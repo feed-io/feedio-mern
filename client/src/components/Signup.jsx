@@ -28,7 +28,7 @@ const SignUp = (props) => {
     console.log(values);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/register",
+        "https://feedio-server.vercel.app/api/users/register",
         values,
         {
           headers: { "Content-Type": "application/json" },

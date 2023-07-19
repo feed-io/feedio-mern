@@ -28,7 +28,7 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/login",
+        "https://feedio-server-luisr.vercel.app/api/users/login",
         values,
         { headers: { "Content-Type": "application/json" } }
       );
