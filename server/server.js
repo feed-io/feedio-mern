@@ -41,6 +41,7 @@ app.use("/api/users/:id/products/:pid/reviews", reviewRoutes);
 app.use("/api/users/:id/payments", paymentRoutes);
 app.post("/api/payments/webhook", paymentController.handleStripeWebhook);
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server running on port ${process.env.PORT}`)
-);
+// app.listen(process.env.PORT, () =>
+//   console.log(`Server running on port ${process.env.PORT}`)
+// );
+module.exports = app;
