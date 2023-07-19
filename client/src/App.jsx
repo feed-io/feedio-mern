@@ -4,19 +4,19 @@ import { Box } from "@mui/material";
 
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import Landing from "./pages/Landing";
-import Pricing from "./pages/Pricing";
-import FeaturesPage from "./pages/Features";
-import Dashboard from "./pages/Dashboard";
-import ProductProfile from "./pages/ProductProfile";
-import Profile from "./components/userProfile/UserProfile";
-import { AuthContext } from "./context/auth-context";
-import { useAuth } from "./hooks/auth-hook";
+import CancelationPage from "./pages/CancelationPage";
+import SuccessPage from "./pages/SuccessPage";
+import LandingPage from "./pages/LandingPage";
+import PricingPage from "./pages/PricingPage";
+import FeaturesPage from "./pages/FeaturesPage";
+import DashboardPage from "./pages/DashboardPage";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import RoomPage from "./pages/RoomPage";
+import UserProfilePage from "./pages/UserProfilePage";
 import ReviewsWidget from "./templates/ReviewsWidget";
 import ReviewSpace from "./templates/ReviewSpace";
-import Membership from "./components/settings/Membership";
-import Success from "./components/settings/Success";
-import Cancel from "./components/settings/Cancelation";
+import { AuthContext } from "./context/auth-context";
+import { useAuth } from "./hooks/auth-hook";
 
 const App = () => {
   const {
@@ -33,15 +33,15 @@ const App = () => {
   if (token) {
     routes = (
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/features" element={<FeaturesPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/membership" element={<Membership />} />
-        <Route path="/success" element={<Success />} />
-        <Route path="/cancel" element={<Cancel />} />
-        <Route path="/products/:productId" element={<ProductProfile />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/membership" element={<SubscriptionPage />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancel" element={<CancelationPage />} />
+        <Route path="/products/:productId" element={<RoomPage />} />
         <Route path="/showRoom/:productId" element={<ReviewsWidget />} />
         <Route path="/reviewSpace/:productId" element={<ReviewSpace />} />
       </Routes>
@@ -49,8 +49,8 @@ const App = () => {
   } else {
     routes = (
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/features" element={<FeaturesPage />} />
       </Routes>
     );

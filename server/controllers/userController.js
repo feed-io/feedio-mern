@@ -211,6 +211,7 @@ exports.registerUser = async (req, res, next) => {
     const user = await userService.register({ name, email, password });
     res.status(201).json(user);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -227,6 +228,7 @@ exports.loginUser = async (req, res, next) => {
     const user = await userService.login({ email, password });
     res.status(200).json(user);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -266,6 +268,7 @@ exports.deleteUser = async (req, res) => {
     const message = await userService.deleteUser(id);
     res.status(200).json({ message: message });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };

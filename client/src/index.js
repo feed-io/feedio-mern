@@ -4,6 +4,7 @@ import { ThemeProvider, GlobalStyles } from "@mui/material";
 
 import App from "./App";
 import theme from "./themes/theme";
+import "./index.css";
 
 const globalStyles = {
   body: {

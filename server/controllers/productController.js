@@ -169,6 +169,7 @@ exports.getAllProducts = async (req, res) => {
     const products = await productService.getAll(userId);
     res.status(200).json({ products });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ message: "Something went wrong", error: error.message });

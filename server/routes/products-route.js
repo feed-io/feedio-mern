@@ -13,11 +13,10 @@ router.post(
   "/createProduct",
   [
     check("name").not().isEmpty().withMessage("Product name is required"),
-    check("imageUrl").not().isEmpty().withMessage("Image URL is required"),
+    // check("imageUrl").not().isEmpty().withMessage("Image URL is required"),
     check("header").not().isEmpty().withMessage("Header is required"),
     check("content").not().isEmpty().withMessage("Content is required"),
     check("questions").isArray().withMessage("Questions must be an array"),
-    check("rating").isNumeric().withMessage("Rating must be a number"),
   ],
   productController.createProduct
 );
@@ -32,11 +31,11 @@ router.put(
       .not()
       .isEmpty()
       .withMessage("Product name must not be empty"),
-    check("imageUrl")
-      .optional()
-      .not()
-      .isEmpty()
-      .withMessage("Image URL must not be empty"),
+    // check("imageUrl")
+    //   .optional()
+    //   .not()
+    //   .isEmpty()
+    //   .withMessage("Image URL must not be empty"),
     check("header")
       .optional()
       .not()
@@ -51,10 +50,6 @@ router.put(
       .optional()
       .isArray()
       .withMessage("Questions must be an array"),
-    check("rating")
-      .optional()
-      .isNumeric()
-      .withMessage("Rating must be a number"),
   ],
   productController.updateProduct
 );

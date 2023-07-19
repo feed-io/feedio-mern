@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { AuthContext } from "../context/auth-context";
-import AuthModal from "./auth/AuthModal";
+import AuthModal from "./AuthModal";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -60,8 +60,8 @@ const NavBar = () => {
           <StyledBox>
             {auth.isLoggedIn ? null : (
               <>
-                <StyledLink to="/pricing">Pricing</StyledLink>
                 <StyledLink to="/features">Features</StyledLink>
+                <StyledLink to="/pricing">Pricing</StyledLink>
               </>
             )}
           </StyledBox>
