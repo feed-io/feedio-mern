@@ -99,16 +99,16 @@
 // export default ShowRoom;
 
 import React from "react";
-import { Box, Typography, Button, SvgIcon } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const CustomIcon1 = (props) => (
-  <SvgIcon {...props}>{/* SVG Path for the first icon */}</SvgIcon>
-);
+// const CustomIcon1 = (props) => (
+//   <SvgIcon {...props}>{/* SVG Path for the first icon */}</SvgIcon>
+// );
 
-const CustomIcon2 = (props) => (
-  <SvgIcon {...props}>{/* SVG Path for the second icon */}</SvgIcon>
-);
+// const CustomIcon2 = (props) => (
+//   <SvgIcon {...props}>{/* SVG Path for the second icon */}</SvgIcon>
+// );
 
 export default function TranslatedComponent() {
   return (

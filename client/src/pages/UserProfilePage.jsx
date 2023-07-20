@@ -39,7 +39,7 @@ const UserProfilePage = () => {
       }
     };
     loadData();
-  }, []);
+  }, [auth.token, auth.userId]);
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();

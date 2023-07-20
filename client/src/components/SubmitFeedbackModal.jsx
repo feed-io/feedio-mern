@@ -18,7 +18,7 @@ const SubmitFeedbackModal = (props) => {
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const { productId } = useParams();
 
   const auth = useContext(AuthContext);
@@ -70,13 +70,13 @@ const SubmitFeedbackModal = (props) => {
     }
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   return (
     <Container maxWidth="lg">

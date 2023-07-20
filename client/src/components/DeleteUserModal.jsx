@@ -17,20 +17,22 @@ const DeleteUserModal = (props) => {
   const auth = useContext(AuthContext);
 
   const handleDeleteSubmit = async (e) => {
-    console.log(e);
-    // e.preventDefault();
+    e.preventDefault();
 
-    // try {
-    //   await axios.delete(`https://feedio-server.vercel.app/api/users/${auth.userId}`, {
-    //     headers: {
-    //       Authorization: "Bearer " + auth.token,
-    //     },
-    //   });
+    try {
+      await axios.delete(
+        `https://feedio-server.vercel.app/api/users/${auth.userId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + auth.token,
+          },
+        }
+      );
 
-    //   onClose();
-    // } catch (error) {
-    //   console.log("Error deleting user:", error.message);
-    // }
+      onClose();
+    } catch (error) {
+      console.log("Error deleting user:", error.message);
+    }
   };
 
   return (
