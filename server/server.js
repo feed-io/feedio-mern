@@ -15,7 +15,13 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+
+app.use(
+  cors({
+    origin: "https://feedio-client.vercel.app",
+  })
+);
 
 app.use(
   bodyParser.json({
