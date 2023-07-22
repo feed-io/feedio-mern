@@ -17,6 +17,7 @@ const register = async ({ name, email, password }) => {
 
   const hashedPassword = await bcrypt.hash(password, 12);
   const newUser = new User({
+    name,
     email,
     password: hashedPassword,
   });
@@ -37,6 +38,7 @@ const register = async ({ name, email, password }) => {
   return {
     userId: newUser._id,
     email: newUser.email,
+    name: newUser.name,
     token,
     membershipStatus: newUser.membershipStatus,
   };

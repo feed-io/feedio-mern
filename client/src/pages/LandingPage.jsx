@@ -10,20 +10,21 @@ import {
   SvgIcon,
 } from "@mui/material";
 
-import LandingImg1 from "../data/landing1.svg";
-import ManageImg from "../data/manage.svg";
-import AmazonTile from "../data/amazonTile.svg";
-import GoogleTile from "../data/googleTile.svg";
-import IgTile from "../data/igTile.svg";
-import TiktokTile from "../data/tiktokTile.svg";
-import productHuntTile from "../data/productHunt.svg";
-import redditTile from "../data/redditTile.svg";
-import twitterTile from "../data/twitterTile.svg";
-import yelpTile from "../data/yelp.svg";
-import Framer from "../data/framer.svg";
-import Shopify from "../data/shopify.svg";
-import Webflow from "../data/webflow.svg";
-import Wordpress from "../data/wordpress.svg";
+import LandingImg1 from "../assets/landing1.svg";
+import ManageImg from "../assets/manage.svg";
+import AmazonTile from "../assets/amazonTile.svg";
+import GoogleTile from "../assets/googleTile.svg";
+import IgTile from "../assets/igTile.svg";
+import TiktokTile from "../assets/tiktokTile.svg";
+import productHuntTile from "../assets/productHunt.svg";
+import redditTile from "../assets/redditTile.svg";
+import twitterTile from "../assets/twitterTile.svg";
+import yelpTile from "../assets/yelp.svg";
+import Framer from "../assets/framer.svg";
+import Shopify from "../assets/shopify.svg";
+import Webflow from "../assets/webflow.svg";
+import Wordpress from "../assets/wordpress.svg";
+import WidgetDisplay from "../components/WidgetDisplay";
 
 const LandingPage = () => {
   const platforms = [
@@ -93,6 +94,12 @@ const LandingPage = () => {
 
   return (
     <main>
+      {/* <WidgetDisplay
+        token={
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGI5OGRmYWM4MzI2NDJlNzVmNGRjZDAiLCJlbWFpbCI6ImxhbGFAdGVzdC5jb20iLCJpYXQiOjE2ODk5Njk5ODEsImV4cCI6MTY4OTk3MzU4MX0.R_-t3ZwfKmUUJalZPoX3kqToyVVj6I2UydPByGfPilM"
+        }
+      /> */}
+
       <Box sx={{ bgcolor: "white", pt: 32, pb: 10 }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", pb: 12 }}>
@@ -106,16 +113,14 @@ const LandingPage = () => {
             </Typography>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <Box>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to="/pricing">
+                <Button variant="contained" color="primary" to="/pricing">
                   Try FREE now
                 </Button>
-                <Typography variant="body2" color="text.secondary" mt={2}>
+                <Typography variant="body2" mt={2}>
                   Get started with free credits on us.
-                  <Link to="/pricing">See our pricing →</Link>
+                  <Link to="/pricing" style={{ textDecoration: "none" }}>
+                    See our pricing →
+                  </Link>
                 </Typography>
               </Box>
             </Box>
@@ -318,7 +323,9 @@ const LandingPage = () => {
             </Button>
           </Box>
           <Typography variant="body2" align="center">
-            <Link to="/pricing">See our pricing →</Link>
+            <Link to="/pricing" style={{ textDecoration: "none" }}>
+              See our pricing →
+            </Link>
           </Typography>
         </Container>
       </Box>

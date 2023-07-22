@@ -19,9 +19,13 @@ import {
   Star,
   Delete,
   Favorite,
+  MailOutline,
+  CalendarToday,
 } from "@mui/icons-material";
 
-const ReviewRows = ({ productId, userId, token }) => {
+import Empty from "../assets/empty.svg";
+
+const ReviewRows = ({ product, userId, token, onSpaceCreated }) => {
   const [reviews, setReviews] = useState([]);
   const [openId, setOpenId] = useState(null);
 
@@ -29,7 +33,7 @@ const ReviewRows = ({ productId, userId, token }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.vercel.app/api/users/${userId}/products/${productId}/reviews/${productId}/all`,
+          `http://localhost:8080/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -44,19 +48,23 @@ const ReviewRows = ({ productId, userId, token }) => {
     };
 
     fetchReviews();
-  }, [userId, token, productId]);
+  }, [userId, token, product._id]);
 
   const handleDelete = async (reviewId) => {
     try {
       await axios.delete(
-        `https://feedio-server.vercel.app/api/users/${userId}/products/${productId}/reviews/${reviewId}`,
+        `http://localhost:8080/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
         {
           headers: {
             Authorization: "Bearer " + token,
           },
         }
       );
+
       setReviews(reviews.filter((review) => review._id !== reviewId));
+      if (onSpaceCreated) {
+        onSpaceCreated();
+      }
     } catch (error) {
       console.log("Error deleting review:", error.message);
     }
@@ -66,15 +74,60 @@ const ReviewRows = ({ productId, userId, token }) => {
     setOpenId(openId === id ? null : id);
   };
 
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    };
+
+    return date.toLocaleString("en-US", options);
+  };
+
   return (
     <TableContainer component={Box}>
       <Table aria-label="collapsible table">
         <TableBody>
           {reviews.length === 0 ? (
-            <Typography variant="subtitle1">No reviews yet</Typography>
+            <Box>
+              <Box display="flex" alignItems="center" justifyContent="center">
+                <Box
+                  display="flex"
+                  width="15%"
+                  alignItems="center"
+                  justifyContent="center">
+                  <img
+                    src={Empty}
+                    width="540"
+                    alt="No Reviews"
+                    loading="lazy"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                      display: "block",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Box
+                display="flex"
+                alignItems="center"
+                paddingTop={4}
+                justifyContent="center">
+                <Typography variant="subtitle1">No reviews yet</Typography>
+              </Box>
+            </Box>
           ) : (
             reviews.map((review, index) => (
-              <React.Fragment>
+              <>
                 <TableRow key={review._id}>
                   <TableCell>
                     <IconButton
@@ -88,10 +141,12 @@ const ReviewRows = ({ productId, userId, token }) => {
                       )}
                     </IconButton>
                   </TableCell>
-                  <TableCell>{review.name}</TableCell>
+                  <TableCell>
+                    <Typography>From:</Typography>
+                    {review.name}
+                  </TableCell>
                   <TableCell>
                     <Rating
-                      name="customized-color"
                       value={review.rating}
                       readOnly
                       icon={<Star fontSize="inherit" />}
@@ -121,15 +176,46 @@ const ReviewRows = ({ productId, userId, token }) => {
                       in={openId === review._id}
                       timeout="auto"
                       unmountOnExit>
-                      <Box sx={{ margin: 1 }}>
-                        <Typography variant="body2">
-                          {review.content}
-                        </Typography>
+                      <Box sx={{ padding: 2 }}>
+                        {/* Content */}
+                        <Box sx={{ marginBottom: 2 }}>
+                          <Typography variant="h6" gutterBottom>
+                            Content:
+                          </Typography>
+                          <Typography variant="body2">
+                            {review.content}
+                          </Typography>
+                        </Box>
+
+                        {/* Email */}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginBottom: 1,
+                          }}>
+                          <Box size="small" color="main">
+                            <MailOutline />
+                          </Box>
+                          <Typography variant="body2" sx={{ marginLeft: 1 }}>
+                            {review.email}
+                          </Typography>
+                        </Box>
+
+                        {/* Created At */}
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Box size="small" color="main">
+                            <CalendarToday />
+                          </Box>
+                          <Typography variant="body2" sx={{ marginLeft: 1 }}>
+                            {formatDate(review.createdAt)}
+                          </Typography>
+                        </Box>
                       </Box>
                     </Collapse>
                   </TableCell>
                 </TableRow>
-              </React.Fragment>
+              </>
             ))
           )}
         </TableBody>

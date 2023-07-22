@@ -74,7 +74,7 @@ const SubscriptionPage = () => {
       navigate("/dashboard");
     } else {
       const response = await axios.post(
-        `https://feedio-server.vercel.app/api/users/${userId}/payments/create-checkout-session`,
+        `http://localhost:8080/api/users/${userId}/payments/create-checkout-session`,
         {},
         {
           headers: {
@@ -96,7 +96,7 @@ const SubscriptionPage = () => {
   const handleUnsubscribe = async () => {
     try {
       const response = await axios.post(
-        `https://feedio-server.vercel.app/api/users/${userId}/payments/cancel-subscription`,
+        `http://localhost:8080/api/users/${userId}/payments/cancel-subscription`,
         {},
         {
           headers: {
@@ -115,7 +115,7 @@ const SubscriptionPage = () => {
   const handleManageBilling = async () => {
     try {
       const response = await axios.post(
-        `https://feedio-server.vercel.app/api/users/${userId}/payments/create-customer-portal-session`,
+        `http://localhost:8080/api/users/${userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {
@@ -137,7 +137,7 @@ const SubscriptionPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.vercel.app/api/users/${userId}`,
+          `http://localhost:8080/api/users/${userId}`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -158,7 +158,8 @@ const SubscriptionPage = () => {
     <Container>
       <Box
         sx={{
-          mt: 4,
+          mt: 8,
+          mb: 16,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

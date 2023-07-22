@@ -3,54 +3,43 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#2962ff",
+      main: "#023047ff",
+      contrastText: "#ffffff",
     },
     secondary: {
-      main: "#6a1b9a",
+      main: "#fb8500ff",
+      contrastText: "#ffffff",
     },
     error: {
-      main: "#d32f2f",
+      main: "#ff6347",
+      contrastText: "#000000",
     },
-    success: {
-      main: "#388e3c",
+    warning: {
+      main: "#219ebcff",
+      contrastText: "#ffffff",
     },
-    background: {
-      default: "#f5f5f5",
-    },
-    text: {
-      primary: "#212121",
-      secondary: "#757575",
+    info: {
+      main: "#8ecae6ff",
+      contrastText: "#000000",
     },
   },
-  typography: {
-    fontFamily: [
-      "Roboto",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Arial",
-      "sans-serif",
-    ].join(","),
-    h1: {
-      fontSize: "2rem",
-      fontWeight: 700,
-      color: "#212121",
-    },
-    h2: {
-      fontSize: "1.5rem",
-      fontWeight: 700,
-      color: "#212121",
-    },
-    body1: {
-      fontSize: "1rem",
-      fontWeight: 400,
-      color: "#757575",
-    },
-    caption: {
-      fontSize: "0.75rem",
-      fontWeight: 400,
-      color: "#757575",
-    },
+  gradients: {
+    top: "linear-gradient(0deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    right:
+      "linear-gradient(90deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    bottom:
+      "linear-gradient(180deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    left: "linear-gradient(270deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    topRight:
+      "linear-gradient(45deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    bottomRight:
+      "linear-gradient(135deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    topLeft:
+      "linear-gradient(225deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    bottomLeft:
+      "linear-gradient(315deg, #8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
+    radial:
+      "radial-gradient(#8ecae6ff, #219ebcff, #023047ff, #ffb703ff, #fb8500ff)",
   },
 });
 

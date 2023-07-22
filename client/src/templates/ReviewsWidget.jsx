@@ -17,7 +17,7 @@
 //     const fetchData = async () => {
 //       try {
 //         const response = await axios.get(
-//           `https://feedio-server.vercel.app/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
+//           `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
 //           {
 //             headers: {
 //               Authorization: "Bearer " + auth.token,

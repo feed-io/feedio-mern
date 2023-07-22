@@ -18,7 +18,7 @@ const FeedbackTemplate = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.vercel.app/api/users/${auth.userId}/products/${productId}`,
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -83,7 +83,7 @@ const FeedbackTemplate = () => {
             </Typography>
 
             <Typography variant="body1">
-              <Box className="custom-message">{productHeader}</Box>
+              <Box>{productHeader}</Box>
             </Typography>
 
             <Box

@@ -25,7 +25,7 @@
 
 //     try {
 //       const response = await axios.put(
-//         `https://feedio-server.vercel.app/api/users/${auth.userId}/products/${props.productId}`,
+//         `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}`,
 //         {
 //           name: updatedProductName,
 //           imageUrl: updatedProductImageUrl,

@@ -137,6 +137,15 @@ exports.getAllReviews = async (req, res) => {
   }
 };
 
+exports.getFavoriteReviews = async (req, res) => {
+  try {
+    const favReviews = await Review.find({ status: "fav" });
+    res.status(200).json(favReviews);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 exports.deleteReview = async (req, res) => {
   const { rid } = req.params;
 

@@ -9,6 +9,8 @@ import {
   styled,
   Menu,
   MenuItem,
+  Button,
+  Tooltip,
 } from "@mui/material";
 
 import { AuthContext } from "../context/auth-context";
@@ -21,20 +23,23 @@ const StyledToolbar = styled(Toolbar)({
 
 const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
-  color: theme.palette.text.secondary,
+  color: theme.palette.primary.main,
   margin: "0px 10px",
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: "flex",
-  justifyContent: "space-between",
   alignItems: "center",
   gap: "20px",
 }));
 
+const StyledButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+}));
+
 const NavBar = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [openMenu, setOpenMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null);
   const auth = useContext(AuthContext);
 
   const handleOpenModal = () => {
@@ -49,7 +54,7 @@ const NavBar = () => {
     <>
       <AppBar
         sx={{
-          backgroundColor: (theme) => theme.palette.background.default,
+          backgroundColor: (theme) => theme.palette.background.paper,
           boxShadow: "none",
           position: "static",
         }}>
@@ -67,21 +72,28 @@ const NavBar = () => {
           </StyledBox>
 
           {!auth.isLoggedIn ? (
-            <StyledLink onClick={handleOpenModal}>Login</StyledLink>
+            <StyledButton
+              variant="contained"
+              color="secondary"
+              onClick={handleOpenModal}>
+              Login
+            </StyledButton>
           ) : (
-            <StyledBox onClick={(e) => setOpenMenu(true)}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-            </StyledBox>
+            <Tooltip title="User Settings">
+              <StyledBox onClick={(e) => setOpenMenu(e.currentTarget)}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </StyledBox>
+            </Tooltip>
           )}
         </StyledToolbar>
       </AppBar>
       <Menu
         id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
-        open={openMenu}
-        onClose={(e) => setOpenMenu(false)}
+        anchorEl={openMenu}
+        open={Boolean(openMenu)}
+        onClose={() => setOpenMenu(null)}
         anchorOrigin={{
-          vertical: "top",
+          vertical: "bottom",
           horizontal: "right",
         }}
         transformOrigin={{
@@ -91,14 +103,14 @@ const NavBar = () => {
         <MenuItem
           component={Link}
           to="/dashboard"
-          onClick={(e) => setOpenMenu(false)}>
+          onClick={() => setOpenMenu(null)}>
           Dashboard
         </MenuItem>
         <MenuItem
           component={Link}
           to="/"
           onClick={() => {
-            setOpenMenu(false);
+            setOpenMenu(null);
             auth.logout();
           }}>
           Logout

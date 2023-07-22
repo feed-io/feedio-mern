@@ -52,7 +52,7 @@ const SubmitFeedbackModal = (props) => {
 
     try {
       const response = await axios.post(
-        `https://feedio-server.vercel.app/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
+        `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
         reviewData,
         {
           headers: {

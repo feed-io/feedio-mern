@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -10,9 +10,11 @@ import {
   Avatar,
   FormControlLabel,
   Checkbox,
+  Alert,
   Box,
 } from "@mui/material";
-import { LockOutlined } from "@mui/icons-material";
+
+import { SensorOccupied } from "@mui/icons-material";
 
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
@@ -23,31 +25,31 @@ const SignUp = (props) => {
   const auth = useContext(AuthContext);
   const { handleClose } = props;
 
+  const [submitError, setSubmitError] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+
     try {
       const response = await axios.post(
-        "https://feedio-server.vercel.app/api/users/register",
+        "http://localhost:8080/api/users/register",
         values,
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-
-      console.log(response);
       auth.login(
         response.data.userId,
+        response.data.name,
         response.data.token,
         response.data.membershipStatus
       );
       navigate("/dashboard");
       handleClose();
     } catch (error) {
-      console.log(error.message);
+      setSubmitError(error.message);
     }
   };
-
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -58,28 +60,36 @@ const SignUp = (props) => {
           alignItems: "center",
         }}>
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlined />
+          <SensorOccupied />
         </Avatar>
+
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+
+        {submitError && (
+          <Box sx={{ width: "100%", mt: 2 }}>
+            <Alert severity="error">{submitError}</Alert>
+          </Box>
+        )}
+
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            {/* <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
-                name="name"
                 required
                 fullWidth
-                id="username"
-                label="Username"
+                id="name"
+                label="Name"
+                name="name"
+                autoComplete="name"
                 value={values.name}
                 onChange={handleChange}
                 error={!!errors.name}
                 helperText={errors.name}
-                autoFocus
               />
-            </Grid> */}
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 required
@@ -94,6 +104,7 @@ const SignUp = (props) => {
                 helperText={errors.email}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 required
@@ -109,6 +120,7 @@ const SignUp = (props) => {
                 helperText={errors.password}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 required
@@ -124,6 +136,7 @@ const SignUp = (props) => {
                 helperText={errors.passwordConfirm}
               />
             </Grid>
+
             <Grid item xs={12}>
               <Box sx={{ padding: "10px" }}>
                 <FormControlLabel
@@ -137,6 +150,7 @@ const SignUp = (props) => {
               </Box>
             </Grid>
           </Grid>
+
           <Box sx={{ padding: "10px" }}>
             <Button
               type="submit"

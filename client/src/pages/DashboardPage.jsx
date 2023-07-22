@@ -41,14 +41,14 @@ const Dashboard = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.vercel.app/api/users/${auth.userId}/products/all`,
+          `http://localhost:8080/api/users/${auth.userId}/products/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
             },
           }
         );
-
+        console.log(response);
         setProducts(response.data.products);
       } catch (error) {
         console.log("Error fetching products:", error.message);
@@ -62,7 +62,7 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.vercel.app/api/users/${auth.userId}`,
+          `http://localhost:8080/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -86,7 +86,7 @@ const Dashboard = () => {
   const handleManageBilling = async () => {
     try {
       const response = await axios.post(
-        `https://feedio-server.vercel.app/api/users/${auth.userId}/payments/create-customer-portal-session`,
+        `http://localhost:8080/api/users/${auth.userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {
@@ -95,7 +95,6 @@ const Dashboard = () => {
         }
       );
 
-      console.log(response);
       if (response.data && response.data.url) {
         window.location.href = response.data.url;
       }
@@ -108,11 +107,12 @@ const Dashboard = () => {
     <Container>
       <Box py={4}>
         {/* Overview Section */}
-        <Box mb={8}>
+        <Box mb={2}>
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
+            sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}
             my={2}>
             <Typography
               variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
@@ -140,8 +140,15 @@ const Dashboard = () => {
                 <Button
                   startIcon={icon}
                   href={label !== "Billing" ? path : undefined}
-                  variant="outlined"
+                  variant="contained"
                   fullWidth={isMobile}
+                  sx={{
+                    fontSize: { xs: "0.6rem", sm: "0.8rem" },
+                    whiteSpace: { xs: "normal", sm: "nowrap" },
+                    padding: "6px 12px",
+                    textTransform: "none",
+                    // fontWeight: "lighter",
+                  }}
                   onClick={
                     label === "Billing" ? handleManageBilling : undefined
                   }>
@@ -152,18 +159,19 @@ const Dashboard = () => {
           </Grid>
         </Box>
 
-        <Box mb={4}>
-          <Divider />
-        </Box>
-
         {/* Rooms Section */}
         <Box>
           <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
-            mb={4}>
+            mt={4}
+            mb={2}>
             <Typography variant={isMobile ? "h5" : "h4"}>Rooms</Typography>
+          </Box>
+
+          <Box mb={4}>
+            <Divider />
           </Box>
 
           <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
@@ -171,7 +179,7 @@ const Dashboard = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Room</TableCell>
-                  <TableCell align="right">Avg. Reviews</TableCell>
+                  <TableCell align="right">Avg. Rating</TableCell>
                   <TableCell align="right">Number of Reviews</TableCell>
                 </TableRow>
               </TableHead>
@@ -189,7 +197,7 @@ const Dashboard = () => {
                       {product.name}
                     </TableCell>
                     <TableCell align="right">
-                      {product.reviews.length}
+                      {product.averageRating.toFixed(1)}
                     </TableCell>
                     <TableCell align="right">
                       {product.reviews.length}
@@ -201,7 +209,9 @@ const Dashboard = () => {
           </TableContainer>
         </Box>
       </Box>
-      <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
+      <Box mb={16}>
+        <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
+      </Box>
     </Container>
   );
 };

@@ -133,10 +133,7 @@ const PricingPage = () => {
                     align: "center",
                   }}
                   sx={{
-                    backgroundColor: (theme) =>
-                      theme.palette.mode === "light"
-                        ? theme.palette.grey[200]
-                        : theme.palette.grey[700],
+                    backgroundColor: (theme) => theme.palette.secondary.main,
                   }}
                 />
                 <CardContent>
@@ -159,11 +156,7 @@ const PricingPage = () => {
                   </Box>
                   <ul>
                     {tier.description.map((line) => (
-                      <Typography
-                        component="li"
-                        variant="subtitle1"
-                        align="center"
-                        key={line}>
+                      <Typography variant="subtitle1" key={line}>
                         {line}
                       </Typography>
                     ))}

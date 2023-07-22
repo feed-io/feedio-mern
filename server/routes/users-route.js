@@ -9,6 +9,11 @@ const checkAuth = require("../middleware/check-auth");
 router.post(
   "/register",
   [
+    check("name")
+      .optional()
+      .not()
+      .isEmpty()
+      .withMessage("Name must not be empty"),
     check("email").isEmail().withMessage("Please enter a valid email"),
     check("password")
       .isLength({ min: 8 })
@@ -33,11 +38,11 @@ router.get("/:id", userController.getUserById);
 router.put(
   "/:id",
   [
-    check("username")
+    check("name")
       .optional()
       .not()
       .isEmpty()
-      .withMessage("Username must not be empty"),
+      .withMessage("Name must not be empty"),
     check("email")
       .optional()
       .isEmail()

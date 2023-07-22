@@ -59,7 +59,7 @@
 //   };
 
 //   const handleCopyLinkToClipboard = () => {
-//     const link = `http://localhost:3000/reviewSpace/${props.product._id}`;
+//     const link = `http://localhost:8080/reviewSpace/${props.product._id}`;
 //     navigator.clipboard.writeText(link);
 //     alert("Link copied to clipboard");
 //   };

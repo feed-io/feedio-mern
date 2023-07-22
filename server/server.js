@@ -10,18 +10,26 @@ const productRoutes = require("./routes/products-route");
 const reviewRoutes = require("./routes/reviews-route");
 const paymentRoutes = require("./routes/payments-route");
 const paymentController = require("./controllers/paymentController");
+const widgetRoutes = require("./routes/widget-route");
 
 dotenv.config();
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
-app.use(
-  cors({
-    origin: "https://feedio-client.vercel.app",
-  })
-);
+// const whitelist = ["http://localhost:3000"]; // replace with your frontend domain
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
+
+// app.use(cors(corsOptions));
 
 app.use(
   bodyParser.json({
@@ -44,10 +52,10 @@ app.use((req, res, next) => {
 app.use("/api/users", userRoutes);
 app.use("/api/users/:id/products", productRoutes);
 app.use("/api/users/:id/products/:pid/reviews", reviewRoutes);
+app.use("/api/users/:id/products/:pid/widgets", widgetRoutes);
 app.use("/api/users/:id/payments", paymentRoutes);
 app.post("/api/payments/webhook", paymentController.handleStripeWebhook);
 
-// app.listen(process.env.PORT, () =>
-//   console.log(`Server running on port ${process.env.PORT}`)
-// );
-module.exports = app;
+app.listen(process.env.PORT, () =>
+  console.log(`Server running on port ${process.env.PORT}`)
+);

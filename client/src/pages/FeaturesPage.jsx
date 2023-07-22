@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 
-import LandingImg1 from "../data/landing1.svg";
-import SocialImg from "../data/social.svg";
-import ManageImg from "../data/manage.svg";
-import BestReviewImg from "../data/bestReview.svg";
+import LandingImg1 from "../assets/landing1.svg";
+import SocialImg from "../assets/social.svg";
+import ManageImg from "../assets/manage.svg";
+import BestReviewImg from "../assets/bestReview.svg";
 
 const FeaturesPage = () => {
   return (
@@ -32,11 +32,7 @@ const FeaturesPage = () => {
             <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
               <Box px={{ xs: 1, sm: 3 }} py={{ sm: 6 }}>
                 <Box pt={6}>
-                  <Typography
-                    variant="h4"
-                    color="purple"
-                    fontWeight="600"
-                    mb={2}>
+                  <Typography variant="h4" fontWeight="600" mb={2}>
                     More social proof
                   </Typography>
                   <Typography variant="h3" mb={3}>
@@ -148,11 +144,7 @@ const FeaturesPage = () => {
             <Grid item xs={12} md={6}>
               <Box px={{ xs: 1, sm: 3 }} py={{ sm: 6 }}>
                 <Box pt={6}>
-                  <Typography
-                    variant="h4"
-                    color="purple"
-                    fontWeight="600"
-                    mb={2}>
+                  <Typography variant="h4" fontWeight="600" mb={2}>
                     Embed the Show Room
                   </Typography>
                   <Typography variant="h3" mb={3}>

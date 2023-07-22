@@ -28,6 +28,7 @@ const getAll = async (productId) => {
   if (!product) {
     throw new Error("Product not found");
   }
+
   return product.reviews;
 };
 
@@ -48,8 +49,7 @@ const deleteOne = async (reviewId) => {
   }
 
   await product.save();
-
-  await Review.findByIdAndRemove(reviewId);
+  await Review.deleteOne({ _id: reviewId });
 
   return "Review deleted successfully";
 };

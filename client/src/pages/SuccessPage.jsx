@@ -10,7 +10,7 @@ const Success = () => {
 
   useEffect(() => {
     axios
-      .get(`https://feedio-server.vercel.app/api/users/${auth.userId}`, {
+      .get(`http://localhost:8080/api/users/${auth.userId}`, {
         headers: {
           Authorization: "Bearer " + auth.token,
         },

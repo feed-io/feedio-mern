@@ -2,16 +2,21 @@
   "name": "feedio",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "cd server && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client": "yarn workspace client start",
+    "server": "yarn workspace server start",
+    "dev": "concurrently \"yarn server\" \"yarn client\""
   },
   "keywords": [],
   "author": "Luis Ramirez",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.0.1"
-  }
+  },
+  "dependencies": {}
 }

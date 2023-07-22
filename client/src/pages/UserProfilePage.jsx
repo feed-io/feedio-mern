@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Link as RouterLink } from "react-router-dom";
+
 import {
   Avatar,
   Button,
@@ -23,7 +25,7 @@ const UserProfilePage = () => {
     const loadData = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.vercel.app/api/users/${auth.userId}`,
+          `http://localhost:8080/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -45,7 +47,7 @@ const UserProfilePage = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `https://feedio-server.vercel.app/api/users/${auth.userId}`,
+        `http://localhost:8080/api/users/${auth.userId}`,
         {
           email: email,
           username: username,
@@ -79,6 +81,8 @@ const UserProfilePage = () => {
           alignItems: "center",
         }}>
         <Box
+          mb={8}
+          mt={8}
           sx={{
             width: { xs: "95%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
             maxWidth: 800,
@@ -164,6 +168,14 @@ const UserProfilePage = () => {
                   onClick={handleDeleteOpen}
                   sx={{ mr: 2, mb: { xs: 2, sm: 0 } }}>
                   Delete User
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  component={RouterLink}
+                  to="/dashboard"
+                  sx={{ mr: 2, mb: { xs: 2, sm: 0 } }}>
+                  Go to Dashboard
                 </Button>
                 <DeleteUserModal
                   variant="outlined"

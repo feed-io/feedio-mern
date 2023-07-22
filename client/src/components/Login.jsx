@@ -13,7 +13,8 @@ import {
   Checkbox,
   Box,
 } from "@mui/material";
-import { LockOutlined } from "@mui/icons-material";
+
+import { VpnKey } from "@mui/icons-material/";
 
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
@@ -28,7 +29,7 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://feedio-server-n4aa58d5v-luisr.vercel.app/api/users/login",
+        "http://localhost:8080/api/users/login",
         values,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -55,7 +56,7 @@ const Login = (props) => {
           alignItems: "center",
         }}>
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlined />
+          <VpnKey />
         </Avatar>
         <Typography component="h1" variant="h5">
           Login

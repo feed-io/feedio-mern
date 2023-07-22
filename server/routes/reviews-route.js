@@ -22,6 +22,8 @@ router.post(
   reviewController.createReview
 );
 
+router.get("/favorites", reviewController.getFavoriteReviews);
+
 router.delete("/:rid", reviewController.deleteReview);
 
 module.exports = router;

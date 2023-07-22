@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const User = require("../models/user");
+const Review = require("../models/Review");
 
 const create = async ({ name, header, content, questions, userId }) => {
   const user = await User.findById(userId);
@@ -28,6 +29,7 @@ const getAll = async (userId) => {
   if (!products) {
     throw new Error("No products found");
   }
+  console.log(products);
   return products;
 };
 
@@ -74,7 +76,6 @@ const deleteOne = async (productId, userId) => {
     { $pull: { products: productId } },
     { new: true }
   );
-
   return "Product and associated reviews deleted successfully";
 };
 

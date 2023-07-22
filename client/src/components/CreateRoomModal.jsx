@@ -49,7 +49,7 @@ const CreateRoomForm = (props) => {
 
     try {
       const response = await axios.post(
-        `https://feedio-server.vercel.app/api/users/${auth.userId}/products/createProduct`,
+        `http://localhost:8080/api/users/${auth.userId}/products/createProduct`,
         {
           name: newProductName,
           // imageUrl: newProductImageUrl,
@@ -75,7 +75,7 @@ const CreateRoomForm = (props) => {
 
   return (
     <div>
-      <Fab color="primary" onClick={handleOpen}>
+      <Fab color="secondary" onClick={handleOpen}>
         <Add />
       </Fab>
 
@@ -89,7 +89,6 @@ const CreateRoomForm = (props) => {
                 mx: "auto",
                 textAlign: "center",
                 pb: 12,
-                color: "gray.800",
               }}>
               <Typography
                 variant="h3"

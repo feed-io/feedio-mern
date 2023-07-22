@@ -2,14 +2,14 @@ import { useState } from "react";
 
 function useValidation() {
   const [values, setValues] = useState({
-    // username: "",
+    // name: "",
     email: "",
     password: "",
     passwordConfirm: "",
   });
 
   const [errors, setErrors] = useState({
-    // username: "",
+    // name: "",
     email: "",
     password: "",
     passwordConfirm: "",
@@ -24,12 +24,12 @@ function useValidation() {
     });
 
     switch (name) {
-      //   case "username":
-      //     setErrors({
-      //       ...errors,
-      //       username: value ? "" : "Username is required",
-      //     });
-      //     break;
+      case "name":
+        setErrors({
+          ...errors,
+          name: value ? "" : "Name is required",
+        });
+        break;
       case "email":
         setErrors({
           ...errors,
