@@ -21,52 +21,40 @@ const MasonryModal = (props) => {
   const auth = useContext(AuthContext);
   const [hideDate, setHideDate] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState("1");
+  const [iframeSrc, setIframeSrc] = useState(null);
 
-  const generateIframeLink = () => {
-    let srcLink = "http://localhost:8080/api/widget?";
-
-    srcLink += hideDate ? "hideDate=true&" : "hideDate=false&";
-    srcLink += `scrollSpeed=${scrollSpeed}`;
-
-    const iframeCode = `<iframe height="800px" id="testimonialto-dasdsa-tag-all-light-animated" src="${srcLink}" frameborder="0" scrolling="no" width="100%"></iframe>`;
-    alert(iframeCode);
-
+  const sendWidgetConfigToBackend = async () => {
     const config = {
       hideDate,
       scrollSpeed,
-      productId: props.productId,
+      type: props.layoutType,
     };
-    console.log(config);
-    sendWidgetConfigToBackend(config);
-  };
 
-  const sendWidgetConfigToBackend = async (config, token) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/widget/config",
+        `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/config`,
         config,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + auth.token,
           },
         }
       );
-
-      return response.data;
+      console.log(response);
+      const widgetId = response.data.widget._id;
+      const iframeLink = `<iframe src="http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve"></iframe>`;
+      setIframeSrc(iframeLink);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+      console.error("There was a problem with the fetch operation:", error);
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         console.error("Response Data:", error.response.data);
         console.error("Response Status:", error.response.status);
         console.error("Response Headers:", error.response.headers);
       } else if (error.request) {
-        // The request was made but no response was received
         console.error("Request:", error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.error("Error", error.message);
       }
       throw error;
@@ -113,11 +101,18 @@ const MasonryModal = (props) => {
             Masonry - scrolling
           </Typography>
         </Box>
-        <Box p={2} my={2}>
-          <Typography variant="body2" color="main">
-            &lt;iframe ... &gt;&lt;/iframe&gt;
-          </Typography>
+
+        <Box mt={3}>
+          {iframeSrc && (
+            <div>
+              <textarea value={iframeSrc} readOnly />
+              <button onClick={() => navigator.clipboard.writeText(iframeSrc)}>
+                Copy Code
+              </button>
+            </div>
+          )}
         </Box>
+
         <Typography variant="caption" color="main" display="block">
           Height is set to 800px by default. You can change the height parameter
           to what you like.
@@ -156,7 +151,7 @@ const MasonryModal = (props) => {
         <Button
           variant="contained"
           color="primary"
-          onClick={generateIframeLink}>
+          onClick={sendWidgetConfigToBackend}>
           Create
         </Button>
       </Box>

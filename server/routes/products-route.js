@@ -5,7 +5,6 @@ const productController = require("../controllers/productController");
 const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
-router.use(checkAuth);
 
 router.get("/all", productController.getAllProducts);
 

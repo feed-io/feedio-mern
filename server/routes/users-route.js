@@ -4,7 +4,6 @@ const { check } = require("express-validator");
 const router = express.Router();
 
 const userController = require("../controllers/userController");
-const checkAuth = require("../middleware/check-auth");
 
 router.post(
   "/register",
@@ -30,8 +29,6 @@ router.post(
   ],
   userController.loginUser
 );
-
-router.use(checkAuth);
 
 router.get("/:id", userController.getUserById);
 

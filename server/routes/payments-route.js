@@ -1,17 +1,8 @@
 const express = require("express");
 
-const checkAuth = require("../middleware/check-auth");
 const paymentController = require("../controllers/paymentController");
 
 const router = express.Router({ mergeParams: true });
-
-router.use((req, res, next) => {
-  if (req.path === "/webhook") {
-    next();
-  } else {
-    checkAuth(req, res, next);
-  }
-});
 
 router.post(
   "/create-checkout-session",

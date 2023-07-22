@@ -1,26 +1,16 @@
-const reviewService = require("../services/reviewService");
-const Widget = require("../models/widgetModel"); // Assume you have a widgetModel
+const widgetService = require("../services/widgetService");
 
 exports.generateWidget = async (req, res, next) => {
-  const userId = req.params.id;
-  const productId = req.params.pid;
+  const productId = req.mainParams.pid;
+  const type = req.body.type;
   const widgetConfig = req.body;
 
   try {
-    let widget = await Widget.findOne({ user: userId, product: productId });
-
-    if (widget) {
-      widget.config = widgetConfig;
-      await widget.save();
-    } else {
-      widget = new Widget({
-        user: userId,
-        product: productId,
-        config: widgetConfig,
-      });
-      await widget.save();
-    }
-
+    const widget = await widgetService.generateWidgetConfig(
+      productId,
+      widgetConfig,
+      type
+    );
     res
       .status(200)
       .json({ message: "Widget configuration saved successfully.", widget });
@@ -32,19 +22,17 @@ exports.generateWidget = async (req, res, next) => {
 };
 
 exports.getWidget = async (req, res, next) => {
-  const userId = req.params.userId;
-  const productId = req.params.productId;
+  const userId = req.mainParams.id;
+  const productId = req.mainParams.pid;
 
   try {
-    const widget = await Widget.findOne({ user: userId, product: productId });
+    const widget = await widgetService.getWidgetConfig(userId, productId);
 
     if (!widget) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "No widget configuration found for the specified user and product.",
-        });
+      return res.status(404).json({
+        message:
+          "No widget configuration found for the specified user and product.",
+      });
     }
 
     res.status(200).json({ widget });
@@ -52,5 +40,32 @@ exports.getWidget = async (req, res, next) => {
     res
       .status(500)
       .json({ message: "Error fetching widget configuration.", error });
+  }
+};
+
+exports.serveWidget = async (req, res, next) => {
+  const widgetId = req.params.wid;
+  const productId = req.mainParams.pid;
+
+  try {
+    const widgetConfig = await widgetService.getWidgetConfig(
+      widgetId,
+      productId
+    );
+
+    if (!widgetConfig) {
+      return res.status(404).json({
+        message:
+          "No widget configuration found for the specified user and product.",
+      });
+    }
+
+    const widgetRepresentation =
+      await widgetService.generateWidgetRepresentation(widgetConfig);
+
+    console.log(widgetRepresentation);
+    res.status(200).json(widgetRepresentation);
+  } catch (error) {
+    res.status(500).json({ message: "Error serving the widget.", error });
   }
 };

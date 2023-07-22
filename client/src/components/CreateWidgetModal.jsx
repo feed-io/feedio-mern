@@ -40,15 +40,16 @@ const CreateWidgetModal = (props) => {
 
   const handleMasonryClick = (title) => {
     if (title === "Masonry - scrolling") {
-      setCurrentPage("masonry");
+      setCurrentPage("masonry_scroll");
     }
     console.log(`${title} was clicked!`);
   };
 
-  if (currentPage === "masonry") {
+  if (currentPage === "masonry_scroll") {
     return (
       <MasonryModal
         goBack={() => setCurrentPage("layoutSelection")}
+        layoutType="masonry_scroll"
         productId={props.productId}
         closeModal={props.closeModal}
       />
@@ -62,6 +63,7 @@ const CreateWidgetModal = (props) => {
       maxWidth="md"
       aria-labelledby="modal-headline">
       <DialogContent>
+        <iframe src="http://localhost:8080/api/users/64b98dfac832642e75f4dcd0/products/64b9ac1324c4519cba0203b0/widgets/64bbefadb841ddd73b8975e0/serve"></iframe>
         <Box position="relative">
           <Box position="absolute" right={5} top={5} zIndex="tooltip">
             <Button onClick={props.closeModal}>

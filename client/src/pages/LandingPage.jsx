@@ -94,12 +94,6 @@ const LandingPage = () => {
 
   return (
     <main>
-      {/* <WidgetDisplay
-        token={
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGI5OGRmYWM4MzI2NDJlNzVmNGRjZDAiLCJlbWFpbCI6ImxhbGFAdGVzdC5jb20iLCJpYXQiOjE2ODk5Njk5ODEsImV4cCI6MTY4OTk3MzU4MX0.R_-t3ZwfKmUUJalZPoX3kqToyVVj6I2UydPByGfPilM"
-        }
-      /> */}
-
       <Box sx={{ bgcolor: "white", pt: 32, pb: 10 }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", pb: 12 }}>

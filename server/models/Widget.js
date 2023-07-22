@@ -14,9 +14,9 @@ const widgetSchema = new mongoose.Schema(
     },
     scrollSpeed: {
       type: Number,
-      required: function () {
-        return this.type === "masonry_scroll";
-      },
+      //   required: function () {
+      //     return this.type === "masonry_scroll";
+      //   },
     },
     showDate: {
       type: Boolean,

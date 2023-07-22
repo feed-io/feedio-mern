@@ -1,38 +1,52 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const { pathToRegexp } = require("path-to-regexp");
 
 dotenv.config();
 
+const UNPROTECTED_ROUTES = [
+  "/api/users/register",
+  "/api/users/login",
+  "/api/users/:id/products/:pid/widgets/:wid/serve",
+];
+
+const isUnprotectedRoute = (path) => {
+  for (let route of UNPROTECTED_ROUTES) {
+    const regex = pathToRegexp(route);
+    if (regex.test(path)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 module.exports = (req, res, next) => {
-  if (req.method === "OPTIONS") {
+  if (isUnprotectedRoute(req.path) || req.method === "OPTIONS") {
     return next();
   }
 
-  let token;
+  let token = null;
 
-  try {
-    token = req.headers.authorization.split(" ")[1];
-    if (!token) {
-      return res
-        .status(401)
-        .json({ message: "Authentication failed: No token provided" });
+  if (req.headers.authorization) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+    } catch (error) {
+      console.error("Error extracting token from Authorization header:", error);
     }
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(401)
-      .json({ message: "Authentication failed: Error retrieving token" });
   }
 
-  let decodedToken;
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "No token provided in the request." });
+  }
+
   try {
-    decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (error) {
-    console.log(error);
-    return res
-      .status(401)
-      .json({ message: "Authentication failed: Invalid token" });
+    console.error("Error verifying token:", error);
+    return res.status(401).json({ message: "Invalid token provided." });
   }
 };
