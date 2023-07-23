@@ -34,31 +34,67 @@ const generateWidgetRepresentation = async (widgetConfig) => {
   let widgetRepresentation;
   let templatePath;
   let templateString;
+  let scriptPath;
+  let stylePath;
 
   const reviews = await Review.find({ product: widgetConfig.product });
 
+  const reviewsData = reviews.map((review) => ({
+    name: review.name,
+    content: review.content,
+    rating: review.rating,
+    createdAt: review.createdAt,
+  }));
+
   switch (widgetConfig.type) {
     case "masonry_scroll":
-      templatePath = path.join(__dirname, "../templates/masonry-scroll.hbs");
+      templatePath = path.join(
+        __dirname,
+        "../public/templates/masonry-scroll.hbs"
+      );
+      stylePath = path.join(__dirname, "../public/styles/masonry-scroll.css");
+      scriptPath = path.join(__dirname, "../public/scripts/autoScroll.js");
       break;
+
     case "masonry_fix":
       templatePath = path.join(__dirname, "../templates/masonry-fix.hbs");
+      stylePath = path.join(__dirname, "../styles/masonry-fix.css");
+      scriptPath = path.join(__dirname, "../scripts/masonry-fix.js");
       break;
+
     case "carousel":
       templatePath = path.join(__dirname, "../templates/carousel.hbs");
+      stylePath = path.join(__dirname, "../styles/carousel.css");
+      scriptPath = path.join(__dirname, "../scripts/carousel.js");
       break;
+
     default:
       throw new Error("Invalid widget type");
   }
 
+  handlebars.registerHelper("repeat", function (n, value) {
+    let ret = "";
+    let i = 0;
+
+    if (arguments.length === 3) {
+      i = value;
+      n = n - value;
+    }
+
+    return ret;
+  });
+
   try {
     templateString = fs.readFileSync(templatePath, "utf-8");
-    console.log(templateString);
-
     const template = handlebars.compile(templateString);
-    console.log(template.toString());
 
-    widgetRepresentation = template({ ...widgetConfig, reviews });
+    const styleContent = fs.readFileSync(stylePath, "utf-8");
+    const scriptContent = fs.readFileSync(scriptPath, "utf-8");
+    console.log(reviewsData);
+    widgetRepresentation = template({ ...widgetConfig, reviewsData });
+
+    widgetRepresentation += `<style>${styleContent}</style>`;
+    widgetRepresentation += `<script>${scriptContent}</script>`;
   } catch (error) {
     console.error("Error compiling the Handlebars template:", error);
   }

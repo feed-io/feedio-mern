@@ -33,7 +33,7 @@ app.use((req, res, next) => {
   console.log(`${req.method} request to ${req.url}`);
   next();
 });
-
+app.use("/static", express.static("public"));
 app.use(checkAuth);
 
 app.use("/api/users", userRoutes);

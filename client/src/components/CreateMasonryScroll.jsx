@@ -41,9 +41,12 @@ const MasonryModal = (props) => {
           },
         }
       );
-      console.log(response);
+
       const widgetId = response.data.widget._id;
-      const iframeLink = `<iframe src="http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve"></iframe>`;
+      const widgetUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+      const iframeLink = `<iframe src="${widgetUrl}" width="100%" height="800px"></iframe>`;
+      console.log(response);
+
       setIframeSrc(iframeLink);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);

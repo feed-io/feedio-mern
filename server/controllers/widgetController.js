@@ -63,8 +63,7 @@ exports.serveWidget = async (req, res, next) => {
     const widgetRepresentation =
       await widgetService.generateWidgetRepresentation(widgetConfig);
 
-    console.log(widgetRepresentation);
-    res.status(200).json(widgetRepresentation);
+    res.status(200).send(widgetRepresentation);
   } catch (error) {
     res.status(500).json({ message: "Error serving the widget.", error });
   }
