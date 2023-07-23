@@ -89,6 +89,15 @@ const ReviewRows = ({ product, userId, token, onSpaceCreated }) => {
     return date.toLocaleString("en-US", options);
   };
 
+  const categorizeSentiment = (score) => {
+    if (score > 2) {
+      return "Positive";
+    } else if (score < 2) {
+      return "Negative";
+    }
+    return "Neutral";
+  };
+
   return (
     <TableContainer component={Box}>
       <Table aria-label="collapsible table">
@@ -184,6 +193,15 @@ const ReviewRows = ({ product, userId, token, onSpaceCreated }) => {
                           </Typography>
                           <Typography variant="body2">
                             {review.content}
+                          </Typography>
+                        </Box>
+                        {/* Sentiment */}
+                        <Box sx={{ marginBottom: 2 }}>
+                          <Typography variant="h6" gutterBottom>
+                            Sentiment:
+                          </Typography>
+                          <Typography variant="body2">
+                            {categorizeSentiment(review.sentiment)}
                           </Typography>
                         </Box>
 

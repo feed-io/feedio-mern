@@ -12,7 +12,9 @@ import { Close } from "@mui/icons-material";
 
 import MasonryLogo from "../assets/MasonryLogo";
 import CarouselLogo from "../assets/CarouselLogo";
-import MasonryModal from "./CreateMasonryScroll";
+import MasonryScroll from "./MasonryScroll";
+import MasonryFix from "./MasonryFix";
+import Carousel from "./Carousel.jsx";
 
 const CreateWidgetModal = (props) => {
   const [currentPage, setCurrentPage] = useState("layoutSelection"); // layoutSelection or masonry
@@ -42,14 +44,40 @@ const CreateWidgetModal = (props) => {
     if (title === "Masonry - scrolling") {
       setCurrentPage("masonry_scroll");
     }
+    if (title === "Masonry - fixed") {
+      setCurrentPage("masonry_fix");
+    }
+    if (title === "Carousel slider") {
+      setCurrentPage("carousel");
+    }
     console.log(`${title} was clicked!`);
   };
 
   if (currentPage === "masonry_scroll") {
     return (
-      <MasonryModal
+      <MasonryScroll
         goBack={() => setCurrentPage("layoutSelection")}
         layoutType="masonry_scroll"
+        productId={props.productId}
+        closeModal={props.closeModal}
+      />
+    );
+  }
+  if (currentPage === "masonry_fix") {
+    return (
+      <MasonryFix
+        goBack={() => setCurrentPage("layoutSelection")}
+        layoutType="masonry_fix"
+        productId={props.productId}
+        closeModal={props.closeModal}
+      />
+    );
+  }
+  if (currentPage === "carousel") {
+    return (
+      <Carousel
+        goBack={() => setCurrentPage("layoutSelection")}
+        layoutType="carousel"
         productId={props.productId}
         closeModal={props.closeModal}
       />

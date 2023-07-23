@@ -17,11 +17,13 @@ import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { AuthContext } from "../context/auth-context";
 
-const MasonryModal = (props) => {
+const MasonryScroll = (props) => {
   const auth = useContext(AuthContext);
   const [hideDate, setHideDate] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState("1");
   const [iframeSrc, setIframeSrc] = useState(null);
+
+  let widgetUrl;
 
   const sendWidgetConfigToBackend = async () => {
     const config = {
@@ -43,7 +45,7 @@ const MasonryModal = (props) => {
       );
 
       const widgetId = response.data.widget._id;
-      const widgetUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+      widgetUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
       const iframeLink = `<iframe src="${widgetUrl}" width="100%" height="800px"></iframe>`;
       console.log(response);
 
@@ -62,6 +64,45 @@ const MasonryModal = (props) => {
       }
       throw error;
     }
+  };
+
+  const IframeComponent = () => {
+    return (
+      <Box
+        component="div"
+        sx={{
+          fontSize: "base",
+          "@media (min-width: 640px)": {
+            fontSize: "sm",
+          },
+          "& pre": {
+            color: "rgb(212, 212, 212)",
+            fontSize: "13px",
+            fontFamily:
+              'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace',
+            lineHeight: 1.5,
+            backgroundColor: "rgb(30, 30, 30)",
+            marginY: "0.5em",
+            overflow: "auto",
+            padding: "1em",
+          },
+        }}>
+        <Typography component="pre">
+          <code
+            className="language-javascript"
+            sx={{
+              color: "rgb(156, 220, 254)",
+              fontSize: "13px",
+              fontFamily:
+                'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace',
+            }}>
+            &lt;iframe height="800px"
+            id="testimonialto-dasdsa-tag-all-light-animated" src=`${widgetUrl}`
+            frameborder="0" scrolling="no" width="100%"&gt;&lt;/iframe&gt;
+          </code>
+        </Typography>
+      </Box>
+    );
   };
 
   return (
@@ -163,4 +204,4 @@ const MasonryModal = (props) => {
   );
 };
 
-export default MasonryModal;
+export default MasonryScroll;

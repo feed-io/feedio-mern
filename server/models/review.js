@@ -11,9 +11,9 @@ const reviewSchema = new Schema({
   content: { type: String, required: true },
   rating: { type: Number, required: true, min: 1, max: 5 },
   createdAt: { type: Date, default: Date.now },
+  sentiment: { type: Number },
 });
 
-// Middleware to calculate average rating and update rating distribution
 const calculateAndUpdateProductStats = async function (next) {
   const review = this;
 
@@ -23,15 +23,12 @@ const calculateAndUpdateProductStats = async function (next) {
     throw new Error("Associated product not found");
   }
 
-  // Fetch all reviews for the product, including the newly saved/updated one
   const reviews = await mongoose
     .model("Review")
     .find({ product: review.product });
 
-  // Calculate total reviews
   product.totalReviews = reviews.length;
 
-  // Reset rating distribution
   product.ratingDistribution = {
     oneStar: 0,
     twoStar: 0,
@@ -40,7 +37,6 @@ const calculateAndUpdateProductStats = async function (next) {
     fiveStar: 0,
   };
 
-  // Calculate rating distribution and total stars for average
   let totalStars = 0;
   for (let r of reviews) {
     totalStars += r.rating;
@@ -52,7 +48,6 @@ const calculateAndUpdateProductStats = async function (next) {
     else if (r.rating === 5) product.ratingDistribution.fiveStar += 1;
   }
 
-  // Calculate average rating
   product.averageRating = totalStars / reviews.length || 0;
 
   await product.save();

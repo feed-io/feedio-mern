@@ -57,15 +57,18 @@ const generateWidgetRepresentation = async (widgetConfig) => {
       break;
 
     case "masonry_fix":
-      templatePath = path.join(__dirname, "../templates/masonry-fix.hbs");
-      stylePath = path.join(__dirname, "../styles/masonry-fix.css");
-      scriptPath = path.join(__dirname, "../scripts/masonry-fix.js");
+      templatePath = path.join(
+        __dirname,
+        "../public/templates/masonry-fix.hbs"
+      );
+      stylePath = path.join(__dirname, "../public/styles/masonry-fix.css");
+
       break;
 
     case "carousel":
-      templatePath = path.join(__dirname, "../templates/carousel.hbs");
-      stylePath = path.join(__dirname, "../styles/carousel.css");
-      scriptPath = path.join(__dirname, "../scripts/carousel.js");
+      templatePath = path.join(__dirname, "../public/templates/carousel.hbs");
+      stylePath = path.join(__dirname, "../public/styles/carousel.css");
+      scriptPath = path.join(__dirname, "../public/scripts/carousel.js");
       break;
 
     default:
@@ -89,12 +92,14 @@ const generateWidgetRepresentation = async (widgetConfig) => {
     const template = handlebars.compile(templateString);
 
     const styleContent = fs.readFileSync(stylePath, "utf-8");
-    const scriptContent = fs.readFileSync(scriptPath, "utf-8");
-    console.log(reviewsData);
-    widgetRepresentation = template({ ...widgetConfig, reviewsData });
 
+    widgetRepresentation = template({ ...widgetConfig, reviewsData });
     widgetRepresentation += `<style>${styleContent}</style>`;
-    widgetRepresentation += `<script>${scriptContent}</script>`;
+
+    if (scriptPath) {
+      const scriptContent = fs.readFileSync(scriptPath, "utf-8");
+      widgetRepresentation += `<script>${scriptContent}</script>`;
+    }
   } catch (error) {
     console.error("Error compiling the Handlebars template:", error);
   }

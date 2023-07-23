@@ -1,5 +1,8 @@
 const Review = require("../models/Review");
 const Product = require("../models/Product");
+const Sentiment = require("sentiment");
+
+const sentiment = new Sentiment();
 
 const create = async ({ name, email, content, rating, productId }) => {
   const product = await Product.findById(productId);
@@ -7,11 +10,14 @@ const create = async ({ name, email, content, rating, productId }) => {
     throw new Error("Product not found");
   }
 
+  const sentimentAnalysis = sentiment.analyze(content);
+
   const newReview = new Review({
     name,
     content,
     email,
     rating,
+    sentiment: sentimentAnalysis.score,
     product: productId,
   });
 
