@@ -129,6 +129,7 @@ exports.getAllReviews = async (req, res) => {
 
   try {
     const reviews = await reviewService.getAll(pid);
+
     res.status(200).json({ reviews: reviews });
   } catch (error) {
     res
@@ -156,5 +157,16 @@ exports.deleteReview = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
+exports.getWordCloudData = async (req, res, next) => {
+  const productId = req.mainParams.pid;
+
+  try {
+    const wordCounts = await reviewService.getWordCloudData(productId);
+    res.status(200).json(wordCounts);
+  } catch (err) {
+    res.status(500).json({ error: "Server error", message: err.message });
   }
 };

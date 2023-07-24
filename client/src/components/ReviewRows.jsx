@@ -10,6 +10,7 @@ import {
   Rating,
   TableContainer,
   TableRow,
+  Chip,
   Typography,
 } from "@mui/material";
 import {
@@ -153,6 +154,21 @@ const ReviewRows = ({ product, userId, token, onSpaceCreated }) => {
                   <TableCell>
                     <Typography>From:</Typography>
                     {review.name}
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={categorizeSentiment(review.sentiment)}
+                      variant="outlined"
+                      color={
+                        review.sentiment > 2
+                          ? "success"
+                          : review.sentiment < 2
+                          ? "error"
+                          : "default"
+                      }
+                      size="small"
+                      style={{ marginRight: 10 }}
+                    />
                   </TableCell>
                   <TableCell>
                     <Rating

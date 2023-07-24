@@ -1,55 +1,8 @@
-// import React, { useState, useContext, useEffect } from "react";
-// import { useParams } from "react-router-dom";
-// import { Stack, Box, Typography } from "@mui/material";
-// import axios from "axios";
-
-// import { AuthContext } from "../context/auth-context";
-// import Feed from "../components/productProfile/Feed";
-// import Sidebar from "../components/productProfile/Sidebar";
-
-// export default function RoomPage() {
-//   const { productId } = useParams();
-//   const [product, setProduct] = useState(null);
-//   const auth = useContext(AuthContext);
-
-//   useEffect(() => {
-//     const fetchProduct = async () => {
-//       try {
-//         const response = await axios.get(
-//           `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
-//           {
-//             headers: {
-//               Authorization: "Bearer " + auth.token,
-//             },
-//           }
-//         );
-
-//         setProduct(response.data.product);
-//       } catch (error) {
-//         console.log("Error fetching product:", error.message);
-//       }
-//     };
-
-//     fetchProduct();
-//   }, [productId, auth.userId, auth.token]);
-
-//   if (!product) {
-//     return <Typography>Loading...</Typography>;
-//   }
-
-//   return (
-//     <Box>
-//       <Stack direction={"row"}>
-//         <Sidebar product={product} />
-//         <Feed product={product} />
-//       </Stack>
-//     </Box>
-//   );
-// }
-
 import React, { useState, useContext, useEffect } from "react";
 import { useParams, Link as RouterLink } from "react-router-dom";
-
+import { Doughnut } from "react-chartjs-2";
+import Chart from "chart.js/auto";
+import ReactWordcloud from "react-wordcloud";
 import axios from "axios";
 import {
   Box,
@@ -62,13 +15,21 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
-
 import { Star } from "@mui/icons-material";
 
 import ReviewRows from "../components/ReviewRows";
-
-import { AuthContext } from "../context/auth-context";
 import CreateWidgetModal from "../components/CreateWidgetModal";
+import { AuthContext } from "../context/auth-context";
+
+const categorizeSentiment = (score) => {
+  if (score > 0.6) {
+    return "Positive";
+  } else if (score >= 0.4 && score <= 0.6) {
+    return "Neutral";
+  } else {
+    return "Negative";
+  }
+};
 
 const RoomPage = () => {
   const { productId } = useParams();
@@ -76,6 +37,8 @@ const RoomPage = () => {
   const [product, setProduct] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [wordCounts, setWordCounts] = useState({});
 
   const WallOfLoveIcon = (props) => (
     <SvgIcon {...props} viewBox="0 0 24 24">
@@ -94,6 +57,51 @@ const RoomPage = () => {
       <path d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859M12 3v8.25m0 0l-3-3m3 3l3-3" />
     </SvgIcon>
   );
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+
+        setReviews(response.data.reviews);
+      } catch (error) {
+        console.log("Error fetching reviews:", error.message);
+      }
+    };
+
+    if (product) {
+      fetchReviews();
+    }
+  }, [auth.userId, auth.token, product]);
+
+  useEffect(() => {
+    async function fetchWordCloud() {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        setWordCounts(data);
+      } catch (error) {
+        console.log("Error fetching word cloud data:", error.message);
+      }
+    }
+
+    fetchWordCloud();
+  }, [auth.token]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -167,6 +175,66 @@ const RoomPage = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const sentimentCounts = {
+    Positive: reviews.filter(
+      (review) => categorizeSentiment(review.sentiment) === "Positive"
+    ).length,
+    Neutral: reviews.filter(
+      (review) => categorizeSentiment(review.sentiment) === "Neutral"
+    ).length,
+    Negative: reviews.filter(
+      (review) => categorizeSentiment(review.sentiment) === "Negative"
+    ).length,
+  };
+
+  const words = Object.keys(wordCounts).map((word) => ({
+    text: word,
+    value: wordCounts[word],
+  }));
+
+  const sentimentData = {
+    labels: ["Positive", "Neutral", "Negative"],
+    datasets: [
+      {
+        data: [
+          sentimentCounts.Positive,
+          sentimentCounts.Neutral,
+          sentimentCounts.Negative,
+        ],
+        backgroundColor: ["#4CAF50", "#FFC107", "#F44336"],
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Sentiment Distribution",
+      },
+    },
+  };
+
+  const options = {
+    colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"],
+    enableTooltip: true,
+    deterministic: false,
+    fontFamily: "impact",
+    fontSizes: [5, 60],
+    fontStyle: "normal",
+    fontWeight: "normal",
+    padding: 1,
+    rotations: 3,
+    rotationAngles: [0, 90],
+    scale: "sqrt",
+    spiral: "archimedean",
+    transitionDuration: 1000,
   };
 
   return (
@@ -428,6 +496,38 @@ const RoomPage = () => {
                       style={{ fontWeight: "bold", color: "#333" }}>
                       {product.reviews.length}
                     </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              {/* Sentiment Chart */}
+              <Grid item xs={12} sm={4}>
+                <Card
+                  style={{
+                    backgroundColor: "#f5f5f5",
+                    borderRadius: "8px",
+                    boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
+                  }}>
+                  <CardContent>
+                    <Typography variant="h6" color="textSecondary" gutterBottom>
+                      Sentiment Distribution
+                    </Typography>
+                    <Doughnut data={sentimentData} options={chartOptions} />
+                  </CardContent>
+                </Card>
+              </Grid>
+              {/* Word Cloud */}
+              <Grid item xs={12} sm={4}>
+                <Card
+                  style={{
+                    backgroundColor: "#f5f5f5",
+                    borderRadius: "8px",
+                    boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
+                  }}>
+                  <CardContent>
+                    <Typography variant="h6" color="textSecondary" gutterBottom>
+                      Word Cloud
+                    </Typography>
+                    <ReactWordcloud options={options} words={words} />
                   </CardContent>
                 </Card>
               </Grid>

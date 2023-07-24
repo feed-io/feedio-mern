@@ -4,7 +4,6 @@ const { check } = require("express-validator");
 const router = express.Router();
 
 const reviewController = require("../controllers/reviewController");
-const checkAuth = require("../middleware/check-auth");
 
 router.get("/:pid/all", reviewController.getAllReviews);
 
@@ -21,7 +20,7 @@ router.post(
 );
 
 router.get("/favorites", reviewController.getFavoriteReviews);
-
+router.get("/wordcloud", reviewController.getWordCloudData);
 router.delete("/:rid", reviewController.deleteReview);
 
 module.exports = router;

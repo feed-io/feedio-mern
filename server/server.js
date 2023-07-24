@@ -38,7 +38,14 @@ app.use(checkAuth);
 
 app.use("/api/users", userRoutes);
 app.use("/api/users/:id/products", productRoutes);
-app.use("/api/users/:id/products/:pid/reviews", reviewRoutes);
+app.use(
+  "/api/users/:id/products/:pid/reviews",
+  (req, res, next) => {
+    req.mainParams = req.params;
+    next();
+  },
+  reviewRoutes
+);
 app.use(
   "/api/users/:id/products/:pid/widgets",
   (req, res, next) => {
