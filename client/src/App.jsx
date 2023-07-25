@@ -22,6 +22,7 @@ const App = () => {
   const {
     token,
     login,
+    signup,
     logout,
     userId,
     membershipStatus,
@@ -63,6 +64,7 @@ const App = () => {
         token: token,
         userId: userId,
         login: login,
+        signup: signup,
         logout: logout,
         membershipStatus: membershipStatus,
         updateMembershipStatus: updateMembershipStatus,

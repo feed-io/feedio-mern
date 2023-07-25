@@ -2,6 +2,7 @@ const Review = require("../models/Review");
 const Product = require("../models/Product");
 const Sentiment = require("sentiment");
 const natural = require("natural");
+const mongoose = require("mongoose");
 
 const tokenizer = new natural.WordTokenizer();
 const sentiment = new Sentiment();
@@ -104,7 +105,6 @@ const generateWordFrequencies = (reviews) => {
 };
 
 const getWordCloudData = async (productId) => {
-  console.log(productId);
   try {
     const reviews = await Review.find({ product: productId });
 
@@ -112,8 +112,102 @@ const getWordCloudData = async (productId) => {
 
     return wordCounts;
   } catch (err) {
-    console.log(err);
     throw new Error("Review not found");
+  }
+};
+
+const getRatingsTrend = async (productId, granularity = "monthly") => {
+  let groupBy = {};
+  if (granularity === "yearly") {
+    groupBy = { year: { $year: "$createdAt" } };
+  } else if (granularity === "weekly") {
+    groupBy = {
+      week: { $isoWeek: "$createdAt" },
+      year: { $isoWeekYear: "$createdAt" },
+    };
+  } else {
+    groupBy = {
+      month: { $month: "$createdAt" },
+      year: { $year: "$createdAt" },
+    };
+  }
+
+  try {
+    const trends = await Review.aggregate([
+      {
+        $match: { product: new mongoose.Types.ObjectId(productId) },
+      },
+      {
+        $project: {
+          rating: 1,
+          createdAt: 1,
+        },
+      },
+      {
+        $group: {
+          _id: groupBy,
+          averageRating: { $avg: "$rating" },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1, "_id.week": 1 } },
+    ]);
+
+    if (granularity === "weekly") {
+      let filledData = [];
+      for (let i = 1; i <= 7; i++) {
+        const dataForWeek = trends.find((item) => item._id.week === i);
+        if (dataForWeek) {
+          filledData.push(dataForWeek);
+        } else {
+          filledData.push({
+            _id: { week: i, year: new Date().getFullYear() },
+            averageRating: 0,
+            count: 0,
+          });
+        }
+      }
+      return filledData;
+    } else if (granularity === "monthly") {
+      let filledData = [];
+      const daysInMonth = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth() + 1,
+        0
+      ).getDate();
+      for (let i = 1; i <= daysInMonth; i++) {
+        const dataForDay = trends.find((item) => item._id.month === i);
+        if (dataForDay) {
+          filledData.push(dataForDay);
+        } else {
+          filledData.push({
+            _id: { month: i, year: new Date().getFullYear() },
+            averageRating: 0,
+            count: 0,
+          });
+        }
+      }
+      return filledData;
+    } else if (granularity === "yearly") {
+      let filledData = [];
+      for (let i = 1; i <= 12; i++) {
+        const dataForMonth = trends.find((item) => item._id.month === i);
+        if (dataForMonth) {
+          filledData.push(dataForMonth);
+        } else {
+          filledData.push({
+            _id: { month: i, year: new Date().getFullYear() },
+            averageRating: 0,
+            count: 0,
+          });
+        }
+      }
+      return filledData;
+    }
+    return trends; // This will be the default return if none of the conditions above are met.
+  } catch (err) {
+    console.error("Error during aggregation: ", err.message);
+    throw new Error("Unable to fetch ratings trend");
   }
 };
 
@@ -122,4 +216,5 @@ module.exports = {
   getAll,
   deleteOne,
   getWordCloudData,
+  getRatingsTrend,
 };

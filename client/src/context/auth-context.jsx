@@ -6,6 +6,7 @@ export const AuthContext = createContext({
   token: null,
   membershipStatus: "free",
   login: () => {},
+  signup: () => {},
   logout: () => {},
   updateMembershipStatus: () => {},
 });

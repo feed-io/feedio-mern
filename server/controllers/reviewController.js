@@ -170,3 +170,18 @@ exports.getWordCloudData = async (req, res, next) => {
     res.status(500).json({ error: "Server error", message: err.message });
   }
 };
+
+exports.getRatingsTrend = async (req, res) => {
+  const productId = req.mainParams.pid;
+  const granularity = req.query.granularity || "monthly";
+  try {
+    const trends = await reviewService.getRatingsTrend(productId, granularity);
+
+    res.status(200).json(trends);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};

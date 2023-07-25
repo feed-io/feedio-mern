@@ -91,12 +91,13 @@ const ReviewRows = ({ product, userId, token, onSpaceCreated }) => {
   };
 
   const categorizeSentiment = (score) => {
-    if (score > 2) {
+    if (score >= 4) {
       return "Positive";
-    } else if (score < 2) {
+    } else if (score === 3) {
+      return "Neutral";
+    } else {
       return "Negative";
     }
-    return "Neutral";
   };
 
   return (
@@ -152,25 +153,29 @@ const ReviewRows = ({ product, userId, token, onSpaceCreated }) => {
                     </IconButton>
                   </TableCell>
                   <TableCell>
-                    <Typography>From:</Typography>
+                    <Typography>From</Typography>
                     {review.name}
                   </TableCell>
                   <TableCell>
+                    <Typography>Sentiment</Typography>
+
                     <Chip
                       label={categorizeSentiment(review.sentiment)}
                       variant="outlined"
                       color={
-                        review.sentiment > 2
+                        review.sentiment >= 4
                           ? "success"
-                          : review.sentiment < 2
-                          ? "error"
-                          : "default"
+                          : review.sentiment === 3
+                          ? "default"
+                          : "error"
                       }
                       size="small"
                       style={{ marginRight: 10 }}
                     />
                   </TableCell>
                   <TableCell>
+                    <Typography>Rating</Typography>
+
                     <Rating
                       value={review.rating}
                       readOnly

@@ -21,6 +21,7 @@ router.post(
 
 router.get("/favorites", reviewController.getFavoriteReviews);
 router.get("/wordcloud", reviewController.getWordCloudData);
+router.get("/trends", reviewController.getRatingsTrend);
 router.delete("/:rid", reviewController.deleteReview);
 
 module.exports = router;

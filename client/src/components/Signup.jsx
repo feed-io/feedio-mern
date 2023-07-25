@@ -24,12 +24,10 @@ const SignUp = (props) => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { handleClose } = props;
-
   const [submitError, setSubmitError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post(
         "http://localhost:8080/api/users/register",
@@ -38,9 +36,8 @@ const SignUp = (props) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      auth.login(
+      auth.signup(
         response.data.userId,
-        response.data.name,
         response.data.token,
         response.data.membershipStatus
       );

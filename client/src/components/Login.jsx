@@ -33,7 +33,7 @@ const Login = (props) => {
         values,
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log(response);
+
       auth.login(
         response.data.userId,
         response.data.token,

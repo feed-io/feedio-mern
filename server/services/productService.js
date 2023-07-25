@@ -29,7 +29,7 @@ const getAll = async (userId) => {
   if (!products) {
     throw new Error("No products found");
   }
-  console.log(products);
+
   return products;
 };
 
