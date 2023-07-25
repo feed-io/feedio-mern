@@ -15,6 +15,7 @@ import {
   Container,
   useMediaQuery,
   Button,
+  IconButton,
   useTheme,
   Divider,
 } from "@mui/material";
@@ -23,6 +24,7 @@ import {
   VerifiedUser,
   Payment,
   Notifications,
+  Delete,
 } from "@mui/icons-material";
 
 import CreateRoomModal from "../components/CreateRoomModal";
@@ -78,6 +80,25 @@ const Dashboard = () => {
 
     fetchUser();
   }, [refreshTrigger, auth.token, auth.userId]);
+
+  const handleDeleteProduct = async (event, productId) => {
+    event.stopPropagation();
+
+    try {
+      await axios.delete(
+        `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + auth.token,
+          },
+        }
+      );
+
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error deleting product:", error.message);
+    }
+  };
 
   const handleSpaceCreated = () => {
     setRefreshTrigger((prev) => prev + 1);
@@ -181,6 +202,7 @@ const Dashboard = () => {
                   <TableCell>Room</TableCell>
                   <TableCell align="right">Avg. Rating</TableCell>
                   <TableCell align="right">Number of Reviews</TableCell>
+                  <TableCell align="right">Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -201,6 +223,12 @@ const Dashboard = () => {
                     </TableCell>
                     <TableCell align="right">
                       {product.reviews.length}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={(e) => handleDeleteProduct(e, product._id)}>
+                        <Delete />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -33,11 +33,15 @@ app.use((req, res, next) => {
   console.log(`${req.method} request to ${req.url}`);
   next();
 });
+
 app.use("/static", express.static("public"));
+
 app.use(checkAuth);
 
 app.use("/api/users", userRoutes);
+
 app.use("/api/users/:id/products", productRoutes);
+
 app.use(
   "/api/users/:id/products/:pid/reviews",
   (req, res, next) => {
@@ -46,6 +50,7 @@ app.use(
   },
   reviewRoutes
 );
+
 app.use(
   "/api/users/:id/products/:pid/widgets",
   (req, res, next) => {
@@ -54,7 +59,9 @@ app.use(
   },
   widgetRoutes
 );
+
 app.use("/api/users/:id/payments", paymentRoutes);
+
 app.post("/api/payments/webhook", paymentController.handleStripeWebhook);
 
 app.listen(process.env.PORT, () =>

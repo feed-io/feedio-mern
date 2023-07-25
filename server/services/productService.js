@@ -70,7 +70,7 @@ const deleteOne = async (productId, userId) => {
   }
 
   await Review.deleteMany({ _id: { $in: product.reviews } });
-  await product.remove();
+  await Product.deleteOne({ _id: productId });
   await User.findByIdAndUpdate(
     userId,
     { $pull: { products: productId } },
