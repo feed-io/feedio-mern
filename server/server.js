@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -34,9 +35,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/static", express.static("public"));
-
 app.use(checkAuth);
+
+app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.use("/api/users", userRoutes);
 

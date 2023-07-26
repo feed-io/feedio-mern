@@ -8,6 +8,7 @@ const UNPROTECTED_ROUTES = [
   "/api/users/register",
   "/api/users/login",
   "/api/users/:id/products/:pid/widgets/:wid/serve",
+  "/static/(.*)",
 ];
 
 const isUnprotectedRoute = (path) => {
@@ -21,7 +22,9 @@ const isUnprotectedRoute = (path) => {
 };
 
 module.exports = (req, res, next) => {
+  console.log("Incoming Request Path:", req.path);
   if (isUnprotectedRoute(req.path) || req.method === "OPTIONS") {
+    console.log("Bypassing token check");
     return next();
   }
 
@@ -34,13 +37,12 @@ module.exports = (req, res, next) => {
       console.error("Error extracting token from Authorization header:", error);
     }
   }
-
   if (!token) {
+    console.error("Token error for path:", req.path);
     return res
       .status(401)
       .json({ message: "No token provided in the request." });
   }
-
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.userData = { userId: decodedToken.userId };

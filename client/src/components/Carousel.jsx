@@ -9,10 +9,12 @@ import {
   Typography,
   Select,
   MenuItem,
+  TextField,
+  Snackbar,
+  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { AuthContext } from "../context/auth-context";
@@ -21,12 +23,34 @@ const Carousel = (props) => {
   const auth = useContext(AuthContext);
   const [hideDate, setHideDate] = useState(false);
   const [iframeSrc, setIframeSrc] = useState(null);
-  const [scrollSpeed, setScrollSpeed] = useState("1");
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [autoScroll, setAutoScroll] = useState(false);
+
+  const generateIframeLink = (widgetId) => {
+    const baseIframeUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+
+    let params = [];
+
+    if (hideDate) {
+      params.push("hideDate=on");
+    }
+
+    if (autoScroll) {
+      params.push("autoScroll=on");
+    }
+
+    params.push(`type=${props.layoutType}`);
+
+    return `<iframe height="800px" id="${widgetId}" src="${baseIframeUrl}?${params.join(
+      "&"
+    )}" frameBorder="0" scrolling="no" width="100%"></iframe>`;
+  };
 
   const sendWidgetConfigToBackend = async () => {
     const config = {
       hideDate,
-      type: "carousel", // set the type to carousel
+      type: props.layoutType,
+      autoScroll,
     };
 
     try {
@@ -42,13 +66,10 @@ const Carousel = (props) => {
       );
 
       const widgetId = response.data.widget._id;
-      const widgetUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
-      const iframeLink = `<iframe src="${widgetUrl}" width="100%" height="800px"></iframe>`;
-      console.log(response);
+      const generatedIframeLink = generateIframeLink(widgetId);
 
-      setIframeSrc(iframeLink);
+      setIframeSrc(generatedIframeLink);
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
       console.error("There was a problem with the fetch operation:", error);
       if (error.response) {
         console.error("Response Data:", error.response.data);
@@ -61,6 +82,11 @@ const Carousel = (props) => {
       }
       throw error;
     }
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(iframeSrc);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -108,10 +134,27 @@ const Carousel = (props) => {
         <Box mt={3}>
           {iframeSrc && (
             <div>
-              <textarea value={iframeSrc} readOnly />
-              <button onClick={() => navigator.clipboard.writeText(iframeSrc)}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                value={iframeSrc}
+                readOnly
+                InputProps={{
+                  readOnly: true,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Typography variant="caption">Embed Link:</Typography>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handleCopyCode}
+                style={{ marginTop: "10px" }}>
                 Copy Code
-              </button>
+              </Button>
             </div>
           )}
         </Box>
@@ -138,16 +181,12 @@ const Carousel = (props) => {
           <Typography variant="body2">Hide the date</Typography>
         </Box>
         <Box display="flex" alignItems="center" mt={2}>
-          <Typography variant="body2">Scroll speed:</Typography>
-          <Select
-            value={scrollSpeed}
-            onChange={(e) => setScrollSpeed(e.target.value)}
-            variant="outlined"
-            size="small"
-            ml={1}>
-            <MenuItem value="1">1x</MenuItem>
-            <MenuItem value="2">2x</MenuItem>
-          </Select>
+          <Checkbox
+            color="secondary"
+            checked={autoScroll}
+            onChange={(e) => setAutoScroll(e.target.checked)}
+          />
+          <Typography variant="body2">Auto Scroll</Typography>
         </Box>
       </Box>
       <Box>
@@ -158,7 +197,21 @@ const Carousel = (props) => {
           Create
         </Button>
       </Box>
-      <Box>{/* <Widget /> */}</Box>
+      {/* Snackbar for copied notification */}
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Code copied to clipboard!"
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </Dialog>
   );
 };

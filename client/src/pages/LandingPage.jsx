@@ -24,7 +24,6 @@ import Framer from "../assets/framer.svg";
 import Shopify from "../assets/shopify.svg";
 import Webflow from "../assets/webflow.svg";
 import Wordpress from "../assets/wordpress.svg";
-import WidgetDisplay from "../components/WidgetDisplay";
 
 const LandingPage = () => {
   const platforms = [
@@ -94,18 +93,27 @@ const LandingPage = () => {
 
   return (
     <main>
-      {/* <iframe
-        src="http://localhost:8080/api/users/64b98dfac832642e75f4dcd0/products/64b9ac1324c4519cba0203b0/widgets/64bd17940675a94d452444c2/serve"
-        width="100%"
-        height="800px"></iframe> */}
-      {/* <iframe
-        src="http://localhost:8080/api/users/64b98dfac832642e75f4dcd0/products/64b9ac1324c4519cba0203b0/widgets/64bbefadb841ddd73b8975e0/serve"
-        width="100%"
-        height="800px"></iframe> */}
-      {/* <iframe
-        src="http://localhost:8080/api/users/64b98dfac832642e75f4dcd0/products/64b9ac1324c4519cba0203b0/widgets/64bd17b70675a94d452444c6/serve"
-        width="100%"
-        height="800px"></iframe> */}
+      <iframe
+        height="800px"
+        id="64c13aaeded3dacffd3be92d"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c13aaeded3dacffd3be92d/serve?hideDate=on&type=masonry_fix"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe>
+      <iframe
+        height="800px"
+        id="64c126b4744c8c56cb7c7f1a"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c126b4744c8c56cb7c7f1a/serve?scrollSpeed=2&type=masonry_scroll"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe>
+      <iframe
+        height="800px"
+        id="64c134392f437200e75fbfca"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c134392f437200e75fbfca/serve?hideDate=on&autoScroll=on&type=carousel"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe>
       <Box sx={{ bgcolor: "white", pt: 32, pb: 10 }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", pb: 12 }}>

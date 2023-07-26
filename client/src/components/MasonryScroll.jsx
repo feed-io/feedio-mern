@@ -9,10 +9,12 @@ import {
   Typography,
   Select,
   MenuItem,
+  TextField,
+  Snackbar,
+  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { AuthContext } from "../context/auth-context";
@@ -22,8 +24,24 @@ const MasonryScroll = (props) => {
   const [hideDate, setHideDate] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState("1");
   const [iframeSrc, setIframeSrc] = useState(null);
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
-  let widgetUrl;
+  const generateIframeLink = (widgetId) => {
+    const baseIframeUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+
+    let params = [];
+
+    if (hideDate) {
+      params.push("hideDate=on");
+    }
+
+    params.push(`scrollSpeed=${scrollSpeed}`);
+    params.push(`type=${props.layoutType}`);
+
+    return `<iframe height="800px" id="${widgetId}" src="${baseIframeUrl}?${params.join(
+      "&"
+    )}" frameBorder="0" scrolling="no" width="100%"></iframe>`;
+  };
 
   const sendWidgetConfigToBackend = async () => {
     const config = {
@@ -45,13 +63,10 @@ const MasonryScroll = (props) => {
       );
 
       const widgetId = response.data.widget._id;
-      widgetUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
-      const iframeLink = `<iframe src="${widgetUrl}" width="100%" height="800px"></iframe>`;
-      console.log(response);
+      const generatedIframeLink = generateIframeLink(widgetId);
 
-      setIframeSrc(iframeLink);
+      setIframeSrc(generatedIframeLink);
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
       console.error("There was a problem with the fetch operation:", error);
       if (error.response) {
         console.error("Response Data:", error.response.data);
@@ -66,43 +81,9 @@ const MasonryScroll = (props) => {
     }
   };
 
-  const IframeComponent = () => {
-    return (
-      <Box
-        component="div"
-        sx={{
-          fontSize: "base",
-          "@media (min-width: 640px)": {
-            fontSize: "sm",
-          },
-          "& pre": {
-            color: "rgb(212, 212, 212)",
-            fontSize: "13px",
-            fontFamily:
-              'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace',
-            lineHeight: 1.5,
-            backgroundColor: "rgb(30, 30, 30)",
-            marginY: "0.5em",
-            overflow: "auto",
-            padding: "1em",
-          },
-        }}>
-        <Typography component="pre">
-          <code
-            className="language-javascript"
-            sx={{
-              color: "rgb(156, 220, 254)",
-              fontSize: "13px",
-              fontFamily:
-                'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace',
-            }}>
-            &lt;iframe height="800px"
-            id="testimonialto-dasdsa-tag-all-light-animated" src=`${widgetUrl}`
-            frameborder="0" scrolling="no" width="100%"&gt;&lt;/iframe&gt;
-          </code>
-        </Typography>
-      </Box>
-    );
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(iframeSrc);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -149,10 +130,27 @@ const MasonryScroll = (props) => {
         <Box mt={3}>
           {iframeSrc && (
             <div>
-              <textarea value={iframeSrc} readOnly />
-              <button onClick={() => navigator.clipboard.writeText(iframeSrc)}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                value={iframeSrc}
+                readOnly
+                InputProps={{
+                  readOnly: true,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Typography variant="caption">Embed Link:</Typography>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handleCopyCode}
+                style={{ marginTop: "10px" }}>
                 Copy Code
-              </button>
+              </Button>
             </div>
           )}
         </Box>
@@ -199,7 +197,21 @@ const MasonryScroll = (props) => {
           Create
         </Button>
       </Box>
-      <Box>{/* <Widget /> */}</Box>
+      {/* Snackbar for copied notification */}
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Code copied to clipboard!"
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </Dialog>
   );
 };

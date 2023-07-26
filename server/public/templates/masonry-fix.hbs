@@ -2,13 +2,16 @@
   {{#each reviewsData}}
     <div class="review-item">
       <div class="avatar-container">
-        {{! <img src="" alt="Avatar" class="avatar" /> }}
-        <span class="review-rating">{{this.name}}</span>
+        <div class="avatar-placeholder"></div>
+        <span class="reviewer-name">{{this.name}}</span>
+        <p class="review-content">{{this.content}}</p>
       </div>
-      <p class="review-content">{{this.content}}</p>
       <div class="review-footer">
-        <span class="review-rating">{{this.rating}} ⭐</span>
-        <span class="review-date">{{this.createdAt}}</span>
+        <span class="stars" data-rating="{{this.rating}}"></span>
+        {{#if ../hideDate}}
+        {{else}}
+          <span class="review-date">{{this.createdAt}}</span>
+        {{/if}}
       </div>
     </div>
   {{/each}}
@@ -17,4 +20,8 @@
 <script
   src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"
 ></script>
-<link rel="stylesheet" href="/static/widgets/masonry_fix/style.css" />
+<link rel="stylesheet" href="/static/styles/masonry-fix/style.css" />
+
+
+
+

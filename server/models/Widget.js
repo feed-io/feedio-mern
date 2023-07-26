@@ -14,13 +14,15 @@ const widgetSchema = new mongoose.Schema(
     },
     scrollSpeed: {
       type: Number,
-      //   required: function () {
-      //     return this.type === "masonry_scroll";
-      //   },
+      type: Number,
     },
-    showDate: {
+    hideDate: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+    autoScroll: {
+      type: Boolean,
+      default: false,
     },
   },
   {

@@ -63,7 +63,7 @@ const CreateRoomForm = (props) => {
           },
         }
       );
-      console.log(response);
+
       handleClose();
       if (props.onSpaceCreated) {
         props.onSpaceCreated();
