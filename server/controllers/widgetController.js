@@ -3,13 +3,17 @@ const widgetService = require("../services/widgetService");
 exports.generateWidget = async (req, res, next) => {
   const productId = req.mainParams.pid;
   const type = req.body.type;
-  const widgetConfig = req.body;
+  const hideDate = req.body.hideDate;
+  const scrollSpeed = req.body.scrollSpeed;
+  const autoScroll = req.body.autoScroll;
 
   try {
     const widget = await widgetService.generateWidgetConfig(
       productId,
-      widgetConfig,
-      type
+      scrollSpeed,
+      hideDate,
+      type,
+      autoScroll
     );
     res
       .status(200)
@@ -61,10 +65,17 @@ exports.serveWidget = async (req, res, next) => {
     }
 
     const widgetRepresentation =
-      await widgetService.generateWidgetRepresentation(widgetConfig);
+      await widgetService.generateWidgetRepresentation(
+        productId,
+        widgetConfig.scrollSpeed,
+        widgetConfig.hideDate,
+        widgetConfig.type,
+        widgetConfig.autoScroll
+      );
 
     res.status(200).send(widgetRepresentation);
   } catch (error) {
-    res.status(500).json({ message: "Error serving the widget.", error });
+    console.log(error);
+    res.status(500).json({ message: "Error serving the widget." });
   }
 };

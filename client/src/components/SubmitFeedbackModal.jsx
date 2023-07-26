@@ -22,7 +22,7 @@ const SubmitFeedbackModal = (props) => {
   const { productId } = useParams();
 
   const auth = useContext(AuthContext);
-  console.log(props);
+
   const handleNameChange = (event) => {
     setName(event.target.value);
   };

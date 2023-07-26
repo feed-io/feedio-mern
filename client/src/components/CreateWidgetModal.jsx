@@ -18,7 +18,7 @@ import Carousel from "./Carousel.jsx";
 
 const CreateWidgetModal = (props) => {
   const [currentPage, setCurrentPage] = useState("layoutSelection"); // layoutSelection or masonry
-  console.log(props);
+
   const layoutOptions = [
     {
       title: "Masonry - scrolling",
@@ -50,7 +50,6 @@ const CreateWidgetModal = (props) => {
     if (title === "Carousel slider") {
       setCurrentPage("carousel");
     }
-    console.log(`${title} was clicked!`);
   };
 
   if (currentPage === "masonry_scroll") {

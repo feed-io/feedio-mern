@@ -23,7 +23,6 @@ import CreateWidgetModal from "../components/CreateWidgetModal";
 import { AuthContext } from "../context/auth-context";
 
 const categorizeSentiment = (score) => {
-  console.log(score);
   if (score >= 4) {
     return "Positive";
   } else if (score === 3) {
@@ -135,7 +134,7 @@ const RoomPage = () => {
         );
 
         const data = await response.json();
-        console.log(data);
+
         const normalizedTrendData = normalizeTrendData(timeGranularity, data);
         setTrendData(normalizedTrendData);
       } catch (error) {
@@ -278,10 +277,6 @@ const RoomPage = () => {
     plugins: {
       legend: {
         position: "top",
-      },
-      title: {
-        display: true,
-        text: "Sentiment Distribution",
       },
     },
   };
