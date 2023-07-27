@@ -131,14 +131,6 @@ const CreateRoomForm = (props) => {
                       onChange={(e) => setNewProductName(e.target.value)}
                       required
                     />
-                    <Typography
-                      sx={{
-                        color: "gray.500",
-                        fontSize: "xs",
-                        fontWeight: "medium",
-                      }}>
-                      Public URL is: testimonial.to/your-space
-                    </Typography>
                   </Box>
                 </Box>
 

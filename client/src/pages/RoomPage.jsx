@@ -16,10 +16,9 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
-import { Star } from "@mui/icons-material";
-
-import ReviewRows from "../components/ReviewRows";
+import ReviewsTable from "../components/ReviewsTable";
 import CreateWidgetModal from "../components/CreateWidgetModal";
+import EditRoomModal from "../components/EditRoomModal";
 import { AuthContext } from "../context/auth-context";
 
 const categorizeSentiment = (score) => {
@@ -38,31 +37,17 @@ const RoomPage = () => {
   const [product, setProduct] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [trendData, setTrendData] = useState([]);
   const [wordCounts, setWordCounts] = useState({});
   const [timeGranularity, setTimeGranularity] = useState("monthly");
 
-  const WallOfLoveIcon = (props) => (
-    <SvgIcon {...props} viewBox="0 0 24 24">
-      <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-    </SvgIcon>
-  );
-
-  const SingleTestimonialIcon = () => (
-    <SvgIcon viewBox="0 0 24 24">
-      <path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
-    </SvgIcon>
-  );
-
-  const CollectingWidgetIcon = () => (
-    <SvgIcon viewBox="0 0 24 24">
-      <path d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859M12 3v8.25m0 0l-3-3m3 3l3-3" />
-    </SvgIcon>
-  );
-
   const normalizeTrendData = (granularity, data) => {
     let normalizedData = [];
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const currentMonth = currentDate.getMonth();
 
     if (granularity === "weekly") {
       const daysOfWeek = [
@@ -75,24 +60,40 @@ const RoomPage = () => {
         "Sunday",
       ];
       daysOfWeek.forEach((day, index) => {
-        const entry = data.find((item) => item._id.week === index + 1);
+        const entry = data.find(
+          (item) => item._id && item._id.dayOfWeek === index + 1
+        );
+
         normalizedData.push(entry ? entry.averageRating : 0);
       });
     } else if (granularity === "monthly") {
-      const daysInMonth = new Date(
-        new Date().getFullYear(),
-        new Date().getMonth() + 1,
-        0
-      ).getDate();
-      for (let i = 1; i <= daysInMonth; i++) {
-        const entry = data.find((item) => item._id.month === i);
+      for (let i = 1; i <= currentDate.getDate(); i++) {
+        const entry = data.find(
+          (item) => item._id && item._id.dayOfMonth === i
+        );
         normalizedData.push(entry ? entry.averageRating : 0);
       }
     } else if (granularity === "yearly") {
-      for (let i = 1; i <= 12; i++) {
-        const entry = data.find((item) => item._id.month === i);
+      const monthsOfYear = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      monthsOfYear.forEach((month, index) => {
+        const entry = data.find(
+          (item) => item._id && item._id.month === index + 1
+        );
         normalizedData.push(entry ? entry.averageRating : 0);
-      }
+      });
     }
 
     return normalizedData;
@@ -134,7 +135,7 @@ const RoomPage = () => {
         );
 
         const data = await response.json();
-
+        console.log(data);
         const normalizedTrendData = normalizeTrendData(timeGranularity, data);
         setTrendData(normalizedTrendData);
       } catch (error) {
@@ -192,21 +193,6 @@ const RoomPage = () => {
     return <Typography>Loading...</Typography>;
   }
 
-  const ReviewContainer = (props) => {
-    return (
-      <Box
-        style={{
-          maxHeight: "500px",
-          overflowY: "auto",
-          border: "1px solid #e0e0e0",
-          borderRadius: "5px",
-          padding: "16px",
-        }}>
-        {props.children}
-      </Box>
-    );
-  };
-
   const maxRating = Math.max(
     product.ratingDistribution.oneStar,
     product.ratingDistribution.twoStar,
@@ -239,6 +225,14 @@ const RoomPage = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const openEditModal = () => {
+    setIsEditModalOpen(true);
   };
 
   const sentimentCounts = {
@@ -300,11 +294,11 @@ const RoomPage = () => {
   let trendLabels = [];
 
   let currentDate = new Date();
-  let currentDay = currentDate.getDay(); // This will return a number between 0 (Sunday) and 6 (Saturday).
-  let currentMonth = currentDate.getMonth(); // This will return a number between 0 (January) and 11 (December).
+  let currentDay = currentDate.getDay();
+  let currentMonth = currentDate.getMonth();
 
   if (timeGranularity === "weekly") {
-    const daysOfWeek = [
+    trendLabels = [
       "Monday",
       "Tuesday",
       "Wednesday",
@@ -313,7 +307,6 @@ const RoomPage = () => {
       "Saturday",
       "Sunday",
     ];
-    trendLabels = daysOfWeek.slice(0, currentDay === 0 ? 7 : currentDay);
   } else if (timeGranularity === "monthly") {
     const daysInMonth = new Date(
       currentDate.getFullYear(),
@@ -324,7 +317,7 @@ const RoomPage = () => {
       (i + 1).toString()
     );
   } else if (timeGranularity === "yearly") {
-    const monthsOfYear = [
+    trendLabels = [
       "January",
       "February",
       "March",
@@ -338,7 +331,6 @@ const RoomPage = () => {
       "November",
       "December",
     ];
-    trendLabels = monthsOfYear.slice(0, currentMonth + 1);
   }
 
   const lineChartOptions = {
@@ -371,7 +363,10 @@ const RoomPage = () => {
             <Typography variant="h4" component="h1">
               {product.name}
             </Typography>
-            <Button variant="contained" color="secondary">
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={openEditModal}>
               Edit space
             </Button>
             <Button
@@ -402,19 +397,16 @@ const RoomPage = () => {
               <Typography variant="h6">Go to</Typography>
               {[
                 {
-                  icon: <Star />,
                   label: "Public landing page",
                   path: `http://localhost:3000/reviewSpace/${productId}`,
                 },
                 {
-                  icon: <Star />,
                   label: "Show Room page",
                   path: `http://localhost:3000/showRoom/${productId}`,
                 },
-              ].map(({ icon, label, path }, index) => (
+              ].map(({ label, path }, index) => (
                 <Button
                   fullWidth
-                  startIcon={icon}
                   href={path}
                   variant="contained"
                   color="primary"
@@ -471,25 +463,22 @@ const RoomPage = () => {
               <Typography variant="h6">Share</Typography>
               {[
                 {
-                  icon: <WallOfLoveIcon />,
                   label: "Show Room",
                   onClick: openModal,
                 },
+                // {
+                //   icon: <SingleTestimonialIcon />,
+                //   label: "Single review",
+                //   path: "",
+                // },
                 {
-                  icon: <SingleTestimonialIcon />,
-                  label: "Single review",
-                  path: "",
-                },
-                {
-                  icon: <CollectingWidgetIcon />,
                   label: "Colleting widget",
                   path: "",
                 },
-              ].map(({ icon, label, path, onClick }, index) => (
+              ].map(({ label, path, onClick }, index) => (
                 <Button
                   fullWidth
                   onClick={onClick}
-                  startIcon={icon}
                   href={path}
                   variant="contained"
                   color="primary"
@@ -529,6 +518,7 @@ const RoomPage = () => {
                     backgroundColor: "#f5f5f5",
                     borderRadius: "8px",
                     boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
+                    paddingBottom: 8,
                   }}>
                   <CardContent
                     style={{ maxHeight: "300px", overflow: "hidden" }}>
@@ -662,14 +652,12 @@ const RoomPage = () => {
             </Grid>
 
             <Box mb={16}>
-              <ReviewContainer>
-                <ReviewRows
-                  onSpaceCreated={handleSpaceCreated}
-                  product={product}
-                  userId={auth.userId}
-                  token={auth.token}
-                />
-              </ReviewContainer>
+              <ReviewsTable
+                onSpaceCreated={handleSpaceCreated}
+                product={product}
+                userId={auth.userId}
+                token={auth.token}
+              />
             </Box>
           </Box>
         </Box>
@@ -677,6 +665,12 @@ const RoomPage = () => {
       {isModalOpen && (
         <CreateWidgetModal productId={productId} closeModal={closeModal} />
       )}
+      <EditRoomModal
+        isOpen={isEditModalOpen}
+        product={product}
+        closeEditModal={closeEditModal}
+        onRoomUpdated={() => setRefreshTrigger((prev) => prev + 1)}
+      />
     </Container>
   );
 };
