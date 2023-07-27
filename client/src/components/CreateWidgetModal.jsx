@@ -17,7 +17,7 @@ import MasonryFix from "./MasonryFix";
 import Carousel from "./Carousel.jsx";
 
 const CreateWidgetModal = (props) => {
-  const [currentPage, setCurrentPage] = useState("layoutSelection"); // layoutSelection or masonry
+  const [currentPage, setCurrentPage] = useState("layoutSelection");
 
   const layoutOptions = [
     {

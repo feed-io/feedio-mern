@@ -116,17 +116,28 @@ const getWordCloudData = async (productId) => {
   }
 };
 
+function getISOWeek(date) {
+  const jan4 = new Date(date.getFullYear(), 0, 4);
+  return Math.ceil(((date - jan4) / 86400000 + jan4.getDay() + 1) / 7);
+}
+
 const getRatingsTrend = async (productId, granularity = "monthly") => {
   let groupBy = {};
+
   if (granularity === "yearly") {
-    groupBy = { year: { $year: "$createdAt" } };
+    groupBy = {
+      month: { $month: "$createdAt" },
+      year: { $year: "$createdAt" },
+    };
   } else if (granularity === "weekly") {
     groupBy = {
+      dayOfWeek: { $dayOfWeek: "$createdAt" },
       week: { $isoWeek: "$createdAt" },
       year: { $isoWeekYear: "$createdAt" },
     };
   } else {
     groupBy = {
+      dayOfMonth: { $dayOfMonth: "$createdAt" },
       month: { $month: "$createdAt" },
       year: { $year: "$createdAt" },
     };
@@ -134,15 +145,8 @@ const getRatingsTrend = async (productId, granularity = "monthly") => {
 
   try {
     const trends = await Review.aggregate([
-      {
-        $match: { product: new mongoose.Types.ObjectId(productId) },
-      },
-      {
-        $project: {
-          rating: 1,
-          createdAt: 1,
-        },
-      },
+      { $match: { product: new mongoose.Types.ObjectId(productId) } },
+      { $project: { rating: 1, createdAt: 1 } },
       {
         $group: {
           _id: groupBy,
@@ -156,12 +160,16 @@ const getRatingsTrend = async (productId, granularity = "monthly") => {
     if (granularity === "weekly") {
       let filledData = [];
       for (let i = 1; i <= 7; i++) {
-        const dataForWeek = trends.find((item) => item._id.week === i);
-        if (dataForWeek) {
-          filledData.push(dataForWeek);
+        const dataForDay = trends.find((item) => item._id.dayOfWeek === i);
+        if (dataForDay) {
+          filledData.push(dataForDay);
         } else {
           filledData.push({
-            _id: { week: i, year: new Date().getFullYear() },
+            _id: {
+              dayOfWeek: i,
+              week: getISOWeek(new Date()),
+              year: new Date().getFullYear(),
+            },
             averageRating: 0,
             count: 0,
           });
@@ -176,12 +184,16 @@ const getRatingsTrend = async (productId, granularity = "monthly") => {
         0
       ).getDate();
       for (let i = 1; i <= daysInMonth; i++) {
-        const dataForDay = trends.find((item) => item._id.month === i);
+        const dataForDay = trends.find((item) => item._id.dayOfMonth === i);
         if (dataForDay) {
           filledData.push(dataForDay);
         } else {
           filledData.push({
-            _id: { month: i, year: new Date().getFullYear() },
+            _id: {
+              dayOfMonth: i,
+              month: new Date().getMonth() + 1,
+              year: new Date().getFullYear(),
+            },
             averageRating: 0,
             count: 0,
           });
@@ -204,7 +216,8 @@ const getRatingsTrend = async (productId, granularity = "monthly") => {
       }
       return filledData;
     }
-    return trends; // This will be the default return if none of the conditions above are met.
+
+    return trends;
   } catch (err) {
     console.error("Error during aggregation: ", err.message);
     throw new Error("Unable to fetch ratings trend");
