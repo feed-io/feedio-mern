@@ -218,11 +218,11 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
                   direction={orderBy === headCell.id ? order : "asc"}
                   onClick={createSortHandler(headCell.id)}
                   hideSortIcon={false}
-                  sx={{ fontSize: "1.2rem" }}>
+                  sx={{ fontSize: "1rem" }}>
                   {headCell.label}
                 </TableSortLabel>
               ) : (
-                <Typography variant="h6" color="inherit">
+                <Typography fontSize={"1rem"} color="inherit">
                   {headCell.label}
                 </Typography>
               )}

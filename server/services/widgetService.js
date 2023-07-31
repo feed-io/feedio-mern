@@ -4,6 +4,7 @@ const handlebars = require("handlebars");
 
 const Widget = require("../models/Widget");
 const Review = require("../models/Review");
+const Product = require("../models/Product");
 
 const generateWidgetConfig = async (
   productId,
@@ -13,8 +14,8 @@ const generateWidgetConfig = async (
   autoScroll
 ) => {
   let widget = await Widget.findOne({
-    product: productId,
-    type: type,
+    productId,
+    type,
   });
 
   if (widget) {
@@ -60,6 +61,14 @@ const generateWidgetRepresentation = async (
     createdAt: new Date(review.createdAt).toDateString(),
   }));
 
+  const product = await Product.findById(productId);
+  const productData = {
+    name: product.name,
+    header: product.header,
+    content: product.content,
+    questions: product.questions,
+  };
+
   switch (type) {
     case "masonry_scroll":
       templatePath = path.join(
@@ -84,6 +93,14 @@ const generateWidgetRepresentation = async (
       stylePath = path.join(__dirname, "../public/styles/carousel.css");
       break;
 
+    case "collect-feedback":
+      templatePath = path.join(
+        __dirname,
+        "../public/templates/collect-feedback.hbs"
+      );
+      stylePath = path.join(__dirname, "../public/styles/collect-feedback.css");
+      break;
+
     default:
       throw new Error("Invalid widget type");
   }
@@ -105,15 +122,32 @@ const generateWidgetRepresentation = async (
     const template = handlebars.compile(templateString);
 
     const styleContent = fs.readFileSync(stylePath, "utf-8");
-    console.log(hideDate);
+
     widgetRepresentation = template({
       reviewsData,
+      productData,
       hideDate,
       scrollSpeed: scrollSpeed || "1",
       autoScroll,
     });
 
     widgetRepresentation += `<style>${styleContent}</style>`;
+
+    if (type === "collect-feedback") {
+      const scriptContent = fs.readFileSync(
+        path.join(__dirname, "../public/scripts/sendForm.js"),
+        "utf-8"
+      );
+
+      const dynamicScriptContent = `
+        <script>
+          const productId = "${productId}";
+        </script>
+        <script>${scriptContent}</script>
+      `;
+
+      widgetRepresentation += dynamicScriptContent;
+    }
   } catch (error) {
     console.error("Error compiling the Handlebars template:", error);
   }

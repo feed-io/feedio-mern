@@ -124,6 +124,34 @@ exports.createReview = async (req, res) => {
   }
 };
 
+exports.createReviewForWidget = async (req, res) => {
+  const { name, email, content, rating, productId } = req.body;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  try {
+    const newReview = await reviewService.widgetReview({
+      name,
+      email,
+      content,
+      rating,
+      productId,
+    });
+    res
+      .status(201)
+      .json({ message: "Review created successfully", review: newReview });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 exports.getAllReviews = async (req, res) => {
   const { pid } = req.params;
 

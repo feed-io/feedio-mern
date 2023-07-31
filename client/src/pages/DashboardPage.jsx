@@ -50,7 +50,7 @@ const Dashboard = () => {
             },
           }
         );
-        console.log(response);
+
         setProducts(response.data.products);
       } catch (error) {
         console.log("Error fetching products:", error.message);

@@ -93,24 +93,17 @@ const LandingPage = () => {
 
   return (
     <main>
-      <iframe
+      {/* <iframe
         height="800px"
-        id="64c13aaeded3dacffd3be92d"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c13aaeded3dacffd3be92d/serve?hideDate=on&type=masonry_fix"
+        id="64c793db8d66b89175e67016"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c793db8d66b89175e67016/serve?type=collect-feedback"
         frameBorder="0"
         scrolling="no"
-        width="100%"></iframe>
+        width="100%"></iframe> */}
       <iframe
         height="800px"
-        id="64c126b4744c8c56cb7c7f1a"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c126b4744c8c56cb7c7f1a/serve?scrollSpeed=2&type=masonry_scroll"
-        frameBorder="0"
-        scrolling="no"
-        width="100%"></iframe>
-      <iframe
-        height="800px"
-        id="64c134392f437200e75fbfca"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c134392f437200e75fbfca/serve?hideDate=on&autoScroll=on&type=carousel"
+        id="64c7bec117af11f0d8a2ecad"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c7bec117af11f0d8a2ecad/serve?type=collect-feedback"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>

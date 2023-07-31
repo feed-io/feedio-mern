@@ -57,10 +57,9 @@ const EditRoomModal = (props) => {
           },
         }
       );
-      console.log(response);
       props.closeEditModal();
-      if (props.onSpaceUpdated) {
-        props.onSpaceUpdated();
+      if (props.onRoomUpdated) {
+        props.onRoomUpdated();
       }
     } catch (error) {
       console.log("Error updating space:", error.message);

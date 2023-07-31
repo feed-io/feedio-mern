@@ -6,7 +6,6 @@ exports.generateWidget = async (req, res, next) => {
   const hideDate = req.body.hideDate;
   const scrollSpeed = req.body.scrollSpeed;
   const autoScroll = req.body.autoScroll;
-
   try {
     const widget = await widgetService.generateWidgetConfig(
       productId,
@@ -19,6 +18,7 @@ exports.generateWidget = async (req, res, next) => {
       .status(200)
       .json({ message: "Widget configuration saved successfully.", widget });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "Error saving widget configuration.", error });
