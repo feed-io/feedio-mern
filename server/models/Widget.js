@@ -9,7 +9,7 @@ const widgetSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["masonry_scroll", "masonry_fix", "carousel"],
+      enum: ["masonry_scroll", "masonry_fix", "carousel", "collect-feedback"],
       required: true,
     },
     scrollSpeed: {

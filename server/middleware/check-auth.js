@@ -5,6 +5,7 @@ const { pathToRegexp } = require("path-to-regexp");
 dotenv.config();
 
 const UNPROTECTED_ROUTES = [
+  "/api/collection-feedback/createReviewForWidget",
   "/api/users/register",
   "/api/users/login",
   "/api/users/:id/products/:pid/widgets/:wid/serve",

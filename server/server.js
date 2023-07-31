@@ -9,6 +9,7 @@ const productRoutes = require("./routes/products-route");
 const reviewRoutes = require("./routes/reviews-route");
 const paymentRoutes = require("./routes/payments-route");
 const paymentController = require("./controllers/paymentController");
+const reviewController = require("./controllers/reviewController");
 const widgetRoutes = require("./routes/widget-route");
 const checkAuth = require("./middleware/check-auth");
 
@@ -63,7 +64,9 @@ app.use(
 
 app.use("/api/users/:id/payments", paymentRoutes);
 
-app.post("/api/payments/webhook", paymentController.handleStripeWebhook);
+app.use("/api/payments/webhook", paymentController.handleStripeWebhook);
+
+app.use("/api/collection-feedback", reviewRoutes);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)

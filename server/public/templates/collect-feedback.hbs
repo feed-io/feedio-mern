@@ -1,0 +1,75 @@
+<body>
+  <div class="feedback-container">
+    <div class="content-container">
+      <div class="product-info">
+        <img src="#" alt="Product Logo" class="product-logo" />
+        <h1 class="product-name">{{productData.name}}</h1>
+        <p class="product-header">{{productData.header}}</p>
+        <div class="product-questions">
+          <hr />
+          <ul>
+            {{#each productData.questions}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <div class="feedback-button-container">
+        <button class="feedback-button" onclick="showFeedbackForm()">Send in
+          feedback</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="feedbackModal">
+    <div class="dialog" id="review-dialog">
+      <div class="dialog-content">
+        <form id="feedback-form">
+          <div class="input-field">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" />
+          </div>
+          <div class="input-field">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" />
+          </div>
+          <div class="input-field">
+            <label for="review">Your Review</label>
+            <textarea id="review" rows="4"></textarea>
+          </div>
+          <div class="input-field rating">
+            <label for="rating">Rating</label>
+            <span class="star" data-value="1">
+              <input type="radio" id="rating-1" name="rating" value="1" />
+              <label for="rating-1"></label>
+            </span>
+            <span class="star" data-value="2">
+              <input type="radio" id="rating-2" name="rating" value="2" />
+              <label for="rating-2"></label>
+            </span>
+            <span class="star" data-value="3">
+              <input type="radio" id="rating-3" name="rating" value="3" />
+              <label for="rating-3"></label>
+            </span>
+            <span class="star" data-value="4">
+              <input type="radio" id="rating-4" name="rating" value="4" />
+              <label for="rating-4"></label>
+            </span>
+            <span class="star" data-value="5">
+              <input type="radio" id="rating-5" name="rating" value="5" />
+              <label for="rating-5"></label>
+            </span>
+          </div>
+
+        </form>
+      </div>
+      <div class="dialog-actions">
+        <button id="cancel-btn">Cancel</button>
+        <button id="submit-btn">Submit Review</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/scripts/sendForm.js"></script>
+</body>

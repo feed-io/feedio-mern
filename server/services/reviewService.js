@@ -33,6 +33,31 @@ const create = async ({ name, email, content, rating, productId }) => {
   return newReview;
 };
 
+const widgetReview = async ({ name, email, content, rating, productId }) => {
+  const product = await Product.findById(productId);
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  const sentimentAnalysis = sentiment.analyze(content);
+
+  const newReview = new Review({
+    name,
+    content,
+    email,
+    rating,
+    sentiment: sentimentAnalysis.score,
+    product: productId,
+  });
+
+  await newReview.save();
+
+  product.reviews.push(newReview._id);
+  await product.save();
+
+  return newReview;
+};
+
 const getAll = async (productId) => {
   const product = await Product.findById(productId).populate("reviews");
   if (!product) {
@@ -159,7 +184,8 @@ const getRatingsTrend = async (productId, granularity = "monthly") => {
 
     if (granularity === "weekly") {
       let filledData = [];
-      for (let i = 1; i <= 7; i++) {
+      const currentDay = new Date().getDay();
+      for (let i = 1; i <= currentDay; i++) {
         const dataForDay = trends.find((item) => item._id.dayOfWeek === i);
         if (dataForDay) {
           filledData.push(dataForDay);
@@ -175,6 +201,7 @@ const getRatingsTrend = async (productId, granularity = "monthly") => {
           });
         }
       }
+
       return filledData;
     } else if (granularity === "monthly") {
       let filledData = [];
@@ -226,6 +253,7 @@ const getRatingsTrend = async (productId, granularity = "monthly") => {
 
 module.exports = {
   create,
+  widgetReview,
   getAll,
   deleteOne,
   getWordCloudData,

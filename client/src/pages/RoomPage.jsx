@@ -11,7 +11,6 @@ import {
   Button,
   Grid,
   Container,
-  SvgIcon,
   Divider,
   Card,
   CardContent,
@@ -19,6 +18,7 @@ import {
 import ReviewsTable from "../components/ReviewsTable";
 import CreateWidgetModal from "../components/CreateWidgetModal";
 import EditRoomModal from "../components/EditRoomModal";
+import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
 import { AuthContext } from "../context/auth-context";
 
 const categorizeSentiment = (score) => {
@@ -37,6 +37,7 @@ const RoomPage = () => {
   const [product, setProduct] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCollModalOpen, setIsCollModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [trendData, setTrendData] = useState([]);
@@ -46,8 +47,6 @@ const RoomPage = () => {
   const normalizeTrendData = (granularity, data) => {
     let normalizedData = [];
     const currentDate = new Date();
-    const currentDay = currentDate.getDay();
-    const currentMonth = currentDate.getMonth();
 
     if (granularity === "weekly") {
       const daysOfWeek = [
@@ -63,7 +62,6 @@ const RoomPage = () => {
         const entry = data.find(
           (item) => item._id && item._id.dayOfWeek === index + 1
         );
-
         normalizedData.push(entry ? entry.averageRating : 0);
       });
     } else if (granularity === "monthly") {
@@ -135,7 +133,7 @@ const RoomPage = () => {
         );
 
         const data = await response.json();
-        console.log(data);
+
         const normalizedTrendData = normalizeTrendData(timeGranularity, data);
         setTrendData(normalizedTrendData);
       } catch (error) {
@@ -201,20 +199,6 @@ const RoomPage = () => {
     product.ratingDistribution.fiveStar
   );
 
-  let cardBackgroundColor;
-
-  if (product.reviews && product.reviews.length > 0) {
-    if (product.averageRating > 40) {
-      cardBackgroundColor = "rgba(119, 221, 119, 0.5)";
-    } else if (product.averageRating <= 40 && product.averageRating > 20) {
-      cardBackgroundColor = "rgba(255, 179, 71, 0.5)";
-    } else {
-      cardBackgroundColor = "rgba(255, 105, 97, 0.5)";
-    }
-  } else {
-    cardBackgroundColor = "#f5f5f5";
-  }
-
   const handleSpaceCreated = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
@@ -226,6 +210,13 @@ const RoomPage = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const openCollectingModal = () => {
+    setIsCollModalOpen(true);
+  };
+
+  const closeCollectingModal = () => {
+    setIsCollModalOpen(false);
+  };
 
   const closeEditModal = () => {
     setIsEditModalOpen(false);
@@ -233,6 +224,10 @@ const RoomPage = () => {
 
   const openEditModal = () => {
     setIsEditModalOpen(true);
+  };
+
+  const handleEditRoom = () => {
+    setRefreshTrigger((prev) => prev + 1);
   };
 
   const sentimentCounts = {
@@ -383,7 +378,7 @@ const RoomPage = () => {
             mt={1}
             spacing={2}
             sx={{ justifyContent: "space-around" }}>
-            {/* Links Section */}
+            {/* Buttons Section */}
             <Grid
               item
               xs={6}
@@ -415,7 +410,6 @@ const RoomPage = () => {
                     whiteSpace: { xs: "normal", sm: "nowrap" },
                     padding: "6px 12px",
                     textTransform: "none",
-                    // fontWeight: "lighter",
                   }}>
                   {label}
                 </Button>
@@ -443,7 +437,6 @@ const RoomPage = () => {
                   whiteSpace: { xs: "normal", sm: "nowrap" },
                   padding: "6px 12px",
                   textTransform: "none",
-                  // fontWeight: "lighter",
                 }}>
                 COMING SOON
               </Button>
@@ -466,20 +459,14 @@ const RoomPage = () => {
                   label: "Show Room",
                   onClick: openModal,
                 },
-                // {
-                //   icon: <SingleTestimonialIcon />,
-                //   label: "Single review",
-                //   path: "",
-                // },
                 {
                   label: "Colleting widget",
-                  path: "",
+                  onClick: openCollectingModal,
                 },
               ].map(({ label, path, onClick }, index) => (
                 <Button
                   fullWidth
                   onClick={onClick}
-                  href={path}
                   variant="contained"
                   color="primary"
                   sx={{
@@ -487,7 +474,6 @@ const RoomPage = () => {
                     whiteSpace: { xs: "normal", sm: "nowrap" },
                     padding: "6px 12px",
                     textTransform: "none",
-                    // fontWeight: "lighter",
                   }}>
                   {label}
                 </Button>
@@ -665,11 +651,17 @@ const RoomPage = () => {
       {isModalOpen && (
         <CreateWidgetModal productId={productId} closeModal={closeModal} />
       )}
+      {isCollModalOpen && (
+        <CollectionFeedbackModal
+          productId={productId}
+          closeModal={closeCollectingModal}
+        />
+      )}
       <EditRoomModal
         isOpen={isEditModalOpen}
         product={product}
         closeEditModal={closeEditModal}
-        onRoomUpdated={() => setRefreshTrigger((prev) => prev + 1)}
+        onRoomUpdated={handleEditRoom}
       />
     </Container>
   );
