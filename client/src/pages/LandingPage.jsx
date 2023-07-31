@@ -93,20 +93,6 @@ const LandingPage = () => {
 
   return (
     <main>
-      {/* <iframe
-        height="800px"
-        id="64c793db8d66b89175e67016"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c793db8d66b89175e67016/serve?type=collect-feedback"
-        frameBorder="0"
-        scrolling="no"
-        width="100%"></iframe> */}
-      <iframe
-        height="800px"
-        id="64c7bec117af11f0d8a2ecad"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c7bec117af11f0d8a2ecad/serve?type=collect-feedback"
-        frameBorder="0"
-        scrolling="no"
-        width="100%"></iframe>
       <Box sx={{ bgcolor: "white", pt: 32, pb: 10 }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", pb: 12 }}>
@@ -336,6 +322,38 @@ const LandingPage = () => {
           </Typography>
         </Container>
       </Box>
+
+      <iframe
+        height="800px"
+        id="64c8373c162336bd3acd5781"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c8373c162336bd3acd5781/serve?hideDate=on&scrollSpeed=1&type=masonry_scroll"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe>
+
+      <iframe
+        height="800px"
+        id="64c83752162336bd3acd5784"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c83752162336bd3acd5784/serve?hideDate=on&type=masonry_fix"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe>
+
+      <iframe
+        height="800px"
+        id="64c8376a162336bd3acd5787"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c8376a162336bd3acd5787/serve?hideDate=on&autoScroll=on&type=carousel"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe>
+
+      <iframe
+        height="800px"
+        id="64c7bec117af11f0d8a2ecad"
+        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c7bec117af11f0d8a2ecad/serve?type=collect-feedback"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe>
     </main>
   );
 };

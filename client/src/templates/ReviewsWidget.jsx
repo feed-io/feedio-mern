@@ -1,116 +1,35 @@
-// import React, { useState, useEffect, useContext } from "react";
-// import { useParams } from "react-router-dom";
-// import { Container, Card, Typography, Box } from "@mui/material";
-// import Grid from "@mui/material/Grid";
-// import CardContent from "@mui/material/CardContent";
-// import CardMedia from "@mui/material/CardMedia";
-// import axios from "axios";
+import React, { useState, useEffect, useContext } from "react";
+import { Avatar, Box, Rating, Typography } from "@mui/material";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
-// import { AuthContext } from "../context/auth-context";
+import { AuthContext } from "../context/auth-context";
 
-// const ShowRoom = () => {
-//   const [reviews, setReviews] = useState([]);
-//   const { productId } = useParams();
-//   const auth = useContext(AuthContext);
+const ShowRoom = () => {
+  const [reviews, setReviews] = useState([]);
+  const { productId } = useParams();
+  const auth = useContext(AuthContext);
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.get(
-//           `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
-//           {
-//             headers: {
-//               Authorization: "Bearer " + auth.token,
-//             },
-//           }
-//         );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+        console.log(response);
+        setReviews(response.data.reviews);
+      } catch (error) {
+        console.log("Error fetching reviews:", error.message);
+      }
+    };
 
-//         setReviews(response.data.reviews);
-//       } catch (error) {
-//         console.log("Error fetching reviews:", error.message);
-//       }
-//     };
-
-//     fetchData();
-//   }, [productId, auth.userId, auth.token]);
-
-//   return (
-//     <>
-//       <main>
-//         <Box
-//           sx={{
-//             bgcolor: "background.paper",
-//             pt: 8,
-//             pb: 6,
-//           }}>
-//           <Container maxWidth="sm">
-//             <Typography
-//               component="h1"
-//               variant="h2"
-//               align="center"
-//               color="text.primary"
-//               gutterBottom>
-//               Show Room
-//             </Typography>
-//             <Typography
-//               variant="h5"
-//               align="center"
-//               color="text.secondary"
-//               paragraph>
-//               Something short and leading about the collection below—its
-//               contents, the creator, etc. Make it short and sweet, but not too
-//               short so folks don&apos;t simply skip over it entirely.
-//             </Typography>
-//           </Container>
-//         </Box>
-//         <Container sx={{ py: 8, bgcolor: "background.paper" }} maxWidth="md">
-//           <Grid container spacing={4}>
-//             {reviews.map((review) => (
-//               <Grid item xs={12} sm={6} md={4}>
-//                 <Card
-//                   sx={{
-//                     height: "100%",
-//                     display: "flex",
-//                     flexDirection: "column",
-//                   }}>
-//                   <CardMedia
-//                     component="div"
-//                     sx={{
-//                       pt: "56.25%",
-//                     }}
-//                     image="https://source.unsplash.com/random?wallpapers"
-//                   />
-//                   <CardContent sx={{ flexGrow: 1 }}>
-//                     <Typography gutterBottom variant="h5" component="h2">
-//                       {review.author} - Rating: {review.rating}/5
-//                     </Typography>
-//                     <Typography>{review.content}</Typography>
-//                   </CardContent>
-//                 </Card>
-//               </Grid>
-//             ))}
-//           </Grid>
-//         </Container>
-//       </main>
-//     </>
-//   );
-// };
-
-// export default ShowRoom;
-
-import React from "react";
-import { Box, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-
-// const CustomIcon1 = (props) => (
-//   <SvgIcon {...props}>{/* SVG Path for the first icon */}</SvgIcon>
-// );
-
-// const CustomIcon2 = (props) => (
-//   <SvgIcon {...props}>{/* SVG Path for the second icon */}</SvgIcon>
-// );
-
-export default function TranslatedComponent() {
+    fetchData();
+  }, [productId, auth.userId, auth.token]);
   return (
     <Box className="flex-grow">
       <Box
@@ -154,15 +73,7 @@ export default function TranslatedComponent() {
                 href="https://testimonial.to/dasdsa">
                 Submit your testimonial
               </Button> */}
-              <Link to="/signup">
-                <Typography
-                  variant="body2"
-                  align="center"
-                  underline="always"
-                  color="white">
-                  Build your own wall? It's free 👉
-                </Typography>
-              </Link>
+              <Link to="/signup"></Link>
             </Box>
           </Box>
         </Box>
@@ -172,26 +83,81 @@ export default function TranslatedComponent() {
         <Box maxWidth="6xl" mx="auto" px={{ xs: 4, sm: 6 }}>
           <Box py={{ xs: 8, lg: 6 }}>
             <Box maxWidth="3xl" mx="auto">
-              <Box overflow="hidden" mx="auto">
-                <img
-                  loading="lazy"
-                  src="/static/media/no-message.18de8749.svg"
-                  alt="success"
-                  sx={{
-                    width: { xs: "3/4", sm: "1/5" },
-                    mx: "auto",
-                    my: 5,
-                    borderRadius: "lg",
-                  }}
-                />
-                <Typography variant="h3" align="center" color="gray.600" mt={5}>
-                  No testimonials found
-                </Typography>
-              </Box>
+              {reviews.length > 0 ? (
+                <Box
+                  display="flex"
+                  flexWrap="wrap"
+                  justifyContent="center"
+                  p={4}
+                  borderRadius={1}>
+                  {reviews.map((review, index) => (
+                    <Box
+                      key={index}
+                      flex="1"
+                      m={2}
+                      p={3}
+                      borderRadius={1}
+                      boxShadow={1}
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="space-between">
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        mb={2}>
+                        <Avatar />
+                        <Typography variant="subtitle1" mt={2}>
+                          {review.name}
+                        </Typography>
+                        <Typography variant="body2" mt={2} textAlign="center">
+                          {review.content}
+                        </Typography>
+                      </Box>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center">
+                        <Rating
+                          name="read-only"
+                          value={review.rating}
+                          readOnly
+                        />
+                        <Typography variant="caption" mt={2}>
+                          {review.createdAt}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              ) : (
+                <Box overflow="hidden" mx="auto">
+                  <img
+                    loading="lazy"
+                    src="/static/media/no-message.18de8749.svg"
+                    alt="success"
+                    sx={{
+                      width: { xs: "3/4", sm: "1/5" },
+                      mx: "auto",
+                      my: 5,
+                      borderRadius: "lg",
+                    }}
+                  />
+                  <Typography
+                    variant="h3"
+                    align="center"
+                    color="gray.600"
+                    mt={5}>
+                    No testimonials found
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>
       </Box>
     </Box>
   );
-}
+};
+
+export default ShowRoom;

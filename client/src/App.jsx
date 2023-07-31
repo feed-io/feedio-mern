@@ -1,9 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Box } from "@mui/material";
 
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
+import Layout from "./components/Layout";
 import CancelationPage from "./pages/CancelationPage";
 import SuccessPage from "./pages/SuccessPage";
 import LandingPage from "./pages/LandingPage";
@@ -70,20 +68,7 @@ const App = () => {
         updateMembershipStatus: updateMembershipStatus,
       }}>
       <Router>
-        <Box display="flex" flexDirection="column" minHeight="100vh">
-          <NavBar />
-          <Box
-            flex="1"
-            pt={2}
-            pb={2}
-            px={2}
-            sx={(theme) => ({
-              backgroundColor: theme.palette.background.default,
-            })}>
-            <main>{routes}</main>
-          </Box>
-          <Footer />
-        </Box>
+        <Layout>{routes}</Layout>
       </Router>
     </AuthContext.Provider>
   );
