@@ -11,9 +11,7 @@ import {
   Snackbar,
   InputAdornment,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import LockIcon from "@mui/icons-material/Lock";
+import { Close, Lock } from "@mui/icons-material/";
 import axios from "axios";
 import { AuthContext } from "../context/auth-context";
 
@@ -90,7 +88,7 @@ const CollectionFeedbackModal = (props) => {
       }}>
       <Box position="absolute" right={1} top={1}>
         <IconButton onClick={props.closeModal}>
-          <CloseIcon />
+          <Close />
         </IconButton>
       </Box>
       <Box textAlign="center" py={3}>
@@ -145,7 +143,7 @@ const CollectionFeedbackModal = (props) => {
           <Tooltip
             title="Please upgrade to our subscription plan to unlock this feature."
             arrow>
-            <LockIcon color="warning" ml={1} />
+            <Lock color="warning" ml={1} />
           </Tooltip>
         </Box>
       </Box>
@@ -167,7 +165,7 @@ const CollectionFeedbackModal = (props) => {
             size="small"
             color="inherit"
             onClick={() => setSnackbarOpen(false)}>
-            <CloseIcon fontSize="small" />
+            <Close fontSize="small" />
           </IconButton>
         }
       />

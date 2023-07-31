@@ -25,7 +25,7 @@ const FeedbackTemplate = () => {
             },
           }
         );
-        console.log(response.data.product.name);
+        console.log(response.data.product);
         setProductName(response.data.product.name);
         setProductHeader(response.data.product.header);
         setProductQuestions(response.data.product.questions);

@@ -9,6 +9,9 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
+  Rating,
+  Box,
+  Typography,
 } from "@mui/material";
 
 import { AuthContext } from "../context/auth-context";
@@ -113,14 +116,24 @@ const SubmitFeedbackModal = (props) => {
                 value={content}
                 onChange={handleContentChange}
               />
-              <TextField
-                label="Rating (1-5)"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 }}
-                value={rating}
-                onChange={handleRatingChange}
-              />
+              <Box
+                sx={{
+                  mb: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}>
+                <Typography variant="caption" gutterBottom>
+                  Rating
+                </Typography>
+                <Rating
+                  name="rating"
+                  value={rating}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
+                  }}
+                />
+              </Box>
             </form>
           </DialogContent>
           <DialogActions>
