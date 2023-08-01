@@ -38,14 +38,16 @@ const create = async ({ name, email, content, rating, productId }) => {
   product.reviews.push(newReview._id);
   await product.save();
 
-  sendAdminNotificationEmail({
-    name: name,
-    email: email,
-    content: content,
-    rating: rating,
-    productName: product.name,
-    userEmail: user.email,
-  });
+  if (user.notifyReview) {
+    sendAdminNotificationEmail({
+      name: name,
+      email: email,
+      content: content,
+      rating: rating,
+      productName: product.name,
+      userEmail: user.email,
+    });
+  }
 
   return newReview;
 };

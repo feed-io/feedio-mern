@@ -23,6 +23,8 @@ const register = async ({ name, email, password }) => {
     name,
     email,
     password: hashedPassword,
+    notifyAccount: true,
+    notifyReview: true,
   });
   await newUser.save();
 
@@ -85,10 +87,19 @@ const getById = async (id) => {
     email: user.email,
     membershipStatus: user.membershipStatus,
     products: user.products,
+    notifyAccount: user.notifyAccount,
+    notifyReview: user.notifyReview,
   };
 };
 
-const update = async ({ id, name, email, password }) => {
+const update = async ({
+  id,
+  name,
+  email,
+  password,
+  notifyAccount,
+  notifyReview,
+}) => {
   const user = await User.findById(id);
   if (!user) {
     throw new Error("User not found");
@@ -116,9 +127,18 @@ const update = async ({ id, name, email, password }) => {
     passwordUpdated = true;
   }
 
+  if (typeof notifyAccount !== "undefined") {
+    user.notifyAccount = notifyAccount;
+  }
+  if (typeof notifyReview !== "undefined") {
+    user.notifyReview = notifyReview;
+  }
+
   await user.save();
 
-  sendAccountUpdateEmail(user, { emailUpdated, passwordUpdated });
+  if (user.notifyAccount) {
+    sendAccountUpdateEmail(user, { emailUpdated, passwordUpdated });
+  }
 
   return { message: "User updated successfully" };
 };

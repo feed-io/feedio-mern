@@ -49,7 +49,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
-  const { name, email, password } = req.body;
+  const { name, email, password, notifyReview, notifyAccount } = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -57,7 +57,14 @@ exports.updateUser = async (req, res, next) => {
   }
 
   try {
-    const message = await userService.update({ id, name, email, password });
+    const message = await userService.update({
+      id,
+      name,
+      email,
+      password,
+      notifyReview,
+      notifyAccount,
+    });
     res.status(200).json({ message: message });
   } catch (error) {
     return res.status(500).json({ message: error.message });

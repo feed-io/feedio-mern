@@ -8,7 +8,13 @@ import {
   Typography,
   Box,
   TextField,
+  Checkbox,
+  FormControlLabel,
+  Snackbar,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 import axios from "axios";
 
 import DeleteUserModal from "../components/DeleteUserModal";
@@ -20,6 +26,9 @@ const UserProfilePage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [user, setUser] = useState("");
   const [openDelete, setOpenDelete] = useState(false);
+  const [notifyReview, setNotifyReview] = useState(true);
+  const [notifyAccount, setNotifyAccount] = useState(true);
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const auth = useContext(AuthContext);
 
   useEffect(() => {
@@ -37,6 +46,8 @@ const UserProfilePage = () => {
         setUser(response.data.user);
         setEmail(response.data.user.email);
         setName(response.data.user.name);
+        setNotifyReview(response.data.user.notifyReview);
+        setNotifyAccount(response.data.user.notifyAccount);
       } catch (error) {
         console.log("Error fetching user data:", error.message);
       }
@@ -49,6 +60,8 @@ const UserProfilePage = () => {
     const updateData = {
       email: email,
       name: name,
+      notifyReview: notifyReview,
+      notifyAccount: notifyAccount,
     };
     if (newPassword) {
       updateData.password = newPassword;
@@ -56,13 +69,15 @@ const UserProfilePage = () => {
     try {
       await axios.put(
         `http://localhost:8080/api/users/${auth.userId}`,
-        updateData, // Send the new password if it's provided
+        updateData,
         {
           headers: {
             Authorization: "Bearer " + auth.token,
           },
         }
       );
+
+      setSnackbarOpen(true);
     } catch (error) {
       console.log("Error updating user:", error.message);
     }
@@ -97,12 +112,33 @@ const UserProfilePage = () => {
             boxShadow: 1,
           }}>
           <Box sx={{ textAlign: "center" }}>
-            <Typography
-              variant="h5"
-              component="div"
-              sx={{ fontWeight: "bold", mb: 4 }}>
-              Profile
-            </Typography>
+            <Box
+              sx={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center", // This will center the Typography
+              }}>
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{ fontWeight: "bold", textAlign: "center" }}>
+                Profile
+              </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                component={RouterLink}
+                to="/dashboard"
+                sx={{
+                  position: "absolute",
+                  right: 0,
+                  mr: 2,
+                  mb: { xs: 2, sm: 0 },
+                }}>
+                Back
+              </Button>
+            </Box>
 
             <Box
               sx={{ my: 4, borderBottom: "1px solid", borderColor: "divider" }}
@@ -161,6 +197,33 @@ const UserProfilePage = () => {
                 onChange={(e) => setNewPassword(e.target.value)}
                 sx={{ mb: 2 }}
               />
+              <Box sx={{ mt: 4 }}>
+                <Typography variant="h6" component="div" sx={{ mb: 2 }}>
+                  Email Notifications:
+                </Typography>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={notifyReview}
+                      onChange={(e) => setNotifyReview(e.target.checked)}
+                      name="notifyReview"
+                      color="primary"
+                    />
+                  }
+                  label="Receive notifications for new reviews"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={notifyAccount}
+                      onChange={(e) => setNotifyAccount(e.target.checked)}
+                      name="notifyAccount"
+                      color="primary"
+                    />
+                  }
+                  label="Receive notifications for account changes"
+                />
+              </Box>
               <Box
                 sx={{
                   mt: 4,
@@ -182,25 +245,32 @@ const UserProfilePage = () => {
                   sx={{ mr: 2, mb: { xs: 2, sm: 0 } }}>
                   Delete User
                 </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  component={RouterLink}
-                  to="/dashboard"
-                  sx={{ mr: 2, mb: { xs: 2, sm: 0 } }}>
-                  Go to Dashboard
-                </Button>
-                <DeleteUserModal
-                  variant="outlined"
-                  color="error"
-                  onOpen={openDelete}
-                  onClose={handleDeleteClose}
-                />
               </Box>
+              <DeleteUserModal
+                variant="outlined"
+                color="error"
+                onOpen={openDelete}
+                onClose={handleDeleteClose}
+              />
             </Box>
           </Box>
         </Box>
       </Box>
+
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Profile updated successfully!"
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </Container>
   );
 };
