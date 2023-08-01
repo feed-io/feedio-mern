@@ -133,19 +133,6 @@ const SignUp = (props) => {
                 helperText={errors.passwordConfirm}
               />
             </Grid>
-
-            <Grid item xs={12}>
-              <Box sx={{ padding: "10px" }}>
-                <FormControlLabel
-                  control={
-                    <Box sx={{ padding: "5px" }}>
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    </Box>
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Box>
-            </Grid>
           </Grid>
 
           <Box sx={{ padding: "10px" }}>

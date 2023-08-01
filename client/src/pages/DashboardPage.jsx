@@ -155,7 +155,6 @@ const Dashboard = () => {
                 label: "Billing",
                 path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
               },
-              { icon: <Notifications />, label: "Notifications" },
             ].map(({ icon, label, path }, index) => (
               <Grid item xs={6} sm={2} key={index}>
                 <Button

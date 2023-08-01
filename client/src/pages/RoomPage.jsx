@@ -377,7 +377,7 @@ const RoomPage = () => {
               color="secondary"
               component={RouterLink}
               to="/dashboard">
-              Go back
+              Back
             </Button>
           </Box>
 
@@ -701,7 +701,6 @@ const RoomPage = () => {
           </IconButton>
         }
       />
-      ;
     </Container>
   );
 };

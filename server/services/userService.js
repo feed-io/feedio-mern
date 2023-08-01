@@ -2,7 +2,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
-const sendEmail = require("../utils/email");
+const {
+  sendAccountCreationEmail,
+  sendAccountUpdateEmail,
+} = require("../utils/email");
 const User = require("../models/user");
 const Product = require("../models/Product");
 const Payment = require("../models/Payment");
@@ -20,6 +23,8 @@ const register = async ({ name, email, password }) => {
     name,
     email,
     password: hashedPassword,
+    notifyAccount: true,
+    notifyReview: true,
   });
   await newUser.save();
 
@@ -29,10 +34,10 @@ const register = async ({ name, email, password }) => {
     { expiresIn: "1h" }
   );
 
-  sendEmail({
-    to: newUser.email,
-    subject: "Welcome to Feedio",
-    html: `<h1>Welcome to Feedio!</h1><p>Dear ${newUser.name},</p><p>Thank you for signing up for Feedio. We're excited to have you on board.</p>`,
+  sendAccountCreationEmail({
+    name: newUser.name,
+    email: newUser.email,
+    membershipStatus: newUser.membershipStatus,
   });
 
   return {
@@ -78,38 +83,63 @@ const getById = async (id) => {
 
   return {
     userId: user._id,
+    name: user.name,
     email: user.email,
     membershipStatus: user.membershipStatus,
     products: user.products,
+    notifyAccount: user.notifyAccount,
+    notifyReview: user.notifyReview,
   };
 };
 
-const update = async ({ id, name, email, password }) => {
+const update = async ({
+  id,
+  name,
+  email,
+  password,
+  notifyAccount,
+  notifyReview,
+}) => {
   const user = await User.findById(id);
   if (!user) {
     throw new Error("User not found");
   }
 
-  if (email) {
+  let emailUpdated = false;
+  let passwordUpdated = false;
+
+  if (name && name !== user.name) {
+    user.name = name;
+  }
+
+  if (email && email !== user.email) {
     const existingUser = await User.findOne({ email });
     if (existingUser && existingUser._id.toString() !== id) {
       throw new Error("Email already in use");
     }
     user.email = email;
+    emailUpdated = true;
   }
 
   if (password) {
     const hashedPassword = await bcrypt.hash(password, 12);
     user.password = hashedPassword;
+    passwordUpdated = true;
+  }
 
-    sendEmail({
-      to: user.email,
-      subject: "Your Password Has Been Updated",
-      html: `<h1>Your Password Has Been Updated</h1><p>Dear ${user.name},</p><p>Your password has been successfully updated. If you did not request this change, please contact support immediately.</p>`,
-    });
+  if (typeof notifyAccount !== "undefined") {
+    user.notifyAccount = notifyAccount;
+  }
+  if (typeof notifyReview !== "undefined") {
+    user.notifyReview = notifyReview;
   }
 
   await user.save();
+
+  if (user.notifyAccount) {
+    sendAccountUpdateEmail(user, { emailUpdated, passwordUpdated });
+  }
+
   return { message: "User updated successfully" };
 };
 

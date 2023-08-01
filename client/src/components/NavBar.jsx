@@ -79,7 +79,7 @@ const NavBar = () => {
               Login
             </StyledButton>
           ) : (
-            <Tooltip title="User Settings">
+            <Tooltip title="Options">
               <StyledBox onClick={(e) => setOpenMenu(e.currentTarget)}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </StyledBox>
@@ -104,7 +104,7 @@ const NavBar = () => {
           component={Link}
           to="/dashboard"
           onClick={() => setOpenMenu(null)}>
-          Dashboard
+          Home
         </MenuItem>
         <MenuItem
           component={Link}
