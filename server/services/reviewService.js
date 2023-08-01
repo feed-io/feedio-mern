@@ -1,5 +1,8 @@
+const User = require("../models/user");
 const Review = require("../models/Review");
 const Product = require("../models/Product");
+const sendEmail = require("../utils/email");
+
 const Sentiment = require("sentiment");
 const natural = require("natural");
 const mongoose = require("mongoose");
@@ -14,29 +17,9 @@ const create = async ({ name, email, content, rating, productId }) => {
     throw new Error("Product not found");
   }
 
-  const sentimentAnalysis = sentiment.analyze(content);
-
-  const newReview = new Review({
-    name,
-    content,
-    email,
-    rating,
-    sentiment: sentimentAnalysis.score,
-    product: productId,
-  });
-
-  await newReview.save();
-
-  product.reviews.push(newReview._id);
-  await product.save();
-
-  return newReview;
-};
-
-const widgetReview = async ({ name, email, content, rating, productId }) => {
-  const product = await Product.findById(productId);
-  if (!product) {
-    throw new Error("Product not found");
+  const user = await User.findById(product.user);
+  if (!user) {
+    throw new Error("User not found");
   }
 
   const sentimentAnalysis = sentiment.analyze(content);
@@ -54,6 +37,55 @@ const widgetReview = async ({ name, email, content, rating, productId }) => {
 
   product.reviews.push(newReview._id);
   await product.save();
+
+  sendEmail({
+    to: user.email,
+    subject: "New Review Added",
+    html: `<h1>New Review for ${product.name}</h1>
+           <p>${name} has added a review for ${product.name}.</p>
+           <p>Rating: ${rating}</p>
+           <p>Review: ${content}</p>`,
+  });
+
+  return newReview;
+};
+
+const widgetReview = async ({ name, email, content, rating, productId }) => {
+  const product = await Product.findById(productId);
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  console.log(product);
+  const user = await User.findById(product.user);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const sentimentAnalysis = sentiment.analyze(content);
+
+  const newReview = new Review({
+    name,
+    content,
+    email,
+    rating,
+    sentiment: sentimentAnalysis.score,
+    product: productId,
+  });
+
+  await newReview.save();
+
+  product.reviews.push(newReview._id);
+  await product.save();
+
+  sendEmail({
+    to: user.email,
+    subject: "New Review Added from Widget",
+    html: `<h1>New Review for ${product.name} from Widget</h1>
+           <p>${name} has added a review for ${product.name} using the widget.</p>
+           <p>Rating: ${rating}</p>
+           <p>Review: ${content}</p>`,
+  });
 
   return newReview;
 };

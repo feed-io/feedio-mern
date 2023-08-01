@@ -100,6 +100,7 @@ const reviewService = require("../services/reviewService");
 
 exports.createReview = async (req, res) => {
   const { name, email, content, rating, productId } = req.body;
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -126,7 +127,6 @@ exports.createReview = async (req, res) => {
 
 exports.createReviewForWidget = async (req, res) => {
   const { name, email, content, rating, productId } = req.body;
-
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

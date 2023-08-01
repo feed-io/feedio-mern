@@ -80,7 +80,6 @@ const CreateRoomForm = (props) => {
       </Fab>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-        <DialogTitle>Create a New Space</DialogTitle>
         <DialogContent>
           <Box sx={{ py: 12, maxWidth: "500px", mx: "auto" }}>
             <Box
@@ -95,21 +94,21 @@ const CreateRoomForm = (props) => {
                 component="h3"
                 sx={{ mb: 4 }}
                 data-aos="fade-up">
-                Create a new Space
+                Create a new Room
               </Typography>
               <Typography
                 sx={{ width: "100%", color: "gray.500" }}
                 data-aos="fade-up"
                 data-aos-delay="200">
                 After the form is created, it will generate a unique link for
-                sharing to collect testimonials.
+                sharing to collect feedback.
               </Typography>
             </Box>
 
             {/* Form */}
             <form onSubmit={handleSubmit}>
               <Box sx={{ maxWidth: "xl", mx: "auto" }}>
-                {/* Space Name Field */}
+                {/* Room Name Field */}
                 <Box sx={{ display: "flex", flexWrap: "wrap", m: -3, mb: 4 }}>
                   <Box sx={{ width: "100%", px: 3 }}>
                     <Typography
@@ -119,7 +118,7 @@ const CreateRoomForm = (props) => {
                         fontWeight: "medium",
                         mb: 1,
                       }}>
-                      Space name <span sx={{ color: "red.600" }}>*</span>
+                      Room name <span sx={{ color: "red.600" }}>*</span>
                     </Typography>
                     <TextField
                       id="name"
@@ -240,7 +239,7 @@ const CreateRoomForm = (props) => {
                 </Box>
                 <Box sx={{ textAlign: "center", mt: 4 }}>
                   <Button type="submit" variant="contained" color="primary">
-                    Create New Space
+                    Create New Room
                   </Button>
                 </Box>
               </Box>

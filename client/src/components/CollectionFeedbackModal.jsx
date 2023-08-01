@@ -95,17 +95,7 @@ const CollectionFeedbackModal = (props) => {
         <Typography variant="h4" gutterBottom>
           Embed a Feedback Collector
         </Typography>
-        <Typography variant="body1">
-          <Box
-            component="span"
-            px={1}
-            py={0.5}
-            borderRadius="full"
-            fontWeight="medium">
-            Step 2
-          </Box>
-          Customize your Feedback Collector
-        </Typography>
+
         <Box mt={3}>
           {iframeSrc && (
             <div>

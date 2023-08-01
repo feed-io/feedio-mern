@@ -201,7 +201,7 @@ const Dashboard = () => {
                 <TableRow>
                   <TableCell>Room</TableCell>
                   <TableCell align="right">Avg. Rating</TableCell>
-                  <TableCell align="right">Number of Reviews</TableCell>
+                  <TableCell align="right">Number of Entries</TableCell>
                   <TableCell align="right">Delete</TableCell>
                 </TableRow>
               </TableHead>

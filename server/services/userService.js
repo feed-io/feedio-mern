@@ -29,11 +29,11 @@ const register = async ({ name, email, password }) => {
     { expiresIn: "1h" }
   );
 
-  // sendEmail({
-  //   to: newUser.email,
-  //   subject: "Welcome to Feedio",
-  //   html: `<h1>Welcome to Feedio!</h1><p>Dear ${newUser.name},</p><p>Thank you for signing up for Feedio. We're excited to have you on board.</p>`,
-  // });
+  sendEmail({
+    to: newUser.email,
+    subject: "Welcome to Feedio",
+    html: `<h1>Welcome to Feedio!</h1><p>Dear ${newUser.name},</p><p>Thank you for signing up for Feedio. We're excited to have you on board.</p>`,
+  });
 
   return {
     userId: newUser._id,

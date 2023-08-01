@@ -62,7 +62,7 @@ const EditRoomModal = (props) => {
         props.onRoomUpdated();
       }
     } catch (error) {
-      console.log("Error updating space:", error.message);
+      console.log("Error updating Room:", error.message);
     }
   };
 
@@ -72,7 +72,6 @@ const EditRoomModal = (props) => {
       onClose={props.closeModal}
       fullWidth
       maxWidth="md">
-      <DialogTitle>Edit Space</DialogTitle>
       <DialogContent>
         <Box sx={{ py: 12, maxWidth: "500px", mx: "auto" }}>
           <Box
@@ -88,13 +87,13 @@ const EditRoomModal = (props) => {
               component="h3"
               sx={{ mb: 4 }}
               data-aos="fade-up">
-              Edit Space
+              Edit Room
             </Typography>
             <Typography
               sx={{ width: "100%", color: "gray.500" }}
               data-aos="fade-up"
               data-aos-delay="200">
-              Update the details for this space.
+              Update the details for this Room.
             </Typography>
           </Box>
           {/* Form */}

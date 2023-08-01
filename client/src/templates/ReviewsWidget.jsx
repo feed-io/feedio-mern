@@ -62,19 +62,10 @@ const ShowRoom = () => {
         </Box>
 
         <Box maxWidth="6xl" mx="auto" px={{ xs: 4, sm: 6 }} position="relative">
-          <Box pt={{ xs: 32, md: 40 }} pb={{ xs: 12, md: 20 }}>
+          <Box pt={{ xs: 32, md: 20 }} pb={{ xs: 12, md: 20 }}>
             <Typography variant="h1" align="center" color="white" mb={4}>
-              fgghsdg
+              Feedio
             </Typography>
-            <Box maxWidth="xs" mx="auto">
-              {/* <Button
-                variant="contained"
-                color="primary"
-                href="https://testimonial.to/dasdsa">
-                Submit your testimonial
-              </Button> */}
-              <Link to="/signup"></Link>
-            </Box>
           </Box>
         </Box>
       </Box>
@@ -124,7 +115,10 @@ const ShowRoom = () => {
                           readOnly
                         />
                         <Typography variant="caption" mt={2}>
-                          {review.createdAt}
+                          {new Date(review.createdAt).toLocaleString(
+                            "default",
+                            { year: "numeric", month: "long" }
+                          )}
                         </Typography>
                       </Box>
                     </Box>
