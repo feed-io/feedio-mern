@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-const { pathToRegexp } = require("path-to-regexp");
 
-dotenv.config();
+const { pathToRegexp } = require("path-to-regexp");
 
 const UNPROTECTED_ROUTES = [
   "/api/collection-feedback/createReviewForWidget",

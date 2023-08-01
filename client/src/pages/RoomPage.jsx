@@ -14,12 +14,15 @@ import {
   Divider,
   Card,
   CardContent,
+  Snackbar,
+  IconButton,
 } from "@mui/material";
 import ReviewsTable from "../components/ReviewsTable";
 import CreateWidgetModal from "../components/CreateWidgetModal";
 import EditRoomModal from "../components/EditRoomModal";
 import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
 import { AuthContext } from "../context/auth-context";
+import { Close } from "@mui/icons-material";
 
 const categorizeSentiment = (score) => {
   if (score >= 4) {
@@ -38,6 +41,7 @@ const RoomPage = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCollModalOpen, setIsCollModalOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [trendData, setTrendData] = useState([]);
@@ -199,6 +203,12 @@ const RoomPage = () => {
     product.ratingDistribution.fiveStar
   );
 
+  const handleCopyLink = (link) => {
+    navigator.clipboard.writeText(link).then(() => {
+      setSnackbarOpen(true);
+    });
+  };
+
   const handleSpaceCreated = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
@@ -289,8 +299,6 @@ const RoomPage = () => {
   let trendLabels = [];
 
   let currentDate = new Date();
-  let currentDay = currentDate.getDay();
-  let currentMonth = currentDate.getMonth();
 
   if (timeGranularity === "weekly") {
     trendLabels = [
@@ -356,20 +364,20 @@ const RoomPage = () => {
             alignItems="center"
             sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}>
             <Typography variant="h4" component="h1">
-              {product.name}
+              {product.name} Room
             </Typography>
             <Button
               variant="contained"
               color="secondary"
               onClick={openEditModal}>
-              Edit space
+              Edit Room
             </Button>
             <Button
               variant="contained"
               color="secondary"
               component={RouterLink}
               to="/dashboard">
-              Go to Dashboard
+              Go back
             </Button>
           </Box>
 
@@ -389,30 +397,46 @@ const RoomPage = () => {
                 flexDirection: "column",
                 gap: "8px",
               }}>
-              <Typography variant="h6">Go to</Typography>
+              <Typography variant="h6">Pages</Typography>
               {[
                 {
-                  label: "Public landing page",
+                  label: "Public Feedback Collection page",
                   path: `http://localhost:3000/reviewSpace/${productId}`,
                 },
                 {
-                  label: "Show Room page",
+                  label: "Public Show Room page",
                   path: `http://localhost:3000/showRoom/${productId}`,
                 },
               ].map(({ label, path }, index) => (
-                <Button
-                  fullWidth
-                  href={path}
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    fontSize: { xs: "0.6rem", sm: "0.8rem" },
-                    whiteSpace: { xs: "normal", sm: "nowrap" },
-                    padding: "6px 12px",
-                    textTransform: "none",
-                  }}>
-                  {label}
-                </Button>
+                <div key={index}>
+                  <Button
+                    fullWidth
+                    component={RouterLink}
+                    to={path}
+                    variant="text"
+                    color="primary"
+                    sx={{
+                      fontSize: { xs: "0.6rem", sm: "0.8rem" },
+                      whiteSpace: { xs: "normal", sm: "nowrap" },
+                      padding: "6px 12px",
+                      textTransform: "none",
+                      textDecoration: "none",
+                      "&:hover": {
+                        textDecoration: "underline",
+                        background: "none",
+                      },
+                    }}>
+                    Go to {label}
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => handleCopyLink(path)}
+                    sx={{ ml: 1 }}>
+                    Copy
+                  </Button>
+                </div>
               ))}
             </Grid>
 
@@ -453,21 +477,21 @@ const RoomPage = () => {
                 flexDirection: "column",
                 gap: "8px",
               }}>
-              <Typography variant="h6">Share</Typography>
+              <Typography variant="h6">Display</Typography>
               {[
                 {
-                  label: "Show Room",
+                  label: "Show Room Widgets",
                   onClick: openModal,
                 },
                 {
-                  label: "Colleting widget",
+                  label: "Feedback Collection Widget",
                   onClick: openCollectingModal,
                 },
               ].map(({ label, path, onClick }, index) => (
                 <Button
                   fullWidth
                   onClick={onClick}
-                  variant="contained"
+                  variant="text"
                   color="primary"
                   sx={{
                     fontSize: { xs: "0.6rem", sm: "0.8rem" },
@@ -482,7 +506,7 @@ const RoomPage = () => {
           </Grid>
         </Box>
 
-        {/* Review Rows Section */}
+        {/* Feedback Rows Section */}
         <Box>
           <Box
             display="flex"
@@ -490,7 +514,7 @@ const RoomPage = () => {
             alignItems="center"
             mt={4}
             mb={2}>
-            <Typography variant="h4">Reviews</Typography>
+            <Typography variant="h4">Feedback</Typography>
           </Box>
           <Box mb={8}>
             <Divider />
@@ -663,6 +687,21 @@ const RoomPage = () => {
         closeEditModal={closeEditModal}
         onRoomUpdated={handleEditRoom}
       />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Link copied to clipboard!"
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}>
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
+      ;
     </Container>
   );
 };

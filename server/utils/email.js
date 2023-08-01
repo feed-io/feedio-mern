@@ -1,4 +1,7 @@
 const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -8,12 +11,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-function sendEmail(to, subject, text) {
+function sendEmail({ to, subject, html }) {
   const mailOptions = {
     from: process.env.EMAIL_USERNAME,
     to: to,
     subject: subject,
-    text: text,
+    html: html,
   };
 
   transporter.sendMail(mailOptions, function (err, data) {

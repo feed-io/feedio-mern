@@ -65,3 +65,25 @@ document.getElementById("submit-btn").addEventListener("click", function (e) {
       console.error(error);
     });
 });
+
+document.querySelectorAll(".star").forEach((star, index) => {
+  star.addEventListener("mouseover", function () {
+    for (let i = 0; i <= index; i++) {
+      const starLabel = document.querySelectorAll(".star label")[i];
+      starLabel.style.color = "gold";
+    }
+  });
+
+  star.addEventListener("mouseout", function () {
+    const checkedValue = document.querySelector('input[name="rating"]:checked');
+    const val = checkedValue ? parseInt(checkedValue.value) : 0;
+    for (let i = 0; i <= 4; i++) {
+      const starLabel = document.querySelectorAll(".star label")[i];
+      if (i < val) {
+        starLabel.style.color = "gold";
+      } else {
+        starLabel.style.color = "#e0e0e0";
+      }
+    }
+  });
+});

@@ -325,32 +325,29 @@ const LandingPage = () => {
 
       <iframe
         height="800px"
-        id="64c8373c162336bd3acd5781"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c8373c162336bd3acd5781/serve?hideDate=on&scrollSpeed=1&type=masonry_scroll"
+        id="64c847f8963a1e52fdec7670"
+        src="http://localhost:8080/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c847f8963a1e52fdec7670/serve?hideDate=on&scrollSpeed=1&type=masonry_scroll"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>
-
       <iframe
         height="800px"
-        id="64c83752162336bd3acd5784"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c83752162336bd3acd5784/serve?hideDate=on&type=masonry_fix"
+        id="64c8480a963a1e52fdec7673"
+        src="http://localhost:8080/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c8480a963a1e52fdec7673/serve?type=masonry_fix"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>
-
       <iframe
         height="800px"
-        id="64c8376a162336bd3acd5787"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c8376a162336bd3acd5787/serve?hideDate=on&autoScroll=on&type=carousel"
+        id="64c8481c963a1e52fdec7676"
+        src="http://localhost:8080/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c8481c963a1e52fdec7676/serve?hideDate=on&autoScroll=on&type=carousel"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>
-
       <iframe
         height="800px"
-        id="64c7bec117af11f0d8a2ecad"
-        src="http://localhost:8080/api/users/64bfbc14728b47946a36bc3d/products/64bfbc6c728b47946a36bc4a/widgets/64c7bec117af11f0d8a2ecad/serve?type=collect-feedback"
+        id="64c8f3d61cb118bc248771a3"
+        src="http://localhost:8080/api/users/64c8f36b1cb118bc24877150/products/64c8f3771cb118bc24877157/widgets/64c8f3d61cb118bc248771a3/serve?type=collect-feedback"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>

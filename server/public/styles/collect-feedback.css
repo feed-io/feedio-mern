@@ -187,13 +187,51 @@
   min-height: 250px;
 }
 
+.rating {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.star {
+  position: relative;
+  margin-right: 10px;
+}
+
+.star input[type="radio"] {
+  display: none;
+}
+
+.star label {
+  cursor: pointer;
+  padding: 10px;
+  font-size: 24px;
+  transition: color 0.3s;
+  color: #e0e0e0;
+  display: inline-block;
+}
+
 .star label::before {
   content: "★";
 }
 
-.star input[type="radio"]:checked ~ label,
 .star input[type="radio"]:hover ~ label,
+.star input[type="radio"]:hover ~ .star label,
 .star input[type="radio"]:focus ~ label,
 .star label:hover ~ input[type="radio"]:not(:checked) ~ label {
+  color: gold;
+}
+
+.star input[type="radio"]:checked ~ label,
+.star input[type="radio"]:checked ~ .star label {
+  color: gold;
+}
+.star input[type="radio"]:checked ~ label,
+.star label:hover ~ input[type="radio"]:not(:checked) ~ label,
+.star input[type="radio"]:checked ~ label ~ label {
+  color: gold;
+}
+.star:hover ~ .star label,
+.star:hover label {
   color: gold;
 }
