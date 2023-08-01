@@ -16,7 +16,8 @@ import { AuthContext } from "../context/auth-context";
 
 const UserProfilePage = () => {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [user, setUser] = useState("");
   const [openDelete, setOpenDelete] = useState(false);
   const auth = useContext(AuthContext);
@@ -32,10 +33,10 @@ const UserProfilePage = () => {
             },
           }
         );
-
+        console.log(response);
         setUser(response.data.user);
         setEmail(response.data.user.email);
-        setUsername(response.data.user.username);
+        setName(response.data.user.name);
       } catch (error) {
         console.log("Error fetching user data:", error.message);
       }
@@ -45,13 +46,17 @@ const UserProfilePage = () => {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+    const updateData = {
+      email: email,
+      name: name,
+    };
+    if (newPassword) {
+      updateData.password = newPassword;
+    }
     try {
       await axios.put(
         `http://localhost:8080/api/users/${auth.userId}`,
-        {
-          email: email,
-          username: username,
-        },
+        updateData, // Send the new password if it's provided
         {
           headers: {
             Authorization: "Bearer " + auth.token,
@@ -111,7 +116,7 @@ const UserProfilePage = () => {
                 alignItems: "center",
               }}>
               <Avatar
-                alt={username}
+                alt={name}
                 src={user.image}
                 sx={{
                   width: { xs: 100, sm: 80 },
@@ -134,18 +139,26 @@ const UserProfilePage = () => {
 
               <TextField
                 margin="normal"
-                label="Username"
-                value={username}
-                placeholder={username}
-                onChange={(e) => setUsername(e.target.value)}
+                label="New Name"
+                value={name}
+                placeholder={name}
+                onChange={(e) => setName(e.target.value)}
               />
 
               <TextField
                 margin="normal"
-                label="Email"
+                label="New Email"
                 value={email}
                 placeholder={email}
                 onChange={(e) => setEmail(e.target.value)}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                margin="normal"
+                label="New Password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
                 sx={{ mb: 2 }}
               />
               <Box
