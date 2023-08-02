@@ -272,7 +272,7 @@ const SubscriptionPage = () => {
           component={RouterLink}
           to="/dashboard"
           sx={{ mt: 4 }}>
-          Go to Dashboard
+          Back
         </Button>
       </Box>
     </Container>

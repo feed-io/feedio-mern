@@ -125,121 +125,131 @@ const Dashboard = () => {
   };
 
   return (
-    <Container>
-      <Box py={4}>
-        {/* Overview Section */}
-        <Box mb={2}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}
-            my={2}>
-            <Typography
-              variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
-          </Box>
-          <Grid
-            container
-            mt={4}
-            spacing={2}
-            sx={{ justifyContent: "space-around" }}>
-            {[
-              { icon: <Person />, label: "Profile", path: "/profile/" },
-              {
-                icon: <VerifiedUser />,
-                label: "Subscription",
-                path: "/membership/",
-              },
-              {
-                icon: <Payment />,
-                label: "Billing",
-                path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
-              },
-            ].map(({ icon, label, path }, index) => (
-              <Grid item xs={6} sm={2} key={index}>
-                <Button
-                  startIcon={icon}
-                  href={label !== "Billing" ? path : undefined}
-                  variant="contained"
-                  fullWidth={isMobile}
-                  sx={{
-                    fontSize: { xs: "0.6rem", sm: "0.8rem" },
-                    whiteSpace: { xs: "normal", sm: "nowrap" },
-                    padding: "6px 12px",
-                    textTransform: "none",
-                    // fontWeight: "lighter",
-                  }}
-                  onClick={
-                    label === "Billing" ? handleManageBilling : undefined
-                  }>
-                  {label}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-
-        {/* Rooms Section */}
-        <Box>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            mt={4}
-            mb={2}>
-            <Typography variant={isMobile ? "h5" : "h4"}>Rooms</Typography>
-          </Box>
-
-          <Box mb={4}>
-            <Divider />
-          </Box>
-
-          <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Room</TableCell>
-                  <TableCell align="right">Avg. Rating</TableCell>
-                  <TableCell align="right">Number of Entries</TableCell>
-                  <TableCell align="right">Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {products.map((product, index) => (
-                  <TableRow
-                    key={index}
-                    hover
-                    onClick={() => navigate(`/products/${product._id}`)}
+    <>
+      <Container
+        sx={{
+          backgroundColor: "#F8F9FA",
+          border: "1px solid #e0e0e0",
+          borderRadius: 8,
+        }}
+        maxWidth={"lg"}>
+        <Box py={4}>
+          {/* Overview Section */}
+          <Box mb={2}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}
+              my={2}>
+              <Typography
+                variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
+            </Box>
+            <Grid
+              container
+              mt={4}
+              spacing={2}
+              sx={{ justifyContent: "space-around" }}>
+              {[
+                { icon: <Person />, label: "Profile", path: "/profile/" },
+                {
+                  icon: <VerifiedUser />,
+                  label: "Subscription",
+                  path: "/membership/",
+                },
+                {
+                  icon: <Payment />,
+                  label: "Billing",
+                  path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
+                },
+              ].map(({ icon, label, path }, index) => (
+                <Grid item xs={6} sm={2} key={index}>
+                  <Button
+                    startIcon={icon}
+                    href={label !== "Billing" ? path : undefined}
+                    variant="contained"
+                    fullWidth={isMobile}
                     sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      cursor: "pointer",
-                    }}>
-                    <TableCell component="th" scope="row">
-                      {product.name}
-                    </TableCell>
-                    <TableCell align="right">
-                      {product.averageRating.toFixed(1)}
-                    </TableCell>
-                    <TableCell align="right">
-                      {product.reviews.length}
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        onClick={(e) => handleDeleteProduct(e, product._id)}>
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
+                      fontSize: { xs: "0.6rem", sm: "0.8rem" },
+                      whiteSpace: { xs: "normal", sm: "nowrap" },
+                      padding: "6px 12px",
+                      textTransform: "none",
+                      // fontWeight: "lighter",
+                    }}
+                    onClick={
+                      label === "Billing" ? handleManageBilling : undefined
+                    }>
+                    {label}
+                  </Button>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+
+          {/* Rooms Section */}
+          <Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              mt={4}
+              mb={2}>
+              <Typography variant={isMobile ? "h5" : "h4"}>Rooms</Typography>
+            </Box>
+
+            <Box mb={4}>
+              <Divider />
+            </Box>
+
+            <TableContainer
+              component={Paper}
+              sx={{ overflowX: "auto", borderRadius: 4 }}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Room</TableCell>
+                    <TableCell align="right">Avg. Rating</TableCell>
+                    <TableCell align="right">Number of Entries</TableCell>
+                    <TableCell align="right">Delete</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {products.map((product, index) => (
+                    <TableRow
+                      key={index}
+                      hover
+                      onClick={() => navigate(`/products/${product._id}`)}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        cursor: "pointer",
+                      }}>
+                      <TableCell component="th" scope="row">
+                        {product.name}
+                      </TableCell>
+                      <TableCell align="right">
+                        {product.averageRating.toFixed(1)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {product.reviews.length}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          onClick={(e) => handleDeleteProduct(e, product._id)}>
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+          <Box mb={2} mt={4}>
+            <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
+          </Box>
         </Box>
-      </Box>
-      <Box mb={16}>
-        <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
-      </Box>
-    </Container>
+      </Container>
+    </>
   );
 };
 

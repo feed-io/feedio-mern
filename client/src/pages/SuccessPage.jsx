@@ -45,7 +45,7 @@ const Success = () => {
           color="secondary"
           component={RouterLink}
           to="/dashboard">
-          Go to Dashboard
+          Home
         </Button>
       </Box>
     </Container>
