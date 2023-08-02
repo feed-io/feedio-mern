@@ -8,7 +8,9 @@ import {
   Card,
   CardContent,
   SvgIcon,
+  Avatar,
 } from "@mui/material";
+import { Tooltip, Paper } from "@mui/material";
 
 import LandingImg1 from "../assets/landing1.svg";
 import ManageImg from "../assets/manage.svg";
@@ -24,6 +26,293 @@ import Framer from "../assets/framer.svg";
 import Shopify from "../assets/shopify.svg";
 import Webflow from "../assets/webflow.svg";
 import Wordpress from "../assets/wordpress.svg";
+
+import React from "react";
+
+const CheckCircleIcon = (props) => (
+  <SvgIcon {...props}>
+    <path
+      fill="none"
+      d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"
+    />
+    <path d="M216.32 334.44l114.45-69.14a10.89 10.89 0 000-18.6l-114.45-69.14a10.78 10.78 0 00-16.32 9.31v138.26a10.78 10.78 0 0016.32 9.31z" />
+  </SvgIcon>
+);
+
+const CTASubscribe = () => {
+  const FeatureItem = ({ text }) => (
+    <Box display="flex" alignItems="center" mb={2}>
+      <CheckCircleIcon color="primary" sx={{ mr: 1 }} />
+      <Typography variant="body1">{text}</Typography>
+    </Box>
+  );
+
+  return (
+    <Box bgcolor="dark" py={12} position="relative" overflow="hidden">
+      <Container>
+        <Grid container justifyContent="center">
+          <Grid item lg={7} md={8}>
+            <Box textAlign="center" zIndex={2}>
+              <Typography variant="h5" color="warning">
+                Let's Try! Get Free Support
+              </Typography>
+              <Typography variant="h4">Start Your 14-Day Free Trial</Typography>
+              <Typography variant="body1" mt={2}>
+                We can help you to create your dream website for better business
+                revenue.
+              </Typography>
+              <Box mt={5}>
+                <Button variant="contained" color="primary" href="/contact-us">
+                  Contact with Us
+                </Button>
+                <Button
+                  color="inherit"
+                  startIcon={
+                    <SvgIcon>
+                      <path
+                        fill="none"
+                        d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"
+                      />
+                    </SvgIcon>
+                  }
+                  href="#!"
+                  sx={{ ml: 3, mt: 2 }}>
+                  Watch Demo
+                </Button>
+              </Box>
+              <Box mt={4}>
+                <FeatureItem text="Free 14-day trial" />
+                <FeatureItem text="No credit card required" />
+                <FeatureItem text="Support 24/7" />
+                <FeatureItem text="Cancel anytime" />
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+      <Box
+        bgcolor="dark.light"
+        borderRadius="50%"
+        position="absolute"
+        left="5%"
+        top="30%"
+        width="100px"
+        height="100px"
+      />
+      <Box
+        bgcolor="warning"
+        borderRadius="50%"
+        position="absolute"
+        right="5%"
+        top="10%"
+        width="150px"
+        height="150px"
+      />
+    </Box>
+  );
+};
+
+const HeroSection = () => {
+  return (
+    <Box
+      sx={{
+        pt: "120px",
+        pb: "120px",
+        position: "relative",
+        overflow: "hidden",
+        backgroundImage: "url('/shape/color-particles-2.svg')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center top",
+      }}>
+      <Container>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          textAlign="center">
+          <Box width={{ xs: 1, md: 8 / 12, lg: 10 / 12 }} mb={5}>
+            <Typography variant="h3" fontWeight="bold">
+              Single Dashboard for All your Business Needs
+            </Typography>
+            <Typography variant="subtitle1" mt={2}>
+              Uniquely network business experiences for resource sucking
+              solutions. Dynamically re-engineer cooperative networks via
+              cross-media expertise.
+            </Typography>
+            <Box mt={4}>
+              <Button
+                variant="contained"
+                color="primary"
+                href="/request-demo"
+                sx={{ mr: 3 }}>
+                Start a Free Trial
+              </Button>
+              <Button variant="outlined" color="primary" href="/contact-us">
+                Talk to Sales
+              </Button>
+            </Box>
+          </Box>
+          <Box width={{ xs: 1, md: 9 / 12 }}>
+            <Box position="relative">
+              <img
+                src="/screen/widget-3.png"
+                alt="widget-img"
+                style={{
+                  position: "absolute",
+                  boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+                  borderRadius: "10px",
+                }}
+              />
+              <img
+                src="/screen/widget-4.png"
+                alt="widget-img"
+                style={{
+                  position: "absolute",
+                  boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+                  borderRadius: "10px",
+                }}
+              />
+              <img
+                src="/dashboard-img.png"
+                alt="dashboard-img"
+                style={{
+                  position: "relative",
+                  borderRadius: "10px",
+                  marginTop: "5px",
+                }}
+              />
+            </Box>
+          </Box>
+        </Box>
+      </Container>
+      <Box
+        sx={{
+          backgroundColor: "dark",
+          position: "absolute",
+          bottom: 0,
+          height: "25%",
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          py: 5,
+        }}></Box>
+    </Box>
+  );
+};
+
+const IntegrationSection = () => {
+  const IntegrationItem = ({ imgSrc, tooltipTitle, href }) => (
+    <Tooltip title={tooltipTitle}>
+      <Box component="a" href={href} mx={1}>
+        <Avatar src={imgSrc} alt="integration" />
+      </Box>
+    </Tooltip>
+  );
+
+  const ConnectedApp = ({
+    imgSrc,
+    title,
+    description,
+    badgeText,
+    badgeColor,
+  }) => (
+    <Paper
+      elevation={3}
+      sx={{ padding: "20px", borderRadius: "15px", position: "relative" }}>
+      <Box display="flex" alignItems="center" mb={2}>
+        <Avatar
+          src={imgSrc}
+          alt="integration"
+          sx={{ mr: 2, bgcolor: "grey.200" }}
+        />
+        <Typography variant="h6">{title}</Typography>
+      </Box>
+      <Typography variant="body1">{description}</Typography>
+      <Box
+        position="absolute"
+        top={1}
+        right={1}
+        px={3}
+        py={1}
+        bgcolor={badgeColor}
+        color="white"
+        borderRadius="10px">
+        {badgeText}
+      </Box>
+    </Paper>
+  );
+
+  return (
+    <Box py={12}>
+      <Container>
+        <Grid container alignItems="center" spacing={3}>
+          <Grid item lg={3}>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              {[1, 2, 3, 4, 5, 6].map((num) => (
+                <IntegrationItem
+                  key={num}
+                  imgSrc={`/integations/${num}.png`}
+                  tooltipTitle="Your Brand Name"
+                  href="/integration-single"
+                />
+              ))}
+            </Box>
+          </Grid>
+          <Grid item lg={6} xs={12}>
+            <Box textAlign="center" my={5}>
+              <Typography variant="h5" color="primary">
+                Integration
+              </Typography>
+              <Typography variant="h4">
+                We Collaborate with Top Software Company
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                href="/integrations"
+                sx={{ mt: 2 }}>
+                View all Integration
+              </Button>
+            </Box>
+          </Grid>
+          <Grid item lg={3}>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              {[7, 8, 9, 10, 11, 12].map((num) => (
+                <IntegrationItem
+                  key={num}
+                  imgSrc={`/integations/${num}.png`}
+                  tooltipTitle="Your Brand Name"
+                  href="/integration-single"
+                />
+              ))}
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" mt={10} spacing={3}>
+          <Grid item lg={5} md={12}>
+            <ConnectedApp
+              imgSrc="/integations/4.png"
+              title="Google Drive"
+              description="Competently generate unique e-services and client-based models. Globally engage tactical niche."
+              badgeText="Connect"
+              badgeColor="primary.light"
+            />
+          </Grid>
+          <Grid item lg={5} md={12}>
+            <ConnectedApp
+              imgSrc="/integations/9.png"
+              title="Google Drive"
+              description="Globally engage tactical niche markets rather than client-based competently generate services."
+              badgeText="Connected"
+              badgeColor="error.light"
+            />
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  );
+};
 
 const LandingPage = () => {
   const platforms = [
@@ -120,6 +409,7 @@ const LandingPage = () => {
           </Box>
         </Container>
       </Box>
+
       <Box sx={{ py: 12 }}>
         <Container maxWidth="xl">
           <Box sx={{ textAlign: "center", pb: 12 }}>

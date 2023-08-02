@@ -241,8 +241,8 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <TableContainer>
+      <Paper sx={{ width: "100%", mb: 2, borderRadius: 4 }}>
+        <TableContainer sx={{ borderRadius: 4 }}>
           <Table>
             <EnhancedTableHead
               order={order}
@@ -426,6 +426,8 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
           sx={(theme) => ({
             backgroundColor: theme.palette.secondary.main,
             color: "white",
+            borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
           })}
         />
       </Paper>
