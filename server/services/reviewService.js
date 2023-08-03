@@ -58,7 +58,6 @@ const widgetReview = async ({ name, email, content, rating, productId }) => {
     throw new Error("Product not found");
   }
 
-  console.log(product);
   const user = await User.findById(product.user);
   if (!user) {
     throw new Error("User not found");

@@ -10,7 +10,7 @@ const Success = () => {
 
   useEffect(() => {
     axios
-      .get(`https://feedio-server.onrender.com/api/users/${auth.userId}`, {
+      .get(`https://feedio.lol/api/users/${auth.userId}`, {
         headers: {
           Authorization: "Bearer " + auth.token,
         },

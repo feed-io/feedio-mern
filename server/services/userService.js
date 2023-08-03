@@ -80,7 +80,6 @@ const getById = async (id) => {
   if (!user) {
     throw new Error("User not found");
   }
-  console.log(user.products);
 
   return {
     userId: user._id,

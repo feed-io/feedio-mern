@@ -42,7 +42,7 @@ const UserProfilePage = () => {
             },
           }
         );
-        console.log(response);
+
         setUser(response.data.user);
         setEmail(response.data.user.email);
         setName(response.data.user.name);
