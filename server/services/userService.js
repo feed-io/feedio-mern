@@ -7,7 +7,9 @@ const {
   sendAccountUpdateEmail,
 } = require("../utils/email");
 const User = require("../models/user");
-const Product = require("../models/Product");
+// const Product = require("../models/Product");
+const Product = require("/opt/render/project/src/server/models/Product");
+
 const Payment = require("../models/Payment");
 
 dotenv.config();
@@ -80,6 +82,7 @@ const getById = async (id) => {
   if (!user) {
     throw new Error("User not found");
   }
+  console.log(user.products);
 
   return {
     userId: user._id,
