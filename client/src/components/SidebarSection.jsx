@@ -38,7 +38,7 @@ const Sidebar = ({
         <Button
           size="small"
           variant="contained"
-          color="secondary"
+          color="primary"
           onClick={openEditModal}
           sx={{
             marginRight: "10px",
