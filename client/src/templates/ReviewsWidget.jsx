@@ -21,7 +21,7 @@ const ShowRoom = () => {
             },
           }
         );
-        console.log(response);
+
         setReviews(response.data.reviews);
       } catch (error) {
         console.log("Error fetching reviews:", error.message);

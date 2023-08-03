@@ -63,7 +63,7 @@ const SubmitFeedbackModal = (props) => {
           },
         }
       );
-      console.log(response);
+
       setName("");
       setEmail("");
       setContent("");

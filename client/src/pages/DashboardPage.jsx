@@ -160,6 +160,7 @@ const Dashboard = () => {
                 {
                   icon: <Payment />,
                   label: "Billing",
+                  status: auth.membershipStatus,
                   path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
                 },
               ].map(({ icon, label, path }, index) => (
@@ -167,6 +168,11 @@ const Dashboard = () => {
                   <Button
                     startIcon={icon}
                     href={label !== "Billing" ? path : undefined}
+                    disabled={
+                      label === "Billing" && auth.membershipStatus === "free"
+                        ? true
+                        : false
+                    }
                     variant="contained"
                     fullWidth={isMobile}
                     sx={{

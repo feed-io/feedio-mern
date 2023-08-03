@@ -42,7 +42,7 @@ document.getElementById("submit-btn").addEventListener("click", function (e) {
     productId,
   });
 
-  fetch(`http://localhost:8080/api/collection-feedback/createReviewForWidget`, {
+  fetch(`https://feedio.lol/api/collection-feedback/createReviewForWidget`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -58,7 +58,6 @@ document.getElementById("submit-btn").addEventListener("click", function (e) {
       });
     })
     .then((data) => {
-      console.log(data);
       hideFeedbackForm();
     })
     .catch((error) => {

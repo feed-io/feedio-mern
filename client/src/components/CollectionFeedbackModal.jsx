@@ -23,7 +23,6 @@ const CollectionFeedbackModal = (props) => {
 
   const generateIframeLink = (widgetId) => {
     const baseIframeUrl = `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
-    console.log(props.productId);
 
     let params = [];
 

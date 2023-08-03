@@ -7,6 +7,7 @@ const UNPROTECTED_ROUTES = [
   "/api/users/register",
   "/api/users/login",
   "/api/users/:id/products/:pid/widgets/:wid/serve",
+  "/api/payments/webhook",
   "/static/(.*)",
 ];
 
