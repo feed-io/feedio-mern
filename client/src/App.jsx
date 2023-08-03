@@ -35,11 +35,11 @@ const App = () => {
 
   let routes;
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/");
+  //   }
+  // }, [token, navigate]);
 
   if (token) {
     routes = (
