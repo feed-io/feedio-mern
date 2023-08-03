@@ -616,28 +616,28 @@ const LandingPage = () => {
       <iframe
         height="800px"
         id="64c847f8963a1e52fdec7670"
-        src="http://localhost:8080/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c847f8963a1e52fdec7670/serve?hideDate=on&scrollSpeed=1&type=masonry_scroll"
+        src="https://feedio-server.onrender.com/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c847f8963a1e52fdec7670/serve?hideDate=on&scrollSpeed=1&type=masonry_scroll"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>
       <iframe
         height="800px"
         id="64c8480a963a1e52fdec7673"
-        src="http://localhost:8080/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c8480a963a1e52fdec7673/serve?type=masonry_fix"
+        src="https://feedio-server.onrender.com/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c8480a963a1e52fdec7673/serve?type=masonry_fix"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>
       <iframe
         height="800px"
         id="64c8481c963a1e52fdec7676"
-        src="http://localhost:8080/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c8481c963a1e52fdec7676/serve?hideDate=on&autoScroll=on&type=carousel"
+        src="https://feedio-server.onrender.com/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64c8481c963a1e52fdec7676/serve?hideDate=on&autoScroll=on&type=carousel"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>
       <iframe
         height="800px"
         id="64c8f3d61cb118bc248771a3"
-        src="http://localhost:8080/api/users/64c8f36b1cb118bc24877150/products/64c8f3771cb118bc24877157/widgets/64c8f3d61cb118bc248771a3/serve?type=collect-feedback"
+        src="https://feedio-server.onrender.com/api/users/64c8f36b1cb118bc24877150/products/64c8f3771cb118bc24877157/widgets/64c8f3d61cb118bc248771a3/serve?type=collect-feedback"
         frameBorder="0"
         scrolling="no"
         width="100%"></iframe>

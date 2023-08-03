@@ -18,7 +18,7 @@ const FeedbackTemplate = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
+          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,

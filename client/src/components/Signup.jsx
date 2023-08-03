@@ -30,7 +30,7 @@ const SignUp = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/register",
+        "https://feedio-server.onrender.com/api/users/register",
         values,
         {
           headers: { "Content-Type": "application/json" },

@@ -74,7 +74,7 @@ const SubscriptionPage = () => {
       navigate("/dashboard");
     } else {
       const response = await axios.post(
-        `http://localhost:8080/api/users/${userId}/payments/create-checkout-session`,
+        `https://feedio-server.onrender.com/api/users/${userId}/payments/create-checkout-session`,
         {},
         {
           headers: {
@@ -96,7 +96,7 @@ const SubscriptionPage = () => {
   const handleUnsubscribe = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/users/${userId}/payments/cancel-subscription`,
+        `https://feedio-server.onrender.com/api/users/${userId}/payments/cancel-subscription`,
         {},
         {
           headers: {
@@ -115,7 +115,7 @@ const SubscriptionPage = () => {
   const handleManageBilling = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/users/${userId}/payments/create-customer-portal-session`,
+        `https://feedio-server.onrender.com/api/users/${userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {
@@ -137,7 +137,7 @@ const SubscriptionPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${userId}`,
+          `https://feedio-server.onrender.com/api/users/${userId}`,
           {
             headers: {
               Authorization: "Bearer " + token,

@@ -14,7 +14,7 @@ const ShowRoom = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
+          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
