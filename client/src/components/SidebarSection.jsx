@@ -67,11 +67,11 @@ const Sidebar = ({
         {[
           {
             label: "Public Feedback Collection page",
-            path: `http://localhost:3000/reviewSpace/${productId}`,
+            path: `/reviewSpace/${productId}`,
           },
           {
             label: "Public Show Room page",
-            path: `http://localhost:3000/showRoom/${productId}`,
+            path: `/showRoom/${productId}`,
           },
         ].map(({ label, path }, index) => (
           <div
