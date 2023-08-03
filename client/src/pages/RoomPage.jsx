@@ -105,7 +105,7 @@
 //     const fetchReviews = async () => {
 //       try {
 //         const response = await axios.get(
-//           `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
+//           `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
 //           {
 //             headers: {
 //               Authorization: "Bearer " + auth.token,
@@ -128,7 +128,7 @@
 //     async function fetchTrendData() {
 //       try {
 //         const response = await fetch(
-//           `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
+//           `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
 //           {
 //             headers: {
 //               Authorization: "Bearer " + auth.token,
@@ -152,7 +152,7 @@
 //     async function fetchWordCloud() {
 //       try {
 //         const response = await fetch(
-//           `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
+//           `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
 //           {
 //             headers: {
 //               Authorization: "Bearer " + auth.token,
@@ -174,7 +174,7 @@
 //     const fetchProduct = async () => {
 //       try {
 //         const response = await axios.get(
-//           `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
+//           `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
 //           {
 //             headers: {
 //               Authorization: "Bearer " + auth.token,
@@ -620,7 +620,7 @@ const RoomPage = () => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
+          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -643,7 +643,7 @@ const RoomPage = () => {
     async function fetchTrendData() {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
+          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -667,7 +667,7 @@ const RoomPage = () => {
     async function fetchWordCloud() {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
+          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -689,7 +689,7 @@ const RoomPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
+          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
