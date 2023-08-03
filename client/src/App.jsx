@@ -31,15 +31,8 @@ const App = () => {
     membershipStatus,
     updateMembershipStatus,
   } = useAuth();
-  const navigate = useNavigate();
 
   let routes;
-
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/");
-  //   }
-  // }, [token, navigate]);
 
   if (token) {
     routes = (
