@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const Review = require("../models/Review");
-const Product = require("../models/Product");
+const Product = require("../models/product");
 const { sendEmail, sendAdminNotificationEmail } = require("../utils/email");
 
 const Sentiment = require("sentiment");

@@ -4,7 +4,7 @@ const handlebars = require("handlebars");
 
 const Widget = require("../models/Widget");
 const Review = require("../models/Review");
-const Product = require("../models/Product");
+const Product = require("../models/product");
 
 const generateWidgetConfig = async (
   productId,
