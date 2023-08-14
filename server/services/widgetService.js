@@ -62,7 +62,7 @@ const generateWidgetRepresentation = async (
   }));
 
   const product = await Product.findById(productId);
-  console.log(product.name);
+
   const productData = {
     name: product.name,
     header: product.header,

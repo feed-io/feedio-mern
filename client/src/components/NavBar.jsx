@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -6,41 +6,53 @@ import {
   Toolbar,
   Typography,
   Box,
-  styled,
   Menu,
   MenuItem,
   Button,
   Tooltip,
 } from "@mui/material";
+import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
 import AuthModal from "./AuthModal";
-
-const StyledToolbar = styled(Toolbar)({
-  display: "flex",
-  justifyContent: "space-between",
-});
-
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  color: theme.palette.primary.main,
-  margin: "0px 10px",
-}));
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: "20px",
-}));
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.text.secondary,
-}));
+import FeedioLogo from "../assets/feedioLogo.svg";
+import { useTheme } from "@mui/material";
 
 const NavBar = () => {
+  const auth = useContext(AuthContext);
+  const theme = useTheme();
   const [openModal, setOpenModal] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
-  const auth = useContext(AuthContext);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    if (auth.userId) {
+      axios
+        .get(`https://feedio-server.onrender.com/api/users/${auth.userId}`, {
+          headers: {
+            Authorization: "Bearer " + auth.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          setUserName(response.data.user.name);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the user data:", error);
+        });
+    }
+  }, [auth.userId, auth.token]);
+
+  const getInitials = (name) => {
+    if (!name) return "";
+    const names = name.split(" ");
+    const initials = names.map((n) => n.charAt(0)).join("");
+    return initials.toUpperCase();
+  };
+
+  const initials = getInitials(userName);
+
+  const avatarUrl = `https://ui-avatars.com/api/?name=${initials}&background=F8FBFF&color=0F2830`;
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -54,38 +66,78 @@ const NavBar = () => {
     <>
       <AppBar
         sx={{
-          backgroundColor: (theme) => theme.palette.background.paper,
+          bgcolor: theme.palette.success.main,
           boxShadow: "none",
           position: "static",
         }}>
-        <StyledToolbar>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
           <Typography variant="h6">
-            <StyledLink to="/">Feedio</StyledLink>
+            <Button
+              component={Link}
+              to="/"
+              sx={{
+                color: theme.palette.primary.contrastText,
+                textDecoration: "none",
+                textTransform: "none",
+              }}>
+              <img
+                src={FeedioLogo}
+                alt="Feedio Logo"
+                style={{ width: "120px", color: "#617E8B" }}
+              />
+            </Button>
           </Typography>
-          <StyledBox>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}>
             {auth.isLoggedIn ? null : (
               <>
-                <StyledLink to="/features">Features</StyledLink>
-                <StyledLink to="/pricing">Pricing</StyledLink>
+                <Button
+                  component={Link}
+                  to="/features"
+                  sx={{
+                    color: theme.palette.primary.contrastText,
+                    textDecoration: "none",
+                    textTransform: "none",
+                  }}>
+                  Features
+                </Button>
+                <Button
+                  component={Link}
+                  to="/pricing"
+                  sx={{
+                    textDecoration: "none",
+                    color: theme.palette.primary.contrastText,
+                    textTransform: "none",
+                  }}>
+                  Pricing
+                </Button>
               </>
             )}
-          </StyledBox>
-
+          </Box>
           {!auth.isLoggedIn ? (
-            <StyledButton
+            <Button
               variant="contained"
               color="secondary"
               onClick={handleOpenModal}>
               Login
-            </StyledButton>
+            </Button>
           ) : (
             <Tooltip title="Options">
-              <StyledBox onClick={(e) => setOpenMenu(e.currentTarget)}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </StyledBox>
+              <Box onClick={(e) => setOpenMenu(e.currentTarget)}>
+                <Avatar alt={userName} src={avatarUrl} />
+              </Box>
             </Tooltip>
           )}
-        </StyledToolbar>
+        </Toolbar>
       </AppBar>
       <Menu
         id="demo-positioned-menu"
