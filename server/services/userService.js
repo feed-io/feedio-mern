@@ -31,7 +31,7 @@ const register = async ({ name, email, password }) => {
   const token = jwt.sign(
     { userId: newUser._id, email: newUser.email },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "24h" }
   );
 
   sendAccountCreationEmail({
@@ -63,7 +63,7 @@ const login = async ({ email, password }) => {
   const token = jwt.sign(
     { userId: existingUser._id, email: existingUser.email },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "24h" }
   );
 
   return {

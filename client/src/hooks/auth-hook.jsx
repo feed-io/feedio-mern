@@ -15,7 +15,7 @@ export const useAuth = () => {
       setMembershipStatus(userMembershipStatus);
 
       const tokenExpirationDate =
-        expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
+        expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
 
       setTokenExpDate(tokenExpirationDate);
 

@@ -26,6 +26,7 @@
     "nodemailer": "^6.9.3",
     "path-to-regexp": "^6.2.1",
     "sentiment": "^5.0.2",
+    "socket.io": "^4.7.2",
     "stripe": "^12.12.0"
   },
   "devDependencies": {
