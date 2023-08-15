@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import {
   Button,
   TextField,
@@ -13,7 +12,6 @@ import {
   Checkbox,
   Box,
 } from "@mui/material";
-
 import { VpnKey } from "@mui/icons-material/";
 
 import { AuthContext } from "../context/auth-context";
@@ -55,6 +53,8 @@ const Login = (props) => {
           flexDirection: "column",
           alignItems: "center",
         }}>
+        {/* FeedioLogo Section */}
+
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <VpnKey />
         </Avatar>
