@@ -10,8 +10,8 @@ import {
   useTheme,
 } from "@mui/material";
 
-import LandingImg1 from "../assets/landing1.svg";
-import ManageImg from "../assets/manage.svg";
+import Learn from "../assets/learn.svg";
+import Integration from "../assets/integrate.svg";
 import AmazonTile from "../assets/amazonTile.svg";
 import GoogleTile from "../assets/googleTile.svg";
 import IgTile from "../assets/igTile.svg";
@@ -91,29 +91,29 @@ const LandingPage = () => {
 
   const features = [
     {
+      title: "Engage & Learn",
+      description:
+        "Engage with your customers, respond to their feedback, and learn from their experiences to enhance your offerings.",
+      image: Learn,
+    },
+    {
       title: "Deep Dive Analytics",
       description:
         "Understand the sentiment behind every review. Dive deep into analytics to uncover insights and drive improvements.",
       image: Analytics,
     },
+
     {
       title: "Showcase Genuine Reviews",
       description:
         "Display authentic testimonials with our customizable widget. Let your customers do the talking and build trust instantly.",
       image: Testimonial,
     },
-
     {
       title: "Seamless Integration",
       description:
         "Easily integrate feedio with your website or app. Set up in minutes and start collecting invaluable feedback.",
-      image: ManageImg,
-    },
-    {
-      title: "Engage & Learn",
-      description:
-        "Engage with your customers, respond to their feedback, and learn from their experiences to enhance your offerings.",
-      image: LandingImg1,
+      image: Integration,
     },
   ];
 
