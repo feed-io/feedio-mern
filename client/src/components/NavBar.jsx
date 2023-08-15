@@ -67,7 +67,6 @@ const NavBar = () => {
       <AppBar
         sx={{
           bgcolor: theme.palette.success.main,
-          boxShadow: "none",
           position: "static",
         }}>
         <Toolbar

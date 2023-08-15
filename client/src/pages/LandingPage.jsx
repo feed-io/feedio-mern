@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -122,7 +121,7 @@ const LandingPage = () => {
       <Box
         sx={{
           bgcolor: theme.palette.info.main,
-          pt: 32,
+          pt: 18,
           pb: 10,
           backgroundImage: `url(${Blob})`,
           backgroundPosition: "right center",
@@ -144,8 +143,11 @@ const LandingPage = () => {
                   color="text.secondary"
                   gutterBottom
                   sx={{ fontSize: "1rem" }}>
-                  Discover what your customers truly think with feedio - the
-                  ultimate reviews and testimonials platform.
+                  Feedback is more than just words; it's a goldmine of insights.
+                  With Feedio, not only can you collect and display feedback,
+                  but you can also transform it into actionable strategies that
+                  drive growth. Start your journey with Feedio today and let
+                  your satisfied customers do the talking.
                 </Typography>
                 <Box
                   sx={{ display: "flex", justifyContent: "flex-start", pt: 2 }}>
@@ -175,7 +177,6 @@ const LandingPage = () => {
       <Container
         maxWidth="xxl"
         sx={{
-          bgcolor: theme.palette.primary.contrastText,
           padding: "0 32px",
           paddingTop: "40px",
           paddingBottom: "40px",
@@ -194,9 +195,8 @@ const LandingPage = () => {
           {features.map((feature, index) => (
             <Grid item xs={12} sm={6} md={6} lg={6} key={index}>
               <Card
-                variant="outlined"
                 sx={{
-                  borderRadius: "16px",
+                  borderRadius: 8,
                   overflow: "hidden",
                   padding: "24px",
                   maxWidth: "400px",
@@ -281,9 +281,7 @@ const LandingPage = () => {
           <Grid container spacing={2} mt={12}>
             {platforms.map((platform, index) => (
               <Grid item xs={6} lg={3} key={index}>
-                <Card
-                  variant="outlined"
-                  sx={{ overflow: "hidden", borderRadius: 8 }}>
+                <Card sx={{ overflow: "hidden", borderRadius: "100px" }}>
                   <CardContent
                     sx={{
                       display: "flex",
@@ -305,24 +303,23 @@ const LandingPage = () => {
           </Grid>
         </Container>
       </Box>
-      <iframe
+      {/* <iframe
         class="custom-iframe"
         height="550px"
         id="64dab17c1743327f0da05edd"
         src="https://feedio-server.onrender.com/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64dab17c1743327f0da05edd/serve?hideDate=on&autoScroll=on&type=carousel"
         frameBorder="0"
         scrolling="no"
-        width="100%"></iframe>
+        width="100%"></iframe> */}
       <Container
         maxWidth="xxl"
         sx={{
-          bgcolor: theme.palette.primary.contrastText,
-          padding: "0 32px",
-          paddingTop: "40px",
-          paddingBottom: "40px",
-          backgroundImage: `url(${Pattern}), url(${Pattern})`,
-          backgroundSize: "cover, cover",
-          backgroundPosition: "left center , right center",
+          py: 8,
+          px: [4, 6, 8, 10],
+          backgroundImage: `url(${Pattern})`,
+          backgroundPosition: "right center",
+          backgroundRepeat: "repeat",
+          backgroundSize: "cover",
         }}>
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={4}>
