@@ -9,8 +9,10 @@ import {
   Grid,
   Typography,
   Container,
+  useTheme,
 } from "@mui/material";
 import { Star } from "@mui/icons-material";
+import Pattern from "../assets/pattern.svg";
 
 const tiers = [
   {
@@ -31,7 +33,7 @@ const tiers = [
   {
     title: "Plus",
     subheader: "Most popular",
-    price: "10",
+    price: "30",
     description: [
       "Everything in Starter",
       " 1 space",
@@ -44,8 +46,8 @@ const tiers = [
     buttonVariant: "contained",
   },
   {
-    title: "Premium",
-    price: "30",
+    title: "Enterprise",
+    price: "50",
     description: [
       "Everything in Plus",
       "2 to 10 spaces",
@@ -54,67 +56,103 @@ const tiers = [
       "Webhook",
       "Zapier and Make integrations",
     ],
-    buttonText: "Contact us",
+    buttonText: "Get started",
     buttonVariant: "outlined",
   },
 ];
 
 const faqs = [
   {
-    question: "Can I add multiple spaces in one account?",
+    question: "What is feedio?",
     answer:
-      "Yes, you can! Premium plan supports 2 spaces, and Ultimate plan supports 5 spaces. In the Agency plan, you can create as many spaces as you want. The first 5 spaces in the Agency plan are covered by the base price. It will be $50/mo for each additional space beyond the first 5 spaces.",
+      "Feedio is a reviews and testimonials platform equipped with advanced analytics. We help businesses showcase genuine customer feedback through a customizable widget and provide insights into what their customers are saying and feeling.",
   },
   {
-    question: "What happens after free credits are exhausted?",
+    question: "How does the subscription model work?",
     answer:
-      "Your customers will not be blocked from submitting their reviews. However on your side, you need to upgrade to the relavant plan to access additional text and video reviews.",
+      "Our subscription model offers monthly and yearly plans. Once you choose a plan, you'll be billed at the start of the billing cycle. Yearly plans come with a discount compared to monthly plans.",
   },
   {
-    question: "What is the Show Room?",
+    question: "Can I change my subscription plan later?",
     answer:
-      'Show Room is a place to display all your selected reviews. They can be video, text or social proof like Twitter shoutouts. <a href="/showRoom" target="_blank" rel="noreferrer">Here is the Show Room for our Feedio product</a>, check it out!',
+      "Absolutely! You can upgrade or downgrade your subscription at any time. If you choose to upgrade, you'll only pay the difference for the remainder of the billing cycle.",
   },
   {
-    question: "How to embed the Show Room?",
+    question: "How do I cancel my subscription?",
     answer:
-      "It's just 3 lines of HTML code. You can embed it in any no-code platform (Webflow, WordPress, you name it!) <a href='/integrations' target='_blank' rel='noreferrer'>You can find some samples here.</a>",
+      "You can cancel your subscription from the account settings page. Once canceled, you won't be billed for the next cycle. However, there are no refunds for the current billing cycle.",
   },
   {
-    question: "Can I get embed a single video to my site?",
+    question: "Is my data secure with feedio?",
     answer:
-      "Yes, but only if you are our premium user! We provide embed code for each video. It's just one-line code. You just copy the code and place it in any no-code platform, like how you embed the Show Room.",
+      "Yes, data security is our top priority. We use advanced encryption methods to ensure that your data, as well as your customers' feedback, remains confidential and protected.",
   },
   {
-    question: "What information can I collect from my customer?",
+    question: "Can I integrate feedio with my existing website or app?",
     answer:
-      "Apart from the review, you can collect your customer's name, headshot, email, title and company, social link. You can also add up to 5 custom data to collect, e.g. phone number, etc.",
+      "Certainly! Feedio is designed for seamless integration with websites and apps. Our easy-to-follow setup guide will have you up and running in minutes.",
   },
   {
-    question: "Can I add Metrics add-on later?",
+    question: "What kind of analytics does feedio provide?",
     answer:
-      "Yes, you can! You can directly go to Stripe-hosted Portal to pick a subscription plan which covers the Metrics add-on. In the Agency plan, Metrics add-on is included.",
+      "Feedio offers deep dive analytics into customer sentiment, feedback trends, and more. You can understand the overall mood of your reviews, identify recurring themes, and get actionable insights to improve your offerings.",
   },
   {
-    question: "Do you offer discount?",
+    question: "How does the review widget look?",
     answer:
-      "Sure! We offer discounts for bootstrappers and non-profits. It will only apply on the subscription plan. Please send us a message with an intro to your business to get the discount code.",
+      "Our review widget is customizable to match your brand's aesthetics. You can choose from various layouts and color schemes to ensure it complements your website or app design.",
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer:
+      "We accept all major credit cards, including Visa, MasterCard, and American Express. For enterprise clients, we can also arrange for bank transfers.",
+  },
+  {
+    question: "Do you offer any discounts or special pricing?",
+    answer:
+      "Yes, our yearly plans come with a discount compared to monthly billing. We also offer special pricing for non-profits and educational institutions. Please contact our sales team for more details.",
+  },
+  {
+    question: "I have more questions. How can I reach out?",
+    answer:
+      "We're here to help! You can contact our support team at [support@feedio.com](mailto:support@feedio.com) or use the live chat feature on our website.",
   },
 ];
 
 const PricingPage = () => {
+  const theme = useTheme();
+
   return (
     <>
-      <Container maxWidth="md" textAlign="center" pb={3}>
-        <Typography variant="h1" mb={4}>
+      <Container
+        maxWidth="xxl"
+        textAlign="center"
+        pb={8}
+        sx={{ px: [4, 6, 8, 10] }}>
+        <Typography variant="h1" textAlign="center" mt={8} mb={4}>
           The easiest way to drive more sales for your business
         </Typography>
-        <Typography variant="h4" color="text.secondary" mb={2}>
+        <Typography
+          variant="h4"
+          color="text.secondary"
+          textAlign="center"
+          mb={2}>
           Start with 3 text reviews, then upgrade to our paid plan only if
           you're happy.
         </Typography>
       </Container>
-      <Container maxWidth="md" component="main">
+      {/* Pricing */}
+      <Container
+        maxWidth="xxl"
+        component="main"
+        sx={{
+          py: 8,
+          px: [4, 6, 8, 10],
+          backgroundImage: `url(${Pattern})`,
+          backgroundPosition: "right center",
+          backgroundRepeat: "repeat",
+          backgroundSize: "cover",
+        }}>
         <Grid container spacing={5} alignItems="flex-end">
           {tiers.map((tier) => (
             <Grid
@@ -133,7 +171,7 @@ const PricingPage = () => {
                     align: "center",
                   }}
                   sx={{
-                    backgroundColor: (theme) => theme.palette.secondary.main,
+                    bgcolor: theme.palette.secondary.main,
                   }}
                 />
                 <CardContent>
@@ -162,19 +200,22 @@ const PricingPage = () => {
                     ))}
                   </ul>
                 </CardContent>
-                <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant}>
-                    {tier.buttonText}
-                  </Button>
+                <CardActions sx={{ justifyContent: "center" }}>
+                  <Button variant={"contained"}>{tier.buttonText}</Button>
                 </CardActions>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
+      {/* FAQs */}
       <Container
-        maxWidth="lg"
-        sx={{ py: { xs: 2, md: 6 }, px: { xs: 1, sm: 3 } }}>
+        maxWidth="xxl"
+        sx={{
+          py: 8,
+          px: [4, 6, 8, 10],
+          bgcolor: theme.palette.info.main,
+        }}>
         <Box py={6} display="flex" justifyContent="center">
           <Typography variant="h2" align="center" gutterBottom>
             Frequently asked questions
