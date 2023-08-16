@@ -15,13 +15,13 @@ import {
   Paper,
   Chip,
   Collapse,
+  useTheme,
 } from "@mui/material";
 import {
   KeyboardArrowDown,
   KeyboardArrowUp,
   Delete,
   Star,
-  FilterList,
 } from "@mui/icons-material";
 import Rating from "@mui/material/Rating";
 import Favorite from "@mui/icons-material/Favorite";
@@ -77,6 +77,7 @@ const headCells = [
 ];
 
 const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
+  const theme = useTheme();
   const [reviews, setReviews] = useState([]);
   const [openId, setOpenId] = useState(null);
   const [order, setOrder] = useState("asc");
@@ -199,9 +200,9 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
 
     return (
       <TableHead
-        sx={(theme) => ({
-          backgroundColor: theme.palette.secondary.main,
-        })}>
+        sx={{
+          backgroundColor: theme.palette.primary.main,
+        }}>
         <TableRow>
           {/* Placeholder cell for expand/collapse icon */}
           <TableCell></TableCell>
@@ -423,12 +424,12 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={(theme) => ({
-            backgroundColor: theme.palette.secondary.main,
+          sx={{
+            backgroundColor: theme.palette.primary.main,
             color: "white",
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
-          })}
+          }}
         />
       </Paper>
     </Box>

@@ -97,12 +97,7 @@ const Login = (props) => {
             />
           </Box>
           <Box sx={{ padding: "10px" }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" variant="primary">
               Login
             </Button>
           </Box>

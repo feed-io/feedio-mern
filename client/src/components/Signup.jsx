@@ -8,8 +8,6 @@ import {
   Typography,
   Container,
   Avatar,
-  FormControlLabel,
-  Checkbox,
   Alert,
   Box,
 } from "@mui/material";
@@ -136,12 +134,7 @@ const SignUp = (props) => {
           </Grid>
 
           <Box sx={{ padding: "10px" }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" variant="primary" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
           </Box>

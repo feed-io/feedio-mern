@@ -34,7 +34,6 @@ const NavBar = () => {
           },
         })
         .then((response) => {
-          console.log(response);
           setUserName(response.data.user.name);
         })
         .catch((error) => {
@@ -52,7 +51,7 @@ const NavBar = () => {
 
   const initials = getInitials(userName);
 
-  const avatarUrl = `https://ui-avatars.com/api/?name=${initials}&background=F8FBFF&color=0F2830`;
+  const avatarUrl = `https://ui-avatars.com/api/?name=${initials}&background=FFEEB4&color=0F2830`;
 
   const handleOpenModal = () => {
     setOpenModal(true);

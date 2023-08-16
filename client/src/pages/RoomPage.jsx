@@ -1,25 +1,24 @@
 import React, { useState, useContext, useEffect } from "react";
 import io from "socket.io-client";
-import { useParams, Link as RouterLink } from "react-router-dom";
-import axios from "axios";
+import { useParams } from "react-router-dom";
 import {
   Box,
-  Typography,
-  Button,
   Container,
+  Grid,
+  Typography,
   Snackbar,
   IconButton,
-  Grid,
-  Menu,
+  useTheme,
 } from "@mui/material";
-
+import LayoutDashboard from "../components/LayoutDashboard";
+import SidebarSection from "../components/SidebarSection";
+import FeedbackSection from "../components/FeebackSection";
 import CreateWidgetModal from "../components/CreateWidgetModal";
 import EditRoomModal from "../components/EditRoomModal";
 import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
-import SidebarSection from "../components/SidebarSection";
-import FeedbackSection from "../components/FeebackSection";
 import { AuthContext } from "../context/auth-context";
 import { Close } from "@mui/icons-material";
+import axios from "axios";
 
 const RoomPage = () => {
   const { productId } = useParams();
@@ -34,6 +33,7 @@ const RoomPage = () => {
   const [trendData, setTrendData] = useState([]);
   const [wordCounts, setWordCounts] = useState({});
   const [timeGranularity, setTimeGranularity] = useState("monthly");
+  const theme = useTheme();
 
   const normalizeTrendData = (granularity, data) => {
     let normalizedData = {
@@ -44,7 +44,7 @@ const RoomPage = () => {
 
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-indexed
+    const currentMonth = currentDate.getMonth() + 1;
     const currentDay = currentDate.getDate();
 
     function getWeekNumber(d) {
@@ -146,7 +146,6 @@ const RoomPage = () => {
 
     socket.on("new-review-added", fetchTrendData);
 
-    // Cleanup the socket connection when the component is unmounted
     return () => {
       socket.disconnect();
     };
@@ -338,94 +337,80 @@ const RoomPage = () => {
 
   return (
     <>
-      <Box pt={0}>
-        <Grid container spacing={0}>
-          {/* Sidebar Section */}
-          <Grid
-            item
-            xs={12}
-            md={3}
-            sx={{
-              position: "relative",
-              borderRight: { xs: "none", md: "1px solid #e0e0e0" },
-              // backgroundColor: { xs: "transparent", md: "#F8F9FA" },
-              display: "flex",
-              alignItems: { xs: "center", md: "flex-start" },
-              justifyContent: "center",
-            }}>
-            <SidebarSection
+      <LayoutDashboard>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            py: 8,
+            bgcolor: theme.palette.primary.contrastText,
+          }}>
+          <Container maxWidth="xxl">
+            <Grid container>
+              {/* Sidebar Section */}
+              <Grid item xs={12} md={2} lg={1}>
+                <SidebarSection
+                  productId={productId}
+                  handleCopyLink={handleCopyLink}
+                  openModal={openModal}
+                  openCollectingModal={openCollectingModal}
+                  openEditModal={openEditModal}
+                  productName={product.name}
+                />
+              </Grid>
+
+              {/* Feedback Section */}
+              <Grid item xs={12} md={10}>
+                <FeedbackSection
+                  product={product}
+                  reviews={reviews}
+                  trendData={trendData}
+                  trendLabels={trendLabels}
+                  timeGranularity={timeGranularity}
+                  setTimeGranularity={setTimeGranularity}
+                  words={words}
+                  sentimentData={sentimentData}
+                  handleSpaceCreated={handleSpaceCreated}
+                  userId={auth.userId}
+                  token={auth.token}
+                />
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+        <Box>
+          {/* Modals and Snackbar */}
+          {isModalOpen && (
+            <CreateWidgetModal productId={productId} closeModal={closeModal} />
+          )}
+          {isCollModalOpen && (
+            <CollectionFeedbackModal
               productId={productId}
-              handleCopyLink={handleCopyLink}
-              openModal={openModal}
-              openCollectingModal={openCollectingModal}
-              openEditModal={openEditModal}
-              productName={product.name}
+              closeModal={closeCollectingModal}
             />
-          </Grid>
-
-          {/* Feedback Section */}
-          <Grid item xs={12} md={9} sx={{ backgroundColor: "#F8F9FA" }}>
-            {/* <Box mb={2}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                sx={{
-                  py: 2,
-                  borderBottom: "1px solid #e0e0e0",
-                }}>
-                <Typography variant="h7" component="h1" alignItems={"center "}>
-                  Feedback Dashboard
-                </Typography>
-              </Box>
-            </Box> */}
-            <FeedbackSection
-              product={product}
-              reviews={reviews}
-              trendData={trendData}
-              trendLabels={trendLabels}
-              timeGranularity={timeGranularity}
-              setTimeGranularity={setTimeGranularity}
-              words={words}
-              sentimentData={sentimentData}
-              handleSpaceCreated={handleSpaceCreated}
-              userId={auth.userId}
-              token={auth.token}
-            />
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* Modals and Snackbar */}
-      {isModalOpen && (
-        <CreateWidgetModal productId={productId} closeModal={closeModal} />
-      )}
-      {isCollModalOpen && (
-        <CollectionFeedbackModal
-          productId={productId}
-          closeModal={closeCollectingModal}
-        />
-      )}
-      <EditRoomModal
-        isOpen={isEditModalOpen}
-        product={product}
-        closeEditModal={closeEditModal}
-        onRoomUpdated={handleEditRoom}
-      />
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
-        message="Link copied to clipboard!"
-        action={
-          <IconButton
-            size="small"
-            color="inherit"
-            onClick={() => setSnackbarOpen(false)}>
-            <Close fontSize="small" />
-          </IconButton>
-        }
-      />
+          )}
+          <EditRoomModal
+            isOpen={isEditModalOpen}
+            product={product}
+            closeEditModal={closeEditModal}
+            onRoomUpdated={handleEditRoom}
+          />
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={3000}
+            onClose={() => setSnackbarOpen(false)}
+            message="Link copied to clipboard!"
+            action={
+              <IconButton
+                size="small"
+                color="inherit"
+                onClick={() => setSnackbarOpen(false)}>
+                <Close fontSize="small" />
+              </IconButton>
+            }
+          />
+        </Box>
+      </LayoutDashboard>
     </>
   );
 };
