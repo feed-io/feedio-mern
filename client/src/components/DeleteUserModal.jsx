@@ -44,7 +44,7 @@ const DeleteUserModal = (props) => {
         </Typography>
       </DialogContent>
       <DialogActions sx={{ mt: 2, pr: 2, pb: 2 }}>
-        <Button variant="outlined" onClick={onClose}>
+        <Button variant="warning" onClick={onClose}>
           Cancel
         </Button>
         <Box sx={{ ml: 2 }}>

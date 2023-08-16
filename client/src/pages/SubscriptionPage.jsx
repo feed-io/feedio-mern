@@ -66,7 +66,7 @@ const tiers = [
 const SubscriptionPage = () => {
   const auth = useContext(AuthContext);
   const { userId, token, membershipStatus } = auth;
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
 
   const handleCheckout = async (plan) => {
@@ -144,10 +144,11 @@ const SubscriptionPage = () => {
           }
         );
         if (response.data && response.data.user) {
-          setEmail(response.data.user.email);
+          console.log(response);
+          setUser(response.data.user);
         }
       } catch (error) {
-        console.error(error);
+        console.error(error.message);
       }
     };
     fetchUserData();
@@ -168,7 +169,7 @@ const SubscriptionPage = () => {
           Subscription Plan
         </Typography>
         <Typography variant="body1" gutterBottom>
-          Hi {email}
+          Hi {user.name}
         </Typography>
         <Typography variant="body1" gutterBottom>
           You are currently on the {membershipStatus} plan

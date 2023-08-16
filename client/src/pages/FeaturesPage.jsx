@@ -421,8 +421,7 @@ const FeaturesPage = () => {
               <Box
                 sx={{ display: "flex", justifyContent: "flex-start", mb: 8 }}>
                 <Button
-                  variant="contained"
-                  color="primary"
+                  variant="primary"
                   sx={{ transform: "scale(1.05)" }}
                   href="/pricing">
                   Get started

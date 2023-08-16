@@ -27,7 +27,7 @@ const tiers = [
       "Show Room with our logo",
     ],
     buttonText: "Sign up for free",
-    buttonVariant: "outlined",
+    buttonVariant: "primary",
   },
 
   {
@@ -43,7 +43,7 @@ const tiers = [
       "Custom domain (SSL)",
     ],
     buttonText: "Get started",
-    buttonVariant: "contained",
+    buttonVariant: "primary",
   },
   {
     title: "Enterprise",
@@ -57,7 +57,7 @@ const tiers = [
       "Zapier and Make integrations",
     ],
     buttonText: "Get started",
-    buttonVariant: "outlined",
+    buttonVariant: "primary",
   },
 ];
 
@@ -201,7 +201,7 @@ const PricingPage = () => {
                   </ul>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "center" }}>
-                  <Button variant={"contained"}>{tier.buttonText}</Button>
+                  <Button variant="primary">{tier.buttonText}</Button>
                 </CardActions>
               </Card>
             </Grid>

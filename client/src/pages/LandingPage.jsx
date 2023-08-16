@@ -152,7 +152,7 @@ const LandingPage = () => {
                 <Box
                   sx={{ display: "flex", justifyContent: "flex-start", pt: 2 }}>
                   <Box>
-                    <Button variant="contained" color="primary" to="/pricing">
+                    <Button variant="primary" color="primary" to="/pricing">
                       Try FREE now
                     </Button>
                   </Box>
@@ -345,8 +345,7 @@ const LandingPage = () => {
               <Box
                 sx={{ display: "flex", justifyContent: "flex-start", mb: 8 }}>
                 <Button
-                  variant="contained"
-                  color="primary"
+                  variant="primary"
                   sx={{ transform: "scale(1.05)" }}
                   href="/pricing">
                   Get started
