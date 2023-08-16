@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import io from "socket.io-client";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -48,14 +47,10 @@ const RoomPage = () => {
     const currentDay = currentDate.getDate();
 
     function getWeekNumber(d) {
-      // Copy date so don't modify original
       d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-      // Set to nearest Thursday: current date + 4 - current day number
-      // Make Sunday's day number 7
       d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-      // Get first day of year
       const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-      // Calculate full weeks to nearest Thursday
+
       const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
       return weekNo;
     }
@@ -78,6 +73,7 @@ const RoomPage = () => {
       for (let i = 1; i <= currentDay; i++) {
         const entry = data.find(
           (item) =>
+            item &&
             item._id &&
             item._id.dayOfMonth === i &&
             item._id.month === currentMonth &&
@@ -86,35 +82,47 @@ const RoomPage = () => {
         pushData(entry);
       }
     } else if (granularity === "weekly") {
-      for (let i = 1; i <= 7; i++) {
+      // Create an array for the entire week
+      const weeklyData = [null, null, null, null, null, null, null];
+
+      // Map the data based on the dayOfWeek property
+      data.forEach((entry) => {
+        if (
+          entry &&
+          entry._id &&
+          entry._id.week === currentWeek &&
+          entry._id.year === currentYear
+        ) {
+          // Adjust the index since dayOfWeek starts from 1 (Monday) and array index starts from 0
+          weeklyData[entry._id.dayOfWeek - 1] = entry;
+        }
+      });
+
+      weeklyData.forEach((entry) => pushData(entry));
+    } else if (granularity === "monthly") {
+      for (let i = 1; i <= 12; i++) {
         const entry = data.find(
           (item) =>
+            item &&
             item._id &&
-            item._id.dayOfWeek === i &&
-            item._id.week === currentWeek &&
+            item._id.month === i &&
             item._id.year === currentYear
         );
         pushData(entry);
       }
-    } else if (granularity === "monthly") {
-      for (let i = 1; i <= currentMonth; i++) {
-        const entry = data.find(
-          (item) =>
-            item._id && item._id.month === i && item._id.year === currentYear
-        );
-        pushData(entry);
-      }
     } else if (granularity === "quarterly") {
-      const currentQuarter = Math.ceil(currentMonth / 3);
-      for (let i = 1; i <= currentQuarter; i++) {
+      for (let i = 1; i <= 4; i++) {
         const entry = data.find(
           (item) =>
-            item._id && item._id.quarter === i && item._id.year === currentYear
+            item &&
+            item._id &&
+            item._id.quarter === i &&
+            item._id.year === currentYear
         );
         pushData(entry);
       }
     }
-
+    console.log("n", normalizedData);
     return normalizedData;
   };
 
@@ -129,7 +137,7 @@ const RoomPage = () => {
             },
           }
         );
-        console.log("Reviews", reviews);
+
         setReviews(response.data.reviews);
       } catch (error) {
         console.log("Error fetching reviews:", error.message);
@@ -142,33 +150,28 @@ const RoomPage = () => {
   }, [auth.userId, auth.token, product]);
 
   useEffect(() => {
-    const socket = io.connect("http://localhost:8080");
+    const fetchTrendData = async () => {
+      try {
+        const response = await fetch(
+          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
 
-    socket.on("new-review-added", fetchTrendData);
-
-    return () => {
-      socket.disconnect();
+        const data = await response.json();
+        console.log("trendData", data);
+        const normalizedTrendData = normalizeTrendData(timeGranularity, data);
+        setTrendData(normalizedTrendData);
+      } catch (error) {
+        console.log("Error fetching ratings trend data:", error.message);
+      }
     };
-  }, [auth.token, timeGranularity]);
 
-  const fetchTrendData = async () => {
-    try {
-      const response = await fetch(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
-        {
-          headers: {
-            Authorization: "Bearer " + auth.token,
-          },
-        }
-      );
-
-      const data = await response.json();
-      const normalizedTrendData = normalizeTrendData(timeGranularity, data);
-      setTrendData(normalizedTrendData);
-    } catch (error) {
-      console.log("Error fetching ratings trend data:", error.message);
-    }
-  };
+    fetchTrendData();
+  }, [auth.token, timeGranularity, auth.userId, productId]);
 
   useEffect(() => {
     async function fetchWordCloud() {
@@ -290,7 +293,6 @@ const RoomPage = () => {
           sentimentCounts.Neutral,
           sentimentCounts.Negative,
         ],
-        backgroundColor: ["#4CAF50", "#FFC107", "#F44336"],
       },
     ],
   };
@@ -342,7 +344,7 @@ const RoomPage = () => {
           component="main"
           sx={{
             flexGrow: 1,
-            py: 8,
+            pb: 4,
             bgcolor: theme.palette.primary.contrastText,
           }}>
           <Container maxWidth="xxl">

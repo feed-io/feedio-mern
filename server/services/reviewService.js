@@ -209,11 +209,27 @@ function handleTrend(trends, granularity) {
       return item._id.month === i; // monthly
     });
 
-    if (dataForPeriod) {
-      filledData.push(dataForPeriod);
-    } else {
-      filledData.push(null);
-    }
+    const average = [];
+    const highest = [];
+    const lowest = [];
+
+    filledData.forEach((data) => {
+      if (data) {
+        average.push(data.averageRating);
+        highest.push(data.highestRating);
+        lowest.push(data.lowestRating);
+      } else {
+        average.push(null);
+        highest.push(null);
+        lowest.push(null);
+      }
+    });
+
+    return {
+      average,
+      highest,
+      lowest,
+    };
   }
 
   return filledData;

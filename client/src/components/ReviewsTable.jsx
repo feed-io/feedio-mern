@@ -201,7 +201,7 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
     return (
       <TableHead
         sx={{
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: theme.palette.success.main,
         }}>
         <TableRow>
           {/* Placeholder cell for expand/collapse icon */}
@@ -425,7 +425,7 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           sx={{
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: theme.palette.success.main,
             color: "white",
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
