@@ -22,7 +22,8 @@ const CollectionFeedbackModal = (props) => {
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
   const generateIframeLink = (widgetId) => {
-    const baseIframeUrl = `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+    const baseIframeUrl = `http://localhost:8080/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+    // const baseIframeUrl = `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
 
     let params = [];
 

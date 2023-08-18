@@ -89,7 +89,8 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
+          `http://localhost:8080/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
+          // `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -109,7 +110,8 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
   const handleDelete = async (reviewId) => {
     try {
       await axios.delete(
-        `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
+        `http://localhost:8080/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
+        // `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
         {
           headers: {
             Authorization: "Bearer " + token,

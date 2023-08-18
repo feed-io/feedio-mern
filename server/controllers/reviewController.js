@@ -111,6 +111,7 @@ exports.getRatingsTrend = async (req, res) => {
 
     res.status(200).json(trends);
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "Something went wrong", error: error.message });

@@ -1,13 +1,8 @@
 import { Line } from "react-chartjs-2";
 import { Typography, Box } from "@mui/material";
 
-const TrendChart = ({
-  trendData,
-  trendLabels,
-  timeGranularity,
-  setTimeGranularity,
-}) => {
-  console.log(trendData, trendLabels, timeGranularity);
+const TrendChart = ({ trendData, timeGranularity, setTimeGranularity }) => {
+  console.log(trendData, timeGranularity);
 
   const lineChartOptions = {
     maintainAspectRatio: false,
@@ -30,64 +25,111 @@ const TrendChart = ({
     setTimeGranularity(e.target.value);
   };
 
-  const roundToOneDecimal = (data) => {
-    return data.map((value) =>
-      value !== null ? parseFloat(value.toFixed(1)) : null
-    );
+  const roundRating = (rating) => {
+    return rating !== null ? Math.round(rating) : null;
   };
 
-  const fillDataToCurrentDay = (data, granularity) => {
-    const currentDate = new Date();
-    const currentDay = currentDate.getDate();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentYear = currentDate.getFullYear();
-    const currentDayOfWeek = currentDate.getDay(); // 0 (Sunday) to 6 (Saturday)
+  const averageRatings = trendData.map((item) =>
+    roundRating(item.averageRating)
+  );
+  const highestRatings = trendData.map((item) =>
+    roundRating(item.highestRating)
+  );
+  const lowestRatings = trendData.map((item) => roundRating(item.lowestRating));
 
-    if (granularity === "daily") {
-      return data.map((value, index) => {
-        if (index <= currentDay - 1) {
-          return value !== null ? value : 0;
-        }
-        return value;
-      });
-    } else if (granularity === "weekly") {
-      return data.map((value, index) => {
-        if (index <= currentDayOfWeek) {
-          return value !== null ? value : 0;
-        }
-        return value;
-      });
-    } else if (granularity === "monthly") {
-      return data.map((value, index) => {
-        if (index <= currentMonth - 1) {
-          return value !== null ? value : 0;
-        }
-        return value;
-      });
-    } else if (granularity === "quarterly") {
-      const currentQuarter = Math.ceil(currentMonth / 3);
-      return data.map((value, index) => {
-        if (index <= currentQuarter - 1) {
-          return value !== null ? value : 0;
-        }
-        return value;
-      });
+  const generateTrendLabels = (granularity) => {
+    switch (granularity) {
+      case "daily":
+        return Array.from({ length: 24 }, (_, i) => `${i}:00`);
+      case "weekly":
+        return [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+      case "monthly":
+        return Array.from({ length: 31 }, (_, i) => `${i + 1}`);
+      case "quarterly":
+        return ["Q1", "Q2", "Q3", "Q4"];
+      default:
+        return [];
     }
-    return data;
   };
 
-  const roundedAverage = fillDataToCurrentDay(
-    roundToOneDecimal(trendData.average),
-    timeGranularity
+  const labels = generateTrendLabels(timeGranularity);
+
+  const fillMissingData = (data, defaultValue = 0) => {
+    return data.map((value) => (value !== null ? value : defaultValue));
+  };
+
+  const filledAverageRatings = fillMissingData(averageRatings);
+  const filledHighestRatings = fillMissingData(highestRatings);
+  const filledLowestRatings = fillMissingData(lowestRatings);
+
+  const ensureLength = (data, length) => {
+    while (data.length < length) {
+      data.push(0); // or any default value you want
+    }
+    return data.slice(0, length);
+  };
+
+  const adjustedAverageRatings = ensureLength(
+    filledAverageRatings,
+    labels.length
   );
-  const roundedHighest = fillDataToCurrentDay(
-    roundToOneDecimal(trendData.highest),
-    timeGranularity
+  const adjustedHighestRatings = ensureLength(
+    filledHighestRatings,
+    labels.length
   );
-  const roundedLowest = fillDataToCurrentDay(
-    roundToOneDecimal(trendData.lowest),
-    timeGranularity
+  const adjustedLowestRatings = ensureLength(
+    filledLowestRatings,
+    labels.length
   );
+
+  const datasets = [
+    {
+      label: "Average Rating",
+      data: adjustedAverageRatings,
+      fill: false,
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderWidth: 1,
+    },
+  ];
+
+  const hasDifferentHighestFromAverage = trendData.some(
+    (item) => item.highestRating !== item.averageRating
+  );
+
+  const hasDifferentLowestFromHighest = trendData.some(
+    (item) => item.lowestRating !== item.highestRating
+  );
+
+  if (hasDifferentHighestFromAverage) {
+    datasets.push({
+      label: "Highest Rating",
+      data: adjustedHighestRatings,
+      fill: false,
+      backgroundColor: "rgba(0,123,255,0.4)",
+      borderColor: "rgba(0,123,255,1)",
+      borderWidth: 1,
+    });
+  }
+
+  if (hasDifferentLowestFromHighest) {
+    datasets.push({
+      label: "Lowest Rating",
+      data: adjustedLowestRatings,
+      fill: false,
+      backgroundColor: "rgba(255,99,132,0.4)",
+      borderColor: "rgba(255,99,132,1)",
+      borderWidth: 1,
+    });
+  }
 
   return (
     <div>
@@ -105,33 +147,8 @@ const TrendChart = ({
       <div style={{ height: "250px" }}>
         <Line
           data={{
-            labels: trendLabels,
-            datasets: [
-              {
-                label: "Average Rating",
-                data: roundedAverage,
-                fill: false,
-                backgroundColor: "rgba(75,192,192,0.4)",
-                borderColor: "rgba(75,192,192,1)",
-                borderWidth: 1,
-              },
-              {
-                label: "Highest Rating",
-                data: roundedHighest,
-                fill: false,
-                backgroundColor: "rgba(0,123,255,0.4)",
-                borderColor: "rgba(0,123,255,1)",
-                borderWidth: 1,
-              },
-              {
-                label: "Lowest Rating",
-                data: roundedLowest,
-                fill: false,
-                backgroundColor: "rgba(255,99,132,0.4)",
-                borderColor: "rgba(255,99,132,1)",
-                borderWidth: 1,
-              },
-            ],
+            labels: labels,
+            datasets: datasets,
           }}
           options={lineChartOptions}
         />

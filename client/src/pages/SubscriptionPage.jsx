@@ -136,7 +136,8 @@ const SubscriptionPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `https://feedio.lol/api/users/${userId}`,
+          `http://localhost:8080/api/users/${userId}`,
+          // `https://feedio.lol/api/users/${userId}`,
           {
             headers: {
               Authorization: "Bearer " + token,

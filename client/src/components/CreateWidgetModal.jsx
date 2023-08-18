@@ -158,17 +158,6 @@ const CreateWidgetModal = (props) => {
               </Grid>
             ))}
           </Grid>
-
-          <Typography variant="body2" align="center" gutterBottom>
-            Check out our
-            <a
-              href="https://help.testimonial.to/en/articles/6223121-embed-a-wall-of-love"
-              target="_blank"
-              rel="noreferrer">
-              Show Room embed guide
-            </a>
-            for more help.
-          </Typography>
         </Box>
       </DialogContent>
     </Dialog>

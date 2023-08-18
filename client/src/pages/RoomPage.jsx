@@ -34,103 +34,12 @@ const RoomPage = () => {
   const [timeGranularity, setTimeGranularity] = useState("monthly");
   const theme = useTheme();
 
-  const normalizeTrendData = (granularity, data) => {
-    let normalizedData = {
-      average: [],
-      highest: [],
-      lowest: [],
-    };
-
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentDay = currentDate.getDate();
-
-    function getWeekNumber(d) {
-      d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-      d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-
-      const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-      return weekNo;
-    }
-
-    const currentWeek = getWeekNumber(new Date());
-
-    const pushData = (entry) => {
-      if (entry) {
-        normalizedData.average.push(entry.averageRating);
-        normalizedData.highest.push(entry.highestRating);
-        normalizedData.lowest.push(entry.lowestRating);
-      } else {
-        normalizedData.average.push(null);
-        normalizedData.highest.push(null);
-        normalizedData.lowest.push(null);
-      }
-    };
-
-    if (granularity === "daily") {
-      for (let i = 1; i <= currentDay; i++) {
-        const entry = data.find(
-          (item) =>
-            item &&
-            item._id &&
-            item._id.dayOfMonth === i &&
-            item._id.month === currentMonth &&
-            item._id.year === currentYear
-        );
-        pushData(entry);
-      }
-    } else if (granularity === "weekly") {
-      // Create an array for the entire week
-      const weeklyData = [null, null, null, null, null, null, null];
-
-      // Map the data based on the dayOfWeek property
-      data.forEach((entry) => {
-        if (
-          entry &&
-          entry._id &&
-          entry._id.week === currentWeek &&
-          entry._id.year === currentYear
-        ) {
-          // Adjust the index since dayOfWeek starts from 1 (Monday) and array index starts from 0
-          weeklyData[entry._id.dayOfWeek - 1] = entry;
-        }
-      });
-
-      weeklyData.forEach((entry) => pushData(entry));
-    } else if (granularity === "monthly") {
-      for (let i = 1; i <= 12; i++) {
-        const entry = data.find(
-          (item) =>
-            item &&
-            item._id &&
-            item._id.month === i &&
-            item._id.year === currentYear
-        );
-        pushData(entry);
-      }
-    } else if (granularity === "quarterly") {
-      for (let i = 1; i <= 4; i++) {
-        const entry = data.find(
-          (item) =>
-            item &&
-            item._id &&
-            item._id.quarter === i &&
-            item._id.year === currentYear
-        );
-        pushData(entry);
-      }
-    }
-    console.log("n", normalizedData);
-    return normalizedData;
-  };
-
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
+          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -147,13 +56,13 @@ const RoomPage = () => {
     if (product) {
       fetchReviews();
     }
-  }, [auth.userId, auth.token, product]);
+  }, [auth.userId, auth.token, product, refreshTrigger]);
 
   useEffect(() => {
     const fetchTrendData = async () => {
       try {
         const response = await fetch(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -163,21 +72,21 @@ const RoomPage = () => {
 
         const data = await response.json();
         console.log("trendData", data);
-        const normalizedTrendData = normalizeTrendData(timeGranularity, data);
-        setTrendData(normalizedTrendData);
+        setTrendData(data);
       } catch (error) {
         console.log("Error fetching ratings trend data:", error.message);
       }
     };
 
     fetchTrendData();
-  }, [auth.token, timeGranularity, auth.userId, productId]);
+  }, [auth.token, timeGranularity, auth.userId, productId, refreshTrigger]);
 
   useEffect(() => {
     async function fetchWordCloud() {
       try {
         const response = await fetch(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
+          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -193,13 +102,14 @@ const RoomPage = () => {
     }
 
     fetchWordCloud();
-  }, [auth.token]);
+  }, [auth.token, refreshTrigger]);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
+          `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
+          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -297,46 +207,6 @@ const RoomPage = () => {
     ],
   };
 
-  let trendLabels = [];
-
-  let currentDate = new Date();
-
-  if (timeGranularity === "weekly") {
-    trendLabels = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
-  } else if (timeGranularity === "monthly") {
-    const daysInMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      0
-    ).getDate();
-    trendLabels = Array.from({ length: daysInMonth }, (_, i) =>
-      (i + 1).toString()
-    );
-  } else if (timeGranularity === "yearly") {
-    trendLabels = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-  }
-
   return (
     <>
       <LayoutDashboard>
@@ -367,7 +237,6 @@ const RoomPage = () => {
                   product={product}
                   reviews={reviews}
                   trendData={trendData}
-                  trendLabels={trendLabels}
                   timeGranularity={timeGranularity}
                   setTimeGranularity={setTimeGranularity}
                   words={words}

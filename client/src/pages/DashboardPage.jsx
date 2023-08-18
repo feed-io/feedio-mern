@@ -37,7 +37,8 @@ const Dashboard = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/all`,
+          `http://localhost:8080/api/users/${auth.userId}/products/all`,
+          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -58,7 +59,8 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}`,
+          `http://localhost:8080/api/users/${auth.userId}`,
+          // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -80,7 +82,8 @@ const Dashboard = () => {
 
     try {
       await axios.delete(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
+        `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
+        // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
         {
           headers: {
             Authorization: "Bearer " + auth.token,

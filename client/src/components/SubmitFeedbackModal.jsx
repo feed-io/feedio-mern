@@ -54,8 +54,9 @@ const SubmitFeedbackModal = (props) => {
     };
 
     try {
-      const response = await axios.post(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
+      await axios.post(
+        `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
+        // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
         reviewData,
         {
           headers: {
