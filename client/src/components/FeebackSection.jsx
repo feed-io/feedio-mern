@@ -46,12 +46,12 @@ const FeedbackSection = ({
         {showAnalytics ? (
           <Grid container spacing={4}>
             {/* Trend Chart */}
-            <Grid item xs={12} sm={6} md={6} lg={6}>
+            <Grid item xs={12}>
               <Card
                 sx={{
                   borderRadius: 4,
                   height: "95%",
-                  backgroundColor: "#F8F9FA",
+                  backgroundColor: "#FfffFF",
                 }}>
                 <CardContent>
                   <TrendChart
@@ -70,7 +70,7 @@ const FeedbackSection = ({
                 sx={{
                   borderRadius: 4,
                   height: "95%",
-                  backgroundColor: "#F8F9FA",
+                  backgroundColor: "#FfffFF",
                 }}>
                 <CardContent>
                   <SentimentChart sentimentData={sentimentData} />
@@ -79,12 +79,12 @@ const FeedbackSection = ({
             </Grid>
 
             {/* Word Cloud */}
-            <Grid item xs={12} sm={6} md={6} lg={6}>
+            <Grid item xs={12} sm={6} md={4} lg={4}>
               <Card
                 sx={{
                   borderRadius: 4,
-                  height: "85%",
-                  backgroundColor: "#F8F9FA",
+                  height: "95%",
+                  backgroundColor: "#FfffFF",
                 }}>
                 <CardContent>
                   <WordCloud words={words} />
@@ -93,13 +93,12 @@ const FeedbackSection = ({
             </Grid>
 
             {/* Rating Distribution */}
-            <Grid item xs={12} sm={6} md={6} lg={6}>
+            <Grid item xs={12} sm={6} md={4} lg={4}>
               <Card
                 sx={{
                   borderRadius: 4,
-                  height: "85%",
-                  width: "65%",
-                  backgroundColor: "#F8F9FA",
+                  height: "95%",
+                  backgroundColor: "#FfffFF",
                 }}>
                 <CardContent>
                   <RatingDistribution product={product} />
@@ -113,7 +112,7 @@ const FeedbackSection = ({
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            paddingBottom={16}
+            paddingBottom={24}
             height="100%">
             <Grid item xs={12}>
               <CardContent>

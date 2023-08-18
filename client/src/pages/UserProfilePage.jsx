@@ -37,7 +37,8 @@ const UserProfilePage = () => {
     const loadData = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}`,
+          `http://localhost:8080/api/users/${auth.userId}`,
+          // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -81,7 +82,8 @@ const UserProfilePage = () => {
     }
     try {
       await axios.put(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}`,
+        `http://localhost:8080/api/users/${auth.userId}`,
+        // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
         updateData,
         {
           headers: {

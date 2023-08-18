@@ -21,7 +21,8 @@ const DeleteUserModal = (props) => {
 
     try {
       await axios.delete(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}`,
+        `http://localhost:8080/api/users/${auth.userId}`,
+        // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
         {
           headers: {
             Authorization: "Bearer " + auth.token,

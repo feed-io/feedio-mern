@@ -8,7 +8,6 @@ import {
   IconButton,
   Button,
   Dialog,
-  DialogTitle,
   Fab,
   DialogContent,
 } from "@mui/material";
@@ -48,8 +47,9 @@ const CreateRoomForm = (props) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/products/createProduct`,
+      await axios.post(
+        `http://localhost:8080/api/users/${auth.userId}/products/createProduct`,
+        // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/createProduct`,
         {
           name: newProductName,
           // imageUrl: newProductImageUrl,

@@ -28,7 +28,8 @@ const NavBar = () => {
   useEffect(() => {
     if (auth.userId) {
       axios
-        .get(`https://feedio-server.onrender.com/api/users/${auth.userId}`, {
+        .get(`http://localhost:8080/api/users/${auth.userId}`, {
+          // .get(`https://feedio-server.onrender.com/api/users/${auth.userId}`, {
           headers: {
             Authorization: "Bearer " + auth.token,
           },

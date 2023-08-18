@@ -1,6 +1,5 @@
 const path = require("path");
 const http = require("http");
-const io = require("socket.io");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -11,31 +10,12 @@ const productRoutes = require("./routes/products-route");
 const reviewRoutes = require("./routes/reviews-route");
 const paymentRoutes = require("./routes/payments-route");
 const paymentController = require("./controllers/paymentController");
-const reviewController = require("./controllers/reviewController");
 const widgetRoutes = require("./routes/widget-route");
 const checkAuth = require("./middleware/check-auth");
-const Review = require("./models/review");
 
 const app = express();
-const changeStream = Review.watch();
-
-const server = http.createServer(app);
-
-const websocket = io(server);
 
 dotenv.config();
-
-websocket.on("connection", (socket) => {
-  console.log("Client connected");
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
-
-server.listen(process.env.PORT, () =>
-  console.log(`Server running on port ${process.env.PORT}`)
-);
 
 app.use(cors());
 
@@ -89,12 +69,6 @@ app.use("/api/payments/webhook", paymentController.handleStripeWebhook);
 
 app.use("/api/collection-feedback", reviewRoutes);
 
-changeStream.on("change", (change) => {
-  if (change.operationType === "insert") {
-    websocket.emit("new-review-added");
-  }
-});
-process.on("SIGINT", () => {
-  changeStream.close();
-  process.exit();
-});
+app.listen(process.env.PORT, () =>
+  console.log(`Server running on port ${process.env.PORT}`)
+);
