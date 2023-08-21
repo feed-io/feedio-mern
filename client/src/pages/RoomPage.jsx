@@ -18,6 +18,7 @@ import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
 import { AuthContext } from "../context/auth-context";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const RoomPage = () => {
   const { productId } = useParams();
@@ -28,6 +29,10 @@ const RoomPage = () => {
   const [isCollModalOpen, setIsCollModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentDateRange, setCurrentDateRange] = useState({
+    start: new Date(),
+    end: new Date(),
+  });
   const [reviews, setReviews] = useState([]);
   const [trendData, setTrendData] = useState([]);
   const [wordCounts, setWordCounts] = useState({});
@@ -38,8 +43,7 @@ const RoomPage = () => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
-          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -58,35 +62,43 @@ const RoomPage = () => {
     }
   }, [auth.userId, auth.token, product, refreshTrigger]);
 
+  const fetchTrendData = async () => {
+    try {
+      const response = await fetch(
+        `${SERVER_URL}/api/users/${
+          auth.userId
+        }/products/${productId}/reviews/trends?granularity=${timeGranularity}&startDate=${currentDateRange.start.toISOString()}&endDate=${currentDateRange.end.toISOString()}`,
+        {
+          headers: {
+            Authorization: "Bearer " + auth.token,
+          },
+        }
+      );
+
+      const data = await response.json();
+      console.log("trendData", data);
+      setTrendData(data);
+    } catch (error) {
+      console.log("Error fetching ratings trend data:", error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchTrendData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/trends?granularity=${timeGranularity}`,
-          {
-            headers: {
-              Authorization: "Bearer " + auth.token,
-            },
-          }
-        );
-
-        const data = await response.json();
-        console.log("trendData", data);
-        setTrendData(data);
-      } catch (error) {
-        console.log("Error fetching ratings trend data:", error.message);
-      }
-    };
-
     fetchTrendData();
-  }, [auth.token, timeGranularity, auth.userId, productId, refreshTrigger]);
+  }, [
+    auth.token,
+    timeGranularity,
+    auth.userId,
+    productId,
+    refreshTrigger,
+    currentDateRange,
+  ]);
 
   useEffect(() => {
     async function fetchWordCloud() {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
-          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -108,8 +120,7 @@ const RoomPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
-          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -239,6 +250,8 @@ const RoomPage = () => {
                   trendData={trendData}
                   timeGranularity={timeGranularity}
                   setTimeGranularity={setTimeGranularity}
+                  currentDateRange={currentDateRange}
+                  setCurrentDateRange={setCurrentDateRange}
                   words={words}
                   sentimentData={sentimentData}
                   handleSpaceCreated={handleSpaceCreated}

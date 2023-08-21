@@ -12,8 +12,8 @@ import {
   DialogContent,
 } from "@mui/material";
 import { Info, Add } from "@mui/icons-material";
-
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const CreateRoomForm = (props) => {
   const [questions, setQuestions] = useState([""]);
@@ -48,7 +48,7 @@ const CreateRoomForm = (props) => {
 
     try {
       await axios.post(
-        `http://localhost:8080/api/users/${auth.userId}/products/createProduct`,
+        `${SERVER_URL}/api/users/${auth.userId}/products/createProduct`,
         // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/createProduct`,
         {
           name: newProductName,

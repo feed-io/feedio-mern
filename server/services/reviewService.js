@@ -11,7 +11,15 @@ const tokenizer = new natural.WordTokenizer();
 const sentiment = new Sentiment();
 const stemmer = natural.PorterStemmer;
 
-const create = async ({ name, email, content, rating, productId }) => {
+const create = async ({
+  name,
+  email,
+  content,
+  rating,
+  productId,
+  startDate,
+  endDate,
+}) => {
   const product = await Product.findById(productId);
   if (!product) {
     throw new Error("Product not found");
@@ -21,7 +29,7 @@ const create = async ({ name, email, content, rating, productId }) => {
   if (!user) {
     throw new Error("User not found");
   }
-
+  console.log("date", startDate, endDate);
   const sentimentAnalysis = sentiment.analyze(content);
 
   const newReview = new Review({
@@ -180,83 +188,87 @@ Date.prototype.getWeek = function () {
   return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 };
 
-const getQuarterDates = (date) => {
-  const year = date.getFullYear();
-  const quarter = Math.floor(date.getMonth() / 3 + 1);
+const getRatingsTrend = async (productId, granularity, startDate, endDate) => {
+  const startDateObj = new Date(startDate);
+  const endDateObj = new Date(endDate);
 
-  switch (quarter) {
-    case 1: // Q1
-      return [new Date(year, 0, 1), new Date(year, 2, 31)];
-    case 2: // Q2
-      return [new Date(year, 3, 1), new Date(year, 5, 30)];
-    case 3: // Q3
-      return [new Date(year, 6, 1), new Date(year, 8, 30)];
-    case 4: // Q4
-      return [new Date(year, 9, 1), new Date(year, 11, 31)];
+  let start, end, trends, groupBy;
+
+  switch (granularity) {
+    case "daily":
+      start = new Date(startDateObj);
+      start.setHours(0, 0, 0, 0);
+
+      end = new Date(endDateObj);
+      end.setHours(23, 59, 59, 999);
+
+      groupBy = "hour";
+      trends = await getTrendsForPeriod(productId, start, end, groupBy);
+      trends = fillGaps(trends, start, end, granularity);
+      break;
+
+    case "weekly":
+      start = new Date(startDateObj);
+      start.setDate(startDateObj.getDate() - startDateObj.getDay());
+
+      end = new Date(endDateObj);
+      end.setDate(endDateObj.getDate() + 6);
+
+      groupBy = "dayOfWeek";
+      trends = await getTrendsForPeriod(productId, start, end, groupBy);
+      trends = fillGaps(trends, start, end, granularity);
+      break;
+
+    case "monthly":
+      start = new Date(startDateObj.getFullYear(), startDateObj.getMonth(), 1);
+
+      end = new Date(endDateObj.getFullYear(), endDateObj.getMonth() + 1, 0);
+
+      groupBy = "dayOfMonth";
+      trends = await getTrendsForPeriod(productId, start, end, groupBy);
+      trends = fillGaps(trends, start, end, granularity);
+      break;
+
     default:
-      throw new Error("Invalid quarter");
+      throw new Error("Invalid granularity");
   }
+
+  console.log(trends);
+
+  return trends;
 };
 
-const getRatingsTrend = async (productId) => {
-  const currentDate = new Date();
-  const timezoneOffset = currentDate.getTimezoneOffset() * 60000;
+// ... [rest of the functions and module exports]
 
-  // For the month
-  const startOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  );
-  startOfMonth.setTime(startOfMonth.getTime() - timezoneOffset);
-
-  const endOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
-  );
-  endOfMonth.setTime(endOfMonth.getTime() - timezoneOffset);
-
-  // For the week
-  const startOfWeek = new Date(currentDate);
-  startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
-  startOfWeek.setTime(startOfWeek.getTime() - timezoneOffset);
-
-  const endOfWeek = new Date(startOfWeek);
-  endOfWeek.setDate(startOfWeek.getDate() + 6);
-  endOfWeek.setTime(endOfWeek.getTime() - timezoneOffset);
-
-  // For the day
-  const startOfDay = new Date(currentDate);
-  startOfDay.setHours(0, 0, 0, 0);
-  startOfDay.setTime(startOfDay.getTime() - timezoneOffset);
-
-  const endOfDay = new Date(currentDate);
-  endOfDay.setHours(23, 59, 59, 999);
-  endOfDay.setTime(endOfDay.getTime() - timezoneOffset);
-
-  // For the quarter
-  const [startOfQuarter, endOfQuarter] = getQuarterDates(currentDate);
-  startOfQuarter.setTime(startOfQuarter.getTime() - timezoneOffset);
-  endOfQuarter.setTime(endOfQuarter.getTime() - timezoneOffset);
-
+const getTrendsForPeriod = async (productId, start, end, groupBy) => {
   try {
-    const monthlyTrends = await Review.aggregate([
+    const timezoneOffset = new Date().getTimezoneOffset();
+    const offsetHours = timezoneOffset / 60;
+
+    return await Review.aggregate([
       {
         $match: {
           product: new mongoose.Types.ObjectId(productId),
           createdAt: {
-            $gte: startOfMonth,
-            $lte: endOfMonth,
+            $gte: start,
+            $lte: end,
+          },
+        },
+      },
+      {
+        $addFields: {
+          localCreatedAt: {
+            $subtract: ["$createdAt", offsetHours * 60 * 60 * 1000],
           },
         },
       },
       {
         $group: {
           _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
-            day: { $dayOfMonth: "$createdAt" },
+            year: { $year: "$localCreatedAt" },
+            month: { $month: "$localCreatedAt" },
+            day: { $dayOfMonth: "$localCreatedAt" },
+            [groupBy]: { [`$${groupBy}`]: "$localCreatedAt" },
           },
           averageRating: { $avg: "$rating" },
           highestRating: { $max: "$rating" },
@@ -269,216 +281,67 @@ const getRatingsTrend = async (productId) => {
           "_id.year": 1,
           "_id.month": 1,
           "_id.day": 1,
+          [`_id.${groupBy}`]: 1,
         },
       },
     ]);
-
-    const weeklyTrends = await Review.aggregate([
-      {
-        $match: {
-          product: new mongoose.Types.ObjectId(productId),
-          createdAt: {
-            $gte: startOfWeek,
-            $lte: endOfWeek,
-          },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
-            day: { $dayOfWeek: "$createdAt" },
-          },
-          averageRating: { $avg: "$rating" },
-          highestRating: { $max: "$rating" },
-          lowestRating: { $min: "$rating" },
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $sort: {
-          "_id.year": 1,
-          "_id.month": 1,
-          "_id.day": 1,
-        },
-      },
-    ]);
-
-    const dailyTrends = await Review.aggregate([
-      {
-        $match: {
-          product: new mongoose.Types.ObjectId(productId),
-          createdAt: {
-            $gte: startOfDay,
-            $lte: endOfDay,
-          },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
-            day: { $dayOfMonth: "$createdAt" },
-            hour: { $hour: "$createdAt" },
-          },
-          averageRating: { $avg: "$rating" },
-          highestRating: { $max: "$rating" },
-          lowestRating: { $min: "$rating" },
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $sort: {
-          "_id.year": 1,
-          "_id.month": 1,
-          "_id.day": 1,
-          "_id.hour": 1,
-        },
-      },
-    ]);
-
-    const quarterlyTrends = await Review.aggregate([
-      {
-        $match: {
-          product: new mongoose.Types.ObjectId(productId),
-          createdAt: {
-            $gte: startOfQuarter,
-            $lte: endOfQuarter,
-          },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
-            day: { $dayOfMonth: "$createdAt" },
-          },
-          averageRating: { $avg: "$rating" },
-          highestRating: { $max: "$rating" },
-          lowestRating: { $min: "$rating" },
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $sort: {
-          "_id.year": 1,
-          "_id.month": 1,
-          "_id.day": 1,
-        },
-      },
-    ]);
-
-    // Fill gaps for days with no reviews for the month
-    const filledMonthlyTrends = [];
-    for (let day = 1; day <= endOfMonth.getDate(); day++) {
-      const trendForDay = monthlyTrends.find((t) => t._id.day === day);
-      if (trendForDay) {
-        filledMonthlyTrends.push(trendForDay);
-      } else {
-        filledMonthlyTrends.push({
-          _id: {
-            year: currentDate.getFullYear(),
-            month: currentDate.getMonth() + 1, // Months are 0-based
-            day,
-          },
-          averageRating: null,
-          highestRating: null,
-          lowestRating: null,
-          count: 0,
-        });
-      }
-    }
-
-    // Fill gaps for days with no reviews for the week
-    const filledWeeklyTrends = [];
-    for (let day = 1; day <= 7; day++) {
-      const trendForDay = weeklyTrends.find((t) => t._id.day === day);
-      if (trendForDay) {
-        filledWeeklyTrends.push(trendForDay);
-      } else {
-        filledWeeklyTrends.push({
-          _id: {
-            year: currentDate.getFullYear(),
-            month: currentDate.getMonth() + 1, // Months are 0-based
-            day: day, // Day of the week (1-7)
-          },
-          averageRating: null,
-          highestRating: null,
-          lowestRating: null,
-          count: 0,
-        });
-      }
-    }
-
-    // Fill gaps for hours with no reviews for the day
-    const filledDailyTrends = [];
-    for (let hour = 0; hour < 24; hour++) {
-      const trendForHour = dailyTrends.find((t) => t._id.hour === hour);
-      if (trendForHour) {
-        filledDailyTrends.push(trendForHour);
-      } else {
-        filledDailyTrends.push({
-          _id: {
-            year: currentDate.getFullYear(),
-            month: currentDate.getMonth() + 1, // Months are 0-based
-            day: currentDate.getDate(),
-            hour,
-          },
-          averageRating: null,
-          highestRating: null,
-          lowestRating: null,
-          count: 0,
-        });
-      }
-    }
-
-    // Fill gaps for days with no reviews for the quarter
-    const filledQuarterlyTrends = [];
-    let current = new Date(startOfQuarter);
-    while (current <= endOfQuarter) {
-      const trendForDay = quarterlyTrends.find(
-        (t) =>
-          t._id.day === current.getDate() &&
-          t._id.month === current.getMonth() + 1
-      );
-      if (trendForDay) {
-        filledQuarterlyTrends.push(trendForDay);
-      } else {
-        filledQuarterlyTrends.push({
-          _id: {
-            year: current.getFullYear(),
-            month: current.getMonth() + 1, // Months are 0-based
-            day: current.getDate(),
-          },
-          averageRating: null,
-          highestRating: null,
-          lowestRating: null,
-          count: 0,
-        });
-      }
-      current.setDate(current.getDate() + 1); // Move to the next day
-    }
-
-    console.log({
-      monthly: filledMonthlyTrends,
-      weekly: filledWeeklyTrends,
-      daily: filledDailyTrends,
-      quarterly: filledQuarterlyTrends,
-    });
-
-    return {
-      daily: filledDailyTrends,
-      monthly: filledMonthlyTrends,
-      weekly: filledWeeklyTrends,
-      quarterly: filledQuarterlyTrends,
-    };
   } catch (err) {
     console.error("Error during aggregation: ", err.message);
     throw new Error("Unable to fetch ratings trend");
   }
+};
+
+const fillGaps = (trends, start, end, granularity) => {
+  const filledTrends = [];
+  let current = new Date(start);
+
+  switch (granularity) {
+    case "daily":
+      for (let hour = 0; hour < 24; hour++) {
+        const trendForHour = trends.find((t) => t._id.hour === hour);
+        if (trendForHour) {
+          filledTrends.push(trendForHour);
+        } else {
+          filledTrends.push(createDefaultTrend(current, granularity, hour));
+        }
+      }
+      break;
+
+    case "weekly":
+    case "monthly":
+      while (current <= end) {
+        const trendForDay = trends.find((t) => t._id.day === current.getDate());
+        if (trendForDay) {
+          filledTrends.push(trendForDay);
+        } else {
+          filledTrends.push(createDefaultTrend(current, granularity));
+        }
+        current.setDate(current.getDate() + 1);
+      }
+      break;
+  }
+
+  return filledTrends;
+};
+
+const createDefaultTrend = (date, granularity, hour = null) => {
+  const defaultTrend = {
+    _id: {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    },
+    averageRating: null,
+    highestRating: null,
+    lowestRating: null,
+    count: 0,
+  };
+
+  if (granularity === "daily") {
+    defaultTrend._id.hour = hour;
+  }
+
+  return defaultTrend;
 };
 
 module.exports = {

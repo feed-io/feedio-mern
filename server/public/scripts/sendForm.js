@@ -42,13 +42,16 @@ document.getElementById("submit-btn").addEventListener("click", function (e) {
     productId,
   });
 
-  fetch(`https://feedio.lol/api/collection-feedback/createReviewForWidget`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: data,
-  })
+  fetch(
+    `${process.env.CLIENT_URL}/api/collection-feedback/createReviewForWidget`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: data,
+    }
+  )
     .then((response) => {
       return response.text().then((text) => {
         if (!response.ok) {

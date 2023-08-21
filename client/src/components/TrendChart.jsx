@@ -1,8 +1,21 @@
 import { Line } from "react-chartjs-2";
 import { Typography, Box } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const TrendChart = ({ trendData, timeGranularity, setTimeGranularity }) => {
-  console.log(trendData, timeGranularity);
+const TrendChart = ({
+  trendData,
+  timeGranularity,
+  setTimeGranularity,
+  currentDateRange,
+  setCurrentDateRange,
+}) => {
+  console.log(
+    trendData,
+    timeGranularity,
+    currentDateRange,
+    setCurrentDateRange
+  );
 
   const lineChartOptions = {
     maintainAspectRatio: false,
@@ -43,18 +56,16 @@ const TrendChart = ({ trendData, timeGranularity, setTimeGranularity }) => {
         return Array.from({ length: 24 }, (_, i) => `${i}:00`);
       case "weekly":
         return [
-          "Sunday",
           "Monday",
           "Tuesday",
           "Wednesday",
           "Thursday",
           "Friday",
           "Saturday",
+          "Sunday",
         ];
       case "monthly":
         return Array.from({ length: 31 }, (_, i) => `${i + 1}`);
-      case "quarterly":
-        return ["Q1", "Q2", "Q3", "Q4"];
       default:
         return [];
     }
@@ -72,7 +83,7 @@ const TrendChart = ({ trendData, timeGranularity, setTimeGranularity }) => {
 
   const ensureLength = (data, length) => {
     while (data.length < length) {
-      data.push(0); // or any default value you want
+      data.push(0);
     }
     return data.slice(0, length);
   };
@@ -131,19 +142,71 @@ const TrendChart = ({ trendData, timeGranularity, setTimeGranularity }) => {
     });
   }
 
+  const handleGoBack = () => {
+    console.log("Current Date Range:", currentDateRange);
+    const newDateRange = { ...currentDateRange };
+
+    switch (timeGranularity) {
+      case "daily":
+        newDateRange.start.setDate(newDateRange.start.getDate() - 1);
+        newDateRange.end.setDate(newDateRange.end.getDate() - 1);
+        break;
+      case "weekly":
+        newDateRange.start.setDate(newDateRange.start.getDate() - 7);
+        newDateRange.end.setDate(newDateRange.end.getDate() - 7);
+        break;
+      case "monthly":
+        newDateRange.start.setMonth(newDateRange.start.getMonth() - 1);
+        newDateRange.end.setMonth(newDateRange.end.getMonth() - 1);
+        break;
+      default:
+        break;
+    }
+    setCurrentDateRange(newDateRange);
+  };
+
+  const handleGoForward = () => {
+    const newDateRange = { ...currentDateRange };
+    switch (timeGranularity) {
+      case "daily":
+        newDateRange.start.setDate(newDateRange.start.getDate() + 1);
+        newDateRange.end.setDate(newDateRange.end.getDate() + 1);
+        break;
+      case "weekly":
+        newDateRange.start.setDate(newDateRange.start.getDate() + 7);
+        newDateRange.end.setDate(newDateRange.end.getDate() + 7);
+        break;
+      case "monthly":
+        newDateRange.start.setMonth(newDateRange.start.getMonth() + 1);
+        newDateRange.end.setMonth(newDateRange.end.getMonth() + 1);
+        break;
+      default:
+        break;
+    }
+    setCurrentDateRange(newDateRange);
+  };
+
   return (
     <div>
       <Box mb={2}>
         <Typography variant="h6" color="textSecondary" gutterBottom>
           Ratings Trend Over Time
         </Typography>
+        <ArrowBackIosIcon
+          onClick={handleGoBack}
+          style={{ cursor: "pointer" }}
+        />
         <select value={timeGranularity} onChange={handleGranularityChange}>
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
-          <option value="quarterly">Quarterly</option>
         </select>
+        <ArrowForwardIosIcon
+          onClick={handleGoForward}
+          style={{ cursor: "pointer" }}
+        />
       </Box>
+
       <div style={{ height: "250px" }}>
         <Line
           data={{

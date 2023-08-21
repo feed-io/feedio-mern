@@ -23,6 +23,7 @@ import { Person, VerifiedUser, Payment, Delete } from "@mui/icons-material";
 
 import CreateRoomModal from "../components/CreateRoomModal";
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
@@ -37,8 +38,7 @@ const Dashboard = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}/products/all`,
-          // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/all`,
+          `${SERVER_URL}/api/users/${auth.userId}/products/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -59,8 +59,7 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}`,
-          // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
+          `${SERVER_URL}/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -82,8 +81,7 @@ const Dashboard = () => {
 
     try {
       await axios.delete(
-        `http://localhost:8080/api/users/${auth.userId}/products/${productId}`,
-        // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}`,
+        `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
         {
           headers: {
             Authorization: "Bearer " + auth.token,
@@ -104,7 +102,7 @@ const Dashboard = () => {
   const handleManageBilling = async () => {
     try {
       const response = await axios.post(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/payments/create-customer-portal-session`,
+        `${SERVER_URL}/api/users/${auth.userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {
