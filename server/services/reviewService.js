@@ -238,8 +238,6 @@ const getRatingsTrend = async (productId, granularity, startDate, endDate) => {
   return trends;
 };
 
-// ... [rest of the functions and module exports]
-
 const getTrendsForPeriod = async (productId, start, end, groupBy) => {
   try {
     const timezoneOffset = new Date().getTimezoneOffset();
