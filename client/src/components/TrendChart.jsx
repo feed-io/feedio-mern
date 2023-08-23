@@ -62,10 +62,12 @@ const TrendChart = ({
           "Thursday",
           "Friday",
           "Saturday",
+
           "Sunday",
         ];
       case "monthly":
         return Array.from({ length: 31 }, (_, i) => `${i + 1}`);
+
       default:
         return [];
     }
@@ -83,7 +85,9 @@ const TrendChart = ({
 
   const ensureLength = (data, length) => {
     while (data.length < length) {
+
       data.push(0);
+
     }
     return data.slice(0, length);
   };
@@ -192,10 +196,7 @@ const TrendChart = ({
         <Typography variant="h6" color="textSecondary" gutterBottom>
           Ratings Trend Over Time
         </Typography>
-        <ArrowBackIosIcon
-          onClick={handleGoBack}
-          style={{ cursor: "pointer" }}
-        />
+
         <select value={timeGranularity} onChange={handleGranularityChange}>
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>

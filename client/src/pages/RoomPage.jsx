@@ -18,7 +18,9 @@ import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
 import { AuthContext } from "../context/auth-context";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 
 const RoomPage = () => {
   const { productId } = useParams();
@@ -43,7 +45,9 @@ const RoomPage = () => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
+
           `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
+
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -61,6 +65,7 @@ const RoomPage = () => {
       fetchReviews();
     }
   }, [auth.userId, auth.token, product, refreshTrigger]);
+
 
   const fetchTrendData = async () => {
     try {
@@ -82,6 +87,7 @@ const RoomPage = () => {
       console.log("Error fetching ratings trend data:", error.message);
     }
   };
+
 
   useEffect(() => {
     fetchTrendData();
@@ -120,7 +126,10 @@ const RoomPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
+
           `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
+
+
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -217,9 +226,7 @@ const RoomPage = () => {
       },
     ],
   };
-
   console.log(words);
-
   return (
     <>
       <LayoutDashboard>
@@ -252,8 +259,10 @@ const RoomPage = () => {
                   trendData={trendData}
                   timeGranularity={timeGranularity}
                   setTimeGranularity={setTimeGranularity}
+
                   currentDateRange={currentDateRange}
                   setCurrentDateRange={setCurrentDateRange}
+
                   words={words}
                   sentimentData={sentimentData}
                   handleSpaceCreated={handleSpaceCreated}

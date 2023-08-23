@@ -188,6 +188,7 @@ Date.prototype.getWeek = function () {
   return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 };
 
+
 const getRatingsTrend = async (productId, granularity, startDate, endDate) => {
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
@@ -232,6 +233,8 @@ const getRatingsTrend = async (productId, granularity, startDate, endDate) => {
     default:
       throw new Error("Invalid granularity");
   }
+};
+
 
   console.log(trends);
 
@@ -250,6 +253,7 @@ const getTrendsForPeriod = async (productId, start, end, groupBy) => {
         $match: {
           product: new mongoose.Types.ObjectId(productId),
           createdAt: {
+
             $gte: start,
             $lte: end,
           },
@@ -265,6 +269,7 @@ const getTrendsForPeriod = async (productId, start, end, groupBy) => {
       {
         $group: {
           _id: {
+
             year: { $year: "$localCreatedAt" },
             month: { $month: "$localCreatedAt" },
             day: { $dayOfMonth: "$localCreatedAt" },
@@ -281,15 +286,18 @@ const getTrendsForPeriod = async (productId, start, end, groupBy) => {
           "_id.year": 1,
           "_id.month": 1,
           "_id.day": 1,
+
           [`_id.${groupBy}`]: 1,
         },
       },
     ]);
+
   } catch (err) {
     console.error("Error during aggregation: ", err.message);
     throw new Error("Unable to fetch ratings trend");
   }
 };
+
 
 const fillGaps = (trends, start, end, granularity) => {
   const filledTrends = [];
@@ -343,6 +351,7 @@ const createDefaultTrend = (date, granularity, hour = null) => {
 
   return defaultTrend;
 };
+
 
 module.exports = {
   create,

@@ -45,8 +45,10 @@ const EditRoomModal = (props) => {
 
     try {
       await axios.put(
+
         `${SERVER_URL}/api/users/${auth.userId}/products/${props.product._id}`,
-        // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${props.product._id}`,
+
+
         {
           name: newProductName,
           header: newProductHeader,

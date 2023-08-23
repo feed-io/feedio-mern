@@ -30,6 +30,7 @@ const NavBar = () => {
     if (auth.userId) {
       axios
         .get(`${SERVER_URL}/api/users/${auth.userId}`, {
+
           headers: {
             Authorization: "Bearer " + auth.token,
           },

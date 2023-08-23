@@ -90,7 +90,9 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
+
           `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
+
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -110,7 +112,12 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
   const handleDelete = async (reviewId) => {
     try {
       await axios.delete(
+
         `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
+
+
+
+
         {
           headers: {
             Authorization: "Bearer " + token,
