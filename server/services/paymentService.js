@@ -21,8 +21,8 @@ const createCheckoutSession = async (userId) => {
     line_items: [{ price: process.env.PRICE_ID, quantity: 1 }],
     mode: "subscription",
     subscription_data: { trial_period_days: 14 },
-    success_url: `https://feedio.lol/success`,
-    cancel_url: `https://feedio.lol/cancel`,
+    success_url: `${process.env.CLIENT_URL}/success`,
+    cancel_url: `${process.env.CLIENT_URL}/cancel`,
     metadata: { userId: userId },
   });
 
@@ -36,7 +36,7 @@ const createCustomerPortalSession = async (userId) => {
   }
   const session = await stripe.billingPortal.sessions.create({
     customer: user.stripeCustomerId,
-    return_url: "https://feedio.lol/dashboard",
+    return_url: `${process.env.CLIENT_URL}/dashboard`,
   });
   return session;
 };

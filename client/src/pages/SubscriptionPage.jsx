@@ -15,6 +15,7 @@ import {
 import { Star, Cancel, Payment } from "@mui/icons-material";
 
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const tiers = [
   {
@@ -74,7 +75,7 @@ const SubscriptionPage = () => {
       navigate("/dashboard");
     } else {
       const response = await axios.post(
-        `https://feedio.lol/api/users/${userId}/payments/create-checkout-session`,
+        `${SERVER_URL}/api/users/${userId}/payments/create-checkout-session`,
         {},
         {
           headers: {
@@ -96,7 +97,7 @@ const SubscriptionPage = () => {
   const handleUnsubscribe = async () => {
     try {
       const response = await axios.post(
-        `https://feedio.lol/api/users/${userId}/payments/cancel-subscription`,
+        `${SERVER_URL}/api/users/${userId}/payments/cancel-subscription`,
         {},
         {
           headers: {
@@ -115,7 +116,7 @@ const SubscriptionPage = () => {
   const handleManageBilling = async () => {
     try {
       const response = await axios.post(
-        `https://feedio.lol/api/users/${userId}/payments/create-customer-portal-session`,
+        `${SERVER_URL}/api/users/${userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {
@@ -136,8 +137,8 @@ const SubscriptionPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${userId}`,
-          // `https://feedio.lol/api/users/${userId}`,
+
+          `${SERVER_URL}/api/users/${userId}`,
           {
             headers: {
               Authorization: "Bearer " + token,

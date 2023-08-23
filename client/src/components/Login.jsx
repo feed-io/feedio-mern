@@ -16,6 +16,7 @@ import { VpnKey } from "@mui/icons-material/";
 
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Login = (props) => {
   const { values, errors, handleChange } = useValidation();
@@ -27,8 +28,9 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/login",
-        // "https://feedio-server.onrender.com/api/users/login",
+
+        `${SERVER_URL}/api/users/login`,
+
         values,
         { headers: { "Content-Type": "application/json" } }
       );

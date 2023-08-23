@@ -87,7 +87,7 @@ const FeedbackSection = ({
                   backgroundColor: "#FfffFF",
                 }}>
                 <CardContent>
-                  <WordCloud words={words} />
+                  <WordCloud sentimentData={sentimentData} words={words} />
                 </CardContent>
               </Card>
             </Grid>

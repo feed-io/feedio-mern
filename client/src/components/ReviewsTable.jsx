@@ -30,6 +30,7 @@ import MailOutline from "@mui/icons-material/MailOutline";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 
 import Empty from "../assets/empty.svg";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const headCells = [
   {
@@ -89,8 +90,9 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
-          // `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
+
+          `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
+
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -110,8 +112,12 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
   const handleDelete = async (reviewId) => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
-        // `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
+
+        `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
+
+
+
+
         {
           headers: {
             Authorization: "Bearer " + token,

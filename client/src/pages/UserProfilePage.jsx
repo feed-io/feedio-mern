@@ -20,6 +20,7 @@ import axios from "axios";
 
 import DeleteUserModal from "../components/DeleteUserModal";
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const UserProfilePage = () => {
   const [email, setEmail] = useState("");
@@ -37,8 +38,7 @@ const UserProfilePage = () => {
     const loadData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${auth.userId}`,
-          // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
+          `${SERVER_URL}/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -81,16 +81,11 @@ const UserProfilePage = () => {
       updateData.password = newPassword;
     }
     try {
-      await axios.put(
-        `http://localhost:8080/api/users/${auth.userId}`,
-        // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
-        updateData,
-        {
-          headers: {
-            Authorization: "Bearer " + auth.token,
-          },
-        }
-      );
+      await axios.put(`${SERVER_URL}/api/users/${auth.userId}`, updateData, {
+        headers: {
+          Authorization: "Bearer " + auth.token,
+        },
+      });
 
       setSnackbarOpen(true);
     } catch (error) {

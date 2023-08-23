@@ -17,6 +17,7 @@ import { AuthContext } from "../context/auth-context";
 import AuthModal from "./AuthModal";
 import FeedioLogo from "../assets/feedioLogo.svg";
 import { useTheme } from "@mui/material";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
@@ -28,8 +29,8 @@ const NavBar = () => {
   useEffect(() => {
     if (auth.userId) {
       axios
-        .get(`http://localhost:8080/api/users/${auth.userId}`, {
-          // .get(`https://feedio-server.onrender.com/api/users/${auth.userId}`, {
+        .get(`${SERVER_URL}/api/users/${auth.userId}`, {
+
           headers: {
             Authorization: "Bearer " + auth.token,
           },

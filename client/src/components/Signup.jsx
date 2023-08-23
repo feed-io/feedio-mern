@@ -11,11 +11,10 @@ import {
   Alert,
   Box,
 } from "@mui/material";
-
 import { SensorOccupied } from "@mui/icons-material";
-
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const SignUp = (props) => {
   const { values, errors, handleChange } = useValidation();
@@ -28,8 +27,9 @@ const SignUp = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/register",
-        // "https://feedio-server.onrender.com/api/users/register",
+
+        `${SERVER_URL}/api/users/register`,
+
         values,
         {
           headers: { "Content-Type": "application/json" },

@@ -14,6 +14,7 @@ import {
 import { Info } from "@mui/icons-material";
 
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const EditRoomModal = (props) => {
   const [questions, setQuestions] = useState(props.product.questions || [""]);
@@ -44,8 +45,10 @@ const EditRoomModal = (props) => {
 
     try {
       await axios.put(
-        `http://localhost:8080/api/users/${auth.userId}/products/${props.product._id}`,
-        // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${props.product._id}`,
+
+        `${SERVER_URL}/api/users/${auth.userId}/products/${props.product._id}`,
+
+
         {
           name: newProductName,
           header: newProductHeader,

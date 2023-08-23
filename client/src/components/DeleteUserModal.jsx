@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const DeleteUserModal = (props) => {
   const { onOpen, onClose } = props;
@@ -20,15 +21,13 @@ const DeleteUserModal = (props) => {
     e.preventDefault();
 
     try {
-      await axios.delete(
-        `http://localhost:8080/api/users/${auth.userId}`,
-        // `https://feedio-server.onrender.com/api/users/${auth.userId}`,
-        {
-          headers: {
-            Authorization: "Bearer " + auth.token,
-          },
-        }
-      );
+
+      await axios.delete(`${SERVER_URL}api/users/${auth.userId}`, {
+        headers: {
+          Authorization: "Bearer " + auth.token,
+        },
+      });
+
 
       onClose();
     } catch (error) {

@@ -15,7 +15,10 @@ const checkAuth = require("./middleware/check-auth");
 
 const app = express();
 
-dotenv.config();
+
+const envPath = path.join(__dirname, ".env");
+dotenv.config({ path: envPath });
+
 
 app.use(cors());
 
@@ -27,10 +30,13 @@ app.use(
   })
 );
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Could not connect to MongoDB", err));
 
 app.use((req, res, next) => {
   console.log(`${req.method} request to ${req.url}`);
