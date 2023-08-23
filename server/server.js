@@ -15,10 +15,8 @@ const checkAuth = require("./middleware/check-auth");
 
 const app = express();
 
-
 const envPath = path.join(__dirname, ".env");
 dotenv.config({ path: envPath });
-
 
 app.use(cors());
 

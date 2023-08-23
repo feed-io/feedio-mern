@@ -30,11 +30,6 @@ router.put(
       .not()
       .isEmpty()
       .withMessage("Product name must not be empty"),
-    // check("imageUrl")
-    //   .optional()
-    //   .not()
-    //   .isEmpty()
-    //   .withMessage("Image URL must not be empty"),
     check("header")
       .optional()
       .not()
