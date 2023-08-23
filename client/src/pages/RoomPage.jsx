@@ -218,6 +218,8 @@ const RoomPage = () => {
     ],
   };
 
+  console.log(words);
+
   return (
     <>
       <LayoutDashboard>
