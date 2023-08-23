@@ -1,5 +1,51 @@
 import { createTheme } from "@mui/material/styles";
 
+const getButtonVariants = (palette) => [
+  {
+    props: { variant: "primary" },
+    style: {
+      backgroundColor: palette.primary.main,
+      color: palette.primary.contrastText,
+      "&:hover": {
+        backgroundColor: palette.warning.main,
+        color: palette.primary.main,
+      },
+    },
+  },
+  {
+    props: { variant: "secondary" },
+    style: {
+      backgroundColor: palette.secondary.main,
+      color: palette.primary.contrastText,
+      "&:hover": {
+        backgroundColor: palette.third.main,
+        color: palette.primary.main,
+      },
+    },
+  },
+  {
+    props: { variant: "warning" },
+    style: {
+      backgroundColor: palette.primary.main,
+      color: palette.primary.contrastText,
+      "&:hover": {
+        backgroundColor: palette.error.main,
+        color: palette.primary.main,
+      },
+    },
+  },
+  {
+    props: { variant: "contrast" },
+    style: {
+      backgroundColor: palette.primary.contrastText,
+      color: palette.primary.main,
+      "&:hover": {
+        backgroundColor: palette.grey[200],
+      },
+    },
+  },
+];
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -59,15 +105,17 @@ const theme = createTheme({
       fontWeight: 200, // Nunito Extra-Light
     },
   },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: "25px",
-        },
+});
+
+theme.components = {
+  MuiButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: "25px",
       },
     },
+    variants: getButtonVariants(theme.palette),
   },
-});
+};
 
 export default theme;

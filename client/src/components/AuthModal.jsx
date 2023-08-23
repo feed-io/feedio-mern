@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 
 import SignUp from "./Signup";
 import Login from "./Login";
+import Logo from "../assets/logo.svg";
+import { Box, useTheme } from "@mui/material";
 
 const AuthModal = ({ open, handleClose }) => {
   const [hasAccount, setHasAccount] = useState(true);
-
+  const theme = useTheme();
   const handleCreateAccount = () => {
     setHasAccount(false);
   };
@@ -21,7 +22,22 @@ const AuthModal = ({ open, handleClose }) => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle></DialogTitle>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.palette.success.main,
+          paddingTop: "16px",
+          paddingBottom: "16px",
+        }}>
+        <img
+          src={Logo}
+          alt="Sentiment"
+          style={{ width: "100px", height: "100px" }}
+        />
+      </Box>
       <DialogContent>
         {hasAccount ? (
           <Login handleClose={handleClose} />

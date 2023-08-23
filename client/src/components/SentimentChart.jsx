@@ -4,11 +4,21 @@ import { Doughnut } from "react-chartjs-2";
 import { Typography } from "@mui/material";
 
 const SentimentChart = ({ sentimentData }) => {
+  const modifiedSentimentData = {
+    ...sentimentData,
+    datasets: sentimentData.datasets.map((dataset) => ({
+      ...dataset,
+      backgroundColor: ["#00D37F", "#D2C4FB", "#FF3864"],
+      hoverBackgroundColor: ["#00B36B", "#B1A2E3", "#FF165D"],
+    })),
+  };
+
   const chartOptions = {
     responsive: true,
+
     plugins: {
       legend: {
-        position: "top",
+        position: "bottom",
       },
     },
   };
@@ -18,7 +28,7 @@ const SentimentChart = ({ sentimentData }) => {
       <Typography variant="h6" color="textSecondary" gutterBottom>
         Sentiment Distribution
       </Typography>
-      <Doughnut data={sentimentData} options={chartOptions} />
+      <Doughnut data={modifiedSentimentData} options={chartOptions} />
     </div>
   );
 };

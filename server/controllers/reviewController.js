@@ -106,11 +106,20 @@ exports.getWordCloudData = async (req, res, next) => {
 exports.getRatingsTrend = async (req, res) => {
   const productId = req.mainParams.pid;
   const granularity = req.query.granularity;
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
+
   try {
-    const trends = await reviewService.getRatingsTrend(productId, granularity);
+    const trends = await reviewService.getRatingsTrend(
+      productId,
+      granularity,
+      startDate,
+      endDate
+    );
 
     res.status(200).json(trends);
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "Something went wrong", error: error.message });

@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const SubmitFeedbackModal = (props) => {
   const [name, setName] = useState("");
@@ -54,8 +55,8 @@ const SubmitFeedbackModal = (props) => {
     };
 
     try {
-      const response = await axios.post(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
+      await axios.post(
+        `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
         reviewData,
         {
           headers: {

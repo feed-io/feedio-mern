@@ -15,13 +15,13 @@ import {
   Paper,
   Chip,
   Collapse,
+  useTheme,
 } from "@mui/material";
 import {
   KeyboardArrowDown,
   KeyboardArrowUp,
   Delete,
   Star,
-  FilterList,
 } from "@mui/icons-material";
 import Rating from "@mui/material/Rating";
 import Favorite from "@mui/icons-material/Favorite";
@@ -30,6 +30,7 @@ import MailOutline from "@mui/icons-material/MailOutline";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 
 import Empty from "../assets/empty.svg";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const headCells = [
   {
@@ -77,6 +78,7 @@ const headCells = [
 ];
 
 const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
+  const theme = useTheme();
   const [reviews, setReviews] = useState([]);
   const [openId, setOpenId] = useState(null);
   const [order, setOrder] = useState("asc");
@@ -88,7 +90,7 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
+          `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -108,7 +110,7 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
   const handleDelete = async (reviewId) => {
     try {
       await axios.delete(
-        `https://feedio-server.onrender.com/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
+        `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -199,9 +201,9 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
 
     return (
       <TableHead
-        sx={(theme) => ({
-          backgroundColor: theme.palette.secondary.main,
-        })}>
+        sx={{
+          backgroundColor: theme.palette.success.main,
+        }}>
         <TableRow>
           {/* Placeholder cell for expand/collapse icon */}
           <TableCell></TableCell>
@@ -423,12 +425,12 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={(theme) => ({
-            backgroundColor: theme.palette.secondary.main,
+          sx={{
+            backgroundColor: theme.palette.success.main,
             color: "white",
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
-          })}
+          }}
         />
       </Paper>
     </Box>

@@ -8,13 +8,12 @@ import {
   IconButton,
   Button,
   Dialog,
-  DialogTitle,
   Fab,
   DialogContent,
 } from "@mui/material";
 import { Info, Add } from "@mui/icons-material";
-
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const CreateRoomForm = (props) => {
   const [questions, setQuestions] = useState([""]);
@@ -48,8 +47,9 @@ const CreateRoomForm = (props) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/products/createProduct`,
+      await axios.post(
+        `${SERVER_URL}/api/users/${auth.userId}/products/createProduct`,
+        // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/createProduct`,
         {
           name: newProductName,
           // imageUrl: newProductImageUrl,

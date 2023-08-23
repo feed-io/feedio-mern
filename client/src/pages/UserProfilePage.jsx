@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Snackbar,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -19,6 +20,7 @@ import axios from "axios";
 
 import DeleteUserModal from "../components/DeleteUserModal";
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const UserProfilePage = () => {
   const [email, setEmail] = useState("");
@@ -30,12 +32,13 @@ const UserProfilePage = () => {
   const [notifyAccount, setNotifyAccount] = useState(true);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const auth = useContext(AuthContext);
+  const theme = useTheme();
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}`,
+          `${SERVER_URL}/api/users/${auth.userId}`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -55,6 +58,17 @@ const UserProfilePage = () => {
     loadData();
   }, [auth.token, auth.userId]);
 
+  const getInitials = (name) => {
+    if (!name) return "";
+    const names = name.split(" ");
+    const initials = names.map((n) => n.charAt(0)).join("");
+    return initials.toUpperCase();
+  };
+
+  const initials = getInitials(name);
+
+  const avatarUrl = `https://ui-avatars.com/api/?name=${initials}&background=D2C4FB&color=0F2830`;
+
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     const updateData = {
@@ -67,15 +81,11 @@ const UserProfilePage = () => {
       updateData.password = newPassword;
     }
     try {
-      await axios.put(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}`,
-        updateData,
-        {
-          headers: {
-            Authorization: "Bearer " + auth.token,
-          },
-        }
-      );
+      await axios.put(`${SERVER_URL}/api/users/${auth.userId}`, updateData, {
+        headers: {
+          Authorization: "Bearer " + auth.token,
+        },
+      });
 
       setSnackbarOpen(true);
     } catch (error) {
@@ -108,7 +118,8 @@ const UserProfilePage = () => {
             maxWidth: 800,
             bg: "background.paper",
             p: 4,
-            borderRadius: 2,
+            borderRadius: 8,
+            bgcolor: theme.palette.primary.contrastText,
             boxShadow: 1,
           }}>
           <Box sx={{ textAlign: "center" }}>
@@ -117,7 +128,7 @@ const UserProfilePage = () => {
                 position: "relative",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center", // This will center the Typography
+                justifyContent: "center",
               }}>
               <Typography
                 variant="h5"
@@ -126,8 +137,7 @@ const UserProfilePage = () => {
                 Profile
               </Typography>
               <Button
-                variant="contained"
-                color="secondary"
+                variant="secondary"
                 component={RouterLink}
                 to="/dashboard"
                 sx={{
@@ -153,25 +163,13 @@ const UserProfilePage = () => {
               }}>
               <Avatar
                 alt={name}
-                src={user.image}
+                src={avatarUrl}
                 sx={{
                   width: { xs: 100, sm: 80 },
                   height: { xs: 100, sm: 80 },
                   mb: 2,
                 }}
               />
-              <input
-                type="file"
-                accept="image/*"
-                name="newAvatarURL"
-                id="newAvatarURL"
-                style={{ display: "none" }}
-              />
-              <label htmlFor="newAvatarURL">
-                <Button variant="outlined" component="span" sx={{ mb: 4 }}>
-                  Change Avatar
-                </Button>
-              </label>
 
               <TextField
                 margin="normal"
@@ -232,15 +230,13 @@ const UserProfilePage = () => {
                   justifyContent: "center",
                 }}>
                 <Button
-                  variant="contained"
-                  color="primary"
+                  variant="primary"
                   onClick={handleUpdateSubmit}
                   sx={{ mr: 2, mb: { xs: 2, sm: 0 } }}>
                   Save Changes
                 </Button>
                 <Button
-                  variant="contained"
-                  color="error"
+                  variant="warning"
                   onClick={handleDeleteOpen}
                   sx={{ mr: 2, mb: { xs: 2, sm: 0 } }}>
                   Delete User

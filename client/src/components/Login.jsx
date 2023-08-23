@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import {
   Button,
   TextField,
@@ -13,11 +12,11 @@ import {
   Checkbox,
   Box,
 } from "@mui/material";
-
 import { VpnKey } from "@mui/icons-material/";
 
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Login = (props) => {
   const { values, errors, handleChange } = useValidation();
@@ -29,7 +28,7 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://feedio-server.onrender.com/api/users/login",
+        `${SERVER_URL}/api/users/login`,
         values,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -55,6 +54,8 @@ const Login = (props) => {
           flexDirection: "column",
           alignItems: "center",
         }}>
+        {/* FeedioLogo Section */}
+
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <VpnKey />
         </Avatar>
@@ -97,12 +98,7 @@ const Login = (props) => {
             />
           </Box>
           <Box sx={{ padding: "10px" }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" variant="primary">
               Login
             </Button>
           </Box>

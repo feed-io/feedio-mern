@@ -15,6 +15,7 @@ import {
 import { Star, Cancel, Payment } from "@mui/icons-material";
 
 import { AuthContext } from "../context/auth-context";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const tiers = [
   {
@@ -66,7 +67,7 @@ const tiers = [
 const SubscriptionPage = () => {
   const auth = useContext(AuthContext);
   const { userId, token, membershipStatus } = auth;
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
 
   const handleCheckout = async (plan) => {
@@ -74,7 +75,7 @@ const SubscriptionPage = () => {
       navigate("/dashboard");
     } else {
       const response = await axios.post(
-        `https://feedio.lol/api/users/${userId}/payments/create-checkout-session`,
+        `${SERVER_URL}/api/users/${userId}/payments/create-checkout-session`,
         {},
         {
           headers: {
@@ -96,7 +97,7 @@ const SubscriptionPage = () => {
   const handleUnsubscribe = async () => {
     try {
       const response = await axios.post(
-        `https://feedio.lol/api/users/${userId}/payments/cancel-subscription`,
+        `${SERVER_URL}/api/users/${userId}/payments/cancel-subscription`,
         {},
         {
           headers: {
@@ -115,7 +116,7 @@ const SubscriptionPage = () => {
   const handleManageBilling = async () => {
     try {
       const response = await axios.post(
-        `https://feedio.lol/api/users/${userId}/payments/create-customer-portal-session`,
+        `${SERVER_URL}/api/users/${userId}/payments/create-customer-portal-session`,
         {},
         {
           headers: {
@@ -136,7 +137,8 @@ const SubscriptionPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `https://feedio.lol/api/users/${userId}`,
+          `${SERVER_URL}/api/users/${userId}`,
+
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -144,10 +146,11 @@ const SubscriptionPage = () => {
           }
         );
         if (response.data && response.data.user) {
-          setEmail(response.data.user.email);
+          console.log(response);
+          setUser(response.data.user);
         }
       } catch (error) {
-        console.error(error);
+        console.error(error.message);
       }
     };
     fetchUserData();
@@ -168,7 +171,7 @@ const SubscriptionPage = () => {
           Subscription Plan
         </Typography>
         <Typography variant="body1" gutterBottom>
-          Hi {email}
+          Hi {user.name}
         </Typography>
         <Typography variant="body1" gutterBottom>
           You are currently on the {membershipStatus} plan
