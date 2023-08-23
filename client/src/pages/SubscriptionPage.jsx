@@ -137,8 +137,8 @@ const SubscriptionPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `${SERVER_URL}/api/users/${userId}`,
 
+          `${SERVER_URL}/api/users/${userId}`,
           {
             headers: {
               Authorization: "Bearer " + token,

@@ -48,7 +48,9 @@ const CreateRoomForm = (props) => {
 
     try {
       await axios.post(
+
         `${SERVER_URL}/api/users/${auth.userId}/products/createProduct`,
+
         // `https://feedio-server.onrender.com/api/users/${auth.userId}/products/createProduct`,
         {
           name: newProductName,

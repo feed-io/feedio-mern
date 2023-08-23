@@ -23,7 +23,9 @@ const CollectionFeedbackModal = (props) => {
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
   const generateIframeLink = (widgetId) => {
+
     const baseIframeUrl = `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+
 
     let params = [];
 

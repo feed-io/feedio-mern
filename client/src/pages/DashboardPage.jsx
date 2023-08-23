@@ -39,6 +39,7 @@ const Dashboard = () => {
       try {
         const response = await axios.get(
           `${SERVER_URL}/api/users/${auth.userId}/products/all`,
+
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -59,7 +60,9 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
+
           `${SERVER_URL}/api/users/${auth.userId}`,
+
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -81,7 +84,9 @@ const Dashboard = () => {
 
     try {
       await axios.delete(
+
         `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
+
         {
           headers: {
             Authorization: "Bearer " + auth.token,

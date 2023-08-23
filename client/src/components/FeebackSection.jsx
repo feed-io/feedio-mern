@@ -27,7 +27,7 @@ const FeedbackSection = ({
   token,
 }) => {
   const [showAnalytics, setShowAnalytics] = useState(false);
-  console.log(words, sentimentData);
+
   return (
     <Box py={4}>
       <Container sx={{ width: "100%" }}>

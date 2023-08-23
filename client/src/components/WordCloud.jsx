@@ -1,6 +1,7 @@
 import React from "react";
 import { Bubble } from "react-chartjs-2";
 import Typography from "@mui/material/Typography";
+
 import { useTheme } from "@mui/material";
 
 const WordBubbleChart = (props) => {
@@ -41,6 +42,7 @@ const WordBubbleChart = (props) => {
         display: false, // Hide legend as it's not used
       },
     },
+
   };
 
   return (

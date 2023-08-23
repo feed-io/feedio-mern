@@ -27,7 +27,9 @@ const SignUp = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
+
         `${SERVER_URL}/api/users/register`,
+
         values,
         {
           headers: { "Content-Type": "application/json" },

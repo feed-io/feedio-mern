@@ -21,11 +21,13 @@ const DeleteUserModal = (props) => {
     e.preventDefault();
 
     try {
+
       await axios.delete(`${SERVER_URL}api/users/${auth.userId}`, {
         headers: {
           Authorization: "Bearer " + auth.token,
         },
       });
+
 
       onClose();
     } catch (error) {
