@@ -16,8 +16,8 @@ import { VpnKey } from "@mui/icons-material/";
 
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
-// const SERVER_URL = process.env.REACT_APP_SERVER_URL;
-
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+console.log(SERVER_URL);
 const Login = (props) => {
   const { values, errors, handleChange } = useValidation();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `/api/users/login`,
+        `${SERVER_URL}/api/users/login`,
 
         values,
         { headers: { "Content-Type": "application/json" } }

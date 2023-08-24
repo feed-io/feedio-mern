@@ -21,7 +21,6 @@ import axios from "axios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-
 const RoomPage = () => {
   const { productId } = useParams();
   const auth = useContext(AuthContext);
@@ -45,7 +44,6 @@ const RoomPage = () => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-
           `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
 
           {
@@ -66,7 +64,6 @@ const RoomPage = () => {
     }
   }, [auth.userId, auth.token, product, refreshTrigger]);
 
-
   const fetchTrendData = async () => {
     try {
       const response = await fetch(
@@ -81,13 +78,11 @@ const RoomPage = () => {
       );
 
       const data = await response.json();
-      console.log("trendData", data);
       setTrendData(data);
     } catch (error) {
       console.log("Error fetching ratings trend data:", error.message);
     }
   };
-
 
   useEffect(() => {
     fetchTrendData();
@@ -126,9 +121,7 @@ const RoomPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-
           `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
-
 
           {
             headers: {
@@ -226,7 +219,7 @@ const RoomPage = () => {
       },
     ],
   };
-  console.log(words);
+
   return (
     <>
       <LayoutDashboard>
@@ -259,10 +252,8 @@ const RoomPage = () => {
                   trendData={trendData}
                   timeGranularity={timeGranularity}
                   setTimeGranularity={setTimeGranularity}
-
                   currentDateRange={currentDateRange}
                   setCurrentDateRange={setCurrentDateRange}
-
                   words={words}
                   sentimentData={sentimentData}
                   handleSpaceCreated={handleSpaceCreated}

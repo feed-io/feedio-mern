@@ -29,7 +29,7 @@ const create = async ({
   if (!user) {
     throw new Error("User not found");
   }
-  console.log("date", startDate, endDate);
+
   const sentimentAnalysis = sentiment.analyze(content);
 
   const newReview = new Review({
@@ -232,8 +232,6 @@ const getRatingsTrend = async (productId, granularity, startDate, endDate) => {
     default:
       throw new Error("Invalid granularity");
   }
-
-  console.log(trends);
 
   return trends;
 };

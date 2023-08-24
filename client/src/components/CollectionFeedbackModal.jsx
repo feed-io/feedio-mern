@@ -23,9 +23,7 @@ const CollectionFeedbackModal = (props) => {
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
   const generateIframeLink = (widgetId) => {
-
     const baseIframeUrl = `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
-
 
     let params = [];
 
@@ -59,7 +57,6 @@ const CollectionFeedbackModal = (props) => {
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
       if (error.response) {
-        console.log(error);
         console.error("Response Data:", error.response.data);
         console.error("Response Status:", error.response.status);
         console.error("Response Headers:", error.response.headers);
