@@ -10,13 +10,6 @@ const TrendChart = ({
   currentDateRange,
   setCurrentDateRange,
 }) => {
-  console.log(
-    trendData,
-    timeGranularity,
-    currentDateRange,
-    setCurrentDateRange
-  );
-
   const lineChartOptions = {
     maintainAspectRatio: false,
     scales: {
@@ -85,9 +78,7 @@ const TrendChart = ({
 
   const ensureLength = (data, length) => {
     while (data.length < length) {
-
       data.push(0);
-
     }
     return data.slice(0, length);
   };
@@ -147,7 +138,6 @@ const TrendChart = ({
   }
 
   const handleGoBack = () => {
-    console.log("Current Date Range:", currentDateRange);
     const newDateRange = { ...currentDateRange };
 
     switch (timeGranularity) {

@@ -136,17 +136,12 @@ const SubscriptionPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-
-          `${SERVER_URL}/api/users/${userId}`,
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axios.get(`${SERVER_URL}/api/users/${userId}`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         if (response.data && response.data.user) {
-          console.log(response);
           setUser(response.data.user);
         }
       } catch (error) {
