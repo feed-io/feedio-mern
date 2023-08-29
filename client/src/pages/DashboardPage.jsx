@@ -1,44 +1,50 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
-  Typography,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Container,
-  useMediaQuery,
-  Button,
+  Grid,
+  Typography,
+  Snackbar,
   IconButton,
   useTheme,
-  Divider,
 } from "@mui/material";
-import { Person, VerifiedUser, Payment, Delete } from "@mui/icons-material";
-
-import CreateRoomModal from "../components/CreateRoomModal";
+import LayoutDashboard from "../components/LayoutDashboard";
+import SidebarSection from "../components/SidebarSection";
+import FeedbackSection from "../components/FeebackSection";
+import CreateWidgetModal from "../components/CreateWidgetModal";
+import EditRoomModal from "../components/EditRoomModal";
+import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
 import { AuthContext } from "../context/auth-context";
+import { Close } from "@mui/icons-material";
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const Dashboard = () => {
-  const [products, setProducts] = useState([]);
-  const [user, setUser] = useState([]);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+const DashboardPage = () => {
+  const { productId } = useParams();
   const auth = useContext(AuthContext);
+  const [product, setProduct] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCollModalOpen, setIsCollModalOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentDateRange, setCurrentDateRange] = useState({
+    start: new Date(),
+    end: new Date(),
+  });
+  const [reviews, setReviews] = useState([]);
+  const [trendData, setTrendData] = useState([]);
+  const [wordCounts, setWordCounts] = useState({});
+  const [timeGranularity, setTimeGranularity] = useState("monthly");
   const theme = useTheme();
-  const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `${SERVER_URL}/api/users/${auth.userId}/products/all`,
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/${product._id}/all`,
 
           {
             headers: {
@@ -47,46 +53,23 @@ const Dashboard = () => {
           }
         );
 
-        setProducts(response.data.products);
+        setReviews(response.data.reviews);
       } catch (error) {
-        console.log("Error fetching products:", error.message);
+        console.log("Error fetching reviews:", error.message);
       }
     };
 
-    fetchProducts();
-  }, [refreshTrigger, auth.token, auth.userId]);
+    if (product) {
+      fetchReviews();
+    }
+  }, [auth.userId, auth.token, product, refreshTrigger]);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-
-          `${SERVER_URL}/api/users/${auth.userId}`,
-
-          {
-            headers: {
-              Authorization: "Bearer " + auth.token,
-            },
-          }
-        );
-
-        setUser(response.data.user.email);
-      } catch (error) {
-        console.log("Error fetching user:", error.message);
-      }
-    };
-
-    fetchUser();
-  }, [refreshTrigger, auth.token, auth.userId]);
-
-  const handleDeleteProduct = async (event, productId) => {
-    event.stopPropagation();
-
+  const fetchTrendData = async () => {
     try {
-      await axios.delete(
-
-        `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
-
+      const response = await fetch(
+        `${SERVER_URL}/api/users/${
+          auth.userId
+        }/products/${productId}/reviews/trends?granularity=${timeGranularity}&startDate=${currentDateRange.start.toISOString()}&endDate=${currentDateRange.end.toISOString()}`,
         {
           headers: {
             Authorization: "Bearer " + auth.token,
@@ -94,191 +77,228 @@ const Dashboard = () => {
         }
       );
 
-      setRefreshTrigger((prev) => prev + 1);
+      const data = await response.json();
+      setTrendData(data);
     } catch (error) {
-      console.error("Error deleting product:", error.message);
+      console.log("Error fetching ratings trend data:", error.message);
     }
+  };
+
+  useEffect(() => {
+    fetchTrendData();
+  }, [
+    auth.token,
+    timeGranularity,
+    auth.userId,
+    productId,
+    refreshTrigger,
+    currentDateRange,
+  ]);
+
+  useEffect(() => {
+    async function fetchWordCloud() {
+      try {
+        const response = await fetch(
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/wordcloud`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+        const data = await response.json();
+
+        setWordCounts(data);
+      } catch (error) {
+        console.log("Error fetching word cloud data:", error.message);
+      }
+    }
+
+    fetchWordCloud();
+  }, [auth.token, refreshTrigger]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
+
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+
+        setProduct(response.data.product);
+      } catch (error) {
+        console.log("Error fetching product:", error.message);
+      }
+    };
+
+    fetchProduct();
+  }, [productId, auth.userId, auth.token, refreshTrigger]);
+
+  if (!product) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  const handleCopyLink = (link) => {
+    navigator.clipboard.writeText(link).then(() => {
+      setSnackbarOpen(true);
+    });
   };
 
   const handleSpaceCreated = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
 
-  const handleManageBilling = async () => {
-    try {
-      const response = await axios.post(
-        `${SERVER_URL}/api/users/${auth.userId}/payments/create-customer-portal-session`,
-        {},
-        {
-          headers: {
-            Authorization: "Bearer " + auth.token,
-          },
-        }
-      );
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-      if (response.data && response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (error) {
-      console.error(error);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const openCollectingModal = () => {
+    setIsCollModalOpen(true);
+  };
+
+  const closeCollectingModal = () => {
+    setIsCollModalOpen(false);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const openEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditRoom = () => {
+    setRefreshTrigger((prev) => prev + 1);
+  };
+
+  const categorizeSentiment = (score) => {
+    if (score >= 4) {
+      return "Positive";
+    } else if (score === 3) {
+      return "Neutral";
+    } else {
+      return "Negative";
     }
+  };
+
+  const sentimentCounts = {
+    Positive: reviews.filter(
+      (review) => categorizeSentiment(review.sentiment) === "Positive"
+    ).length,
+    Neutral: reviews.filter(
+      (review) => categorizeSentiment(review.sentiment) === "Neutral"
+    ).length,
+    Negative: reviews.filter(
+      (review) => categorizeSentiment(review.sentiment) === "Negative"
+    ).length,
+  };
+
+  const words = Object.keys(wordCounts).map((word) => ({
+    text: word,
+    value: wordCounts[word],
+  }));
+
+  const sentimentData = {
+    labels: ["Positive", "Neutral", "Negative"],
+    datasets: [
+      {
+        data: [
+          sentimentCounts.Positive,
+          sentimentCounts.Neutral,
+          sentimentCounts.Negative,
+        ],
+      },
+    ],
   };
 
   return (
     <>
-      <Container
-        sx={{
-          bgcolor: theme.palette.primary.contrastText,
-          boxShadow: 1,
+      <LayoutDashboard>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            pb: 4,
+            bgcolor: theme.palette.primary.contrastText,
+          }}>
+          <Container maxWidth="xxl">
+            <Grid container>
+              {/* Sidebar Section */}
+              <Grid item xs={12} md={2} lg={1}>
+                <SidebarSection
+                  productId={productId}
+                  handleCopyLink={handleCopyLink}
+                  openModal={openModal}
+                  openCollectingModal={openCollectingModal}
+                  openEditModal={openEditModal}
+                  productName={product.name}
+                />
+              </Grid>
 
-          borderRadius: 8,
-          my: 8,
-        }}
-        maxWidth={"lg"}>
-        <Box py={4}>
-          {/* Overview Section */}
-          <Box mb={2}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}
-              my={2}>
-              <Typography
-                variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
-            </Box>
-            <Grid
-              container
-              mt={4}
-              spacing={2}
-              sx={{ justifyContent: "space-around" }}>
-              {[
-                { icon: <Person />, label: "Profile", path: "/profile/" },
-                {
-                  icon: <VerifiedUser />,
-                  label: "Subscription",
-                  path: "/membership/",
-                },
-                {
-                  icon: <Payment />,
-                  label: "Billing",
-                  status: auth.membershipStatus,
-                  path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
-                },
-              ].map(({ icon, label, path }, index) => (
-                <Grid item xs={6} sm={2} key={index}>
-                  <Button
-                    startIcon={icon}
-                    href={label !== "Billing" ? path : undefined}
-                    disabled={
-                      label === "Billing" && auth.membershipStatus === "free"
-                        ? true
-                        : false
-                    }
-                    variant="primary"
-                    fullWidth={isMobile}
-                    sx={{
-                      fontSize: { xs: "0.6rem", sm: "0.8rem" },
-                      whiteSpace: { xs: "normal", sm: "nowrap" },
-                      padding: "6px 12px",
-                      textTransform: "none",
-                    }}
-                    onClick={
-                      label === "Billing" ? handleManageBilling : undefined
-                    }>
-                    {label}
-                  </Button>
-                </Grid>
-              ))}
+              {/* Feedback Section */}
+              <Grid item xs={12} md={10}>
+                <FeedbackSection
+                  product={product}
+                  reviews={reviews}
+                  trendData={trendData}
+                  timeGranularity={timeGranularity}
+                  setTimeGranularity={setTimeGranularity}
+                  currentDateRange={currentDateRange}
+                  setCurrentDateRange={setCurrentDateRange}
+                  words={words}
+                  sentimentData={sentimentData}
+                  handleSpaceCreated={handleSpaceCreated}
+                  userId={auth.userId}
+                  token={auth.token}
+                />
+              </Grid>
             </Grid>
-          </Box>
-
-          {/* Rooms Section */}
-          <Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              mt={4}
-              mb={2}>
-              <Typography variant={isMobile ? "h5" : "h4"}>Rooms</Typography>
-            </Box>
-
-            <Box mb={4}>
-              <Divider />
-            </Box>
-
-            <TableContainer
-              component={Paper}
-              sx={{
-                overflowX: "auto",
-                borderRadius: 4,
-              }}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow
-                    sx={{
-                      bgcolor: theme.palette.success.main,
-                    }}>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}>
-                      Room
-                    </TableCell>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}
-                      align="right">
-                      Avg. Rating
-                    </TableCell>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}
-                      align="right">
-                      Number of Entries
-                    </TableCell>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}
-                      align="right">
-                      Delete
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {products.map((product, index) => (
-                    <TableRow
-                      key={index}
-                      hover
-                      onClick={() => navigate(`/products/${product._id}`)}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                        cursor: "pointer",
-                      }}>
-                      <TableCell component="th" scope="row">
-                        {product.name}
-                      </TableCell>
-                      <TableCell align="right">
-                        {product.averageRating.toFixed(1)}
-                      </TableCell>
-                      <TableCell align="right">
-                        {product.reviews.length}
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          onClick={(e) => handleDeleteProduct(e, product._id)}>
-                          <Delete />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Box mb={2} mt={4}>
-            <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
-          </Box>
+          </Container>
         </Box>
-      </Container>
+        <Box>
+          {/* Modals and Snackbar */}
+          {isModalOpen && (
+            <CreateWidgetModal productId={productId} closeModal={closeModal} />
+          )}
+          {isCollModalOpen && (
+            <CollectionFeedbackModal
+              productId={productId}
+              closeModal={closeCollectingModal}
+            />
+          )}
+          <EditRoomModal
+            isOpen={isEditModalOpen}
+            product={product}
+            closeEditModal={closeEditModal}
+            onRoomUpdated={handleEditRoom}
+          />
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={3000}
+            onClose={() => setSnackbarOpen(false)}
+            message="Link copied to clipboard!"
+            action={
+              <IconButton
+                size="small"
+                color="inherit"
+                onClick={() => setSnackbarOpen(false)}>
+                <Close fontSize="small" />
+              </IconButton>
+            }
+          />
+        </Box>
+      </LayoutDashboard>
     </>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
