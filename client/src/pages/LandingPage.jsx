@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 import Learn from "../assets/learn.svg";
@@ -36,6 +37,8 @@ import React from "react";
 
 const LandingPage = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const platforms = [
     {
@@ -135,27 +138,29 @@ const LandingPage = () => {
                 <Typography
                   variant="h1"
                   gutterBottom
-                  sx={{ fontSize: "4.5rem" }}>
+                  sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
                   Elevate Your Brand with Authentic Feedback
                 </Typography>
                 <Typography
                   variant="h6"
                   color="text.secondary"
                   gutterBottom
-                  sx={{ fontSize: "1rem" }}>
+                  sx={{ fontSize: isMobile ? "0.8rem" : "1rem" }}>
                   Feedback is more than just words; it's a goldmine of insights.
-                  With Feedio, not only can you collect and display feedback,
-                  but you can also transform it into actionable strategies that
-                  drive growth. Start your journey with Feedio today and let
-                  your satisfied customers do the talking.
                 </Typography>
                 <Box
-                  sx={{ display: "flex", justifyContent: "flex-start", pt: 2 }}>
-                  <Box>
-                    <Button variant="primary" color="primary" to="/pricing">
-                      Try FREE now
-                    </Button>
-                  </Box>
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    pt: 2,
+                  }}>
+                  <Button
+                    variant="primary"
+                    color="primary"
+                    to="/pricing"
+                    sx={{ fontSize: isMobile ? "0.8rem" : "1rem" }}>
+                    Try FREE now
+                  </Button>
                 </Box>
               </Box>
             </Grid>
@@ -303,14 +308,7 @@ const LandingPage = () => {
           </Grid>
         </Container>
       </Box>
-      {/* <iframe
-        class="custom-iframe"
-        height="550px"
-        id="64dab17c1743327f0da05edd"
-        src="https://feedio-server.onrender.com/api/users/64c842c6963a1e52fdec757e/products/64c8445b963a1e52fdec7585/widgets/64dab17c1743327f0da05edd/serve?hideDate=on&autoScroll=on&type=carousel"
-        frameBorder="0"
-        scrolling="no"
-        width="100%"></iframe> */}
+
       <Container
         maxWidth="xxl"
         sx={{

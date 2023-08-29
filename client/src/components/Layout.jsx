@@ -15,17 +15,7 @@ const Layout = ({ children }) => {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       {shouldShowNavAndFooter && <NavBar />}
-      {/* <Box
-        flex="1"
-        pt={2}
-        pb={2}
-        px={2}
-        sx={(theme) => ({
-          backgroundColor: theme.palette.background.default,
-        })}
-        > */}
       <main>{children}</main>
-      {/* </Box> */}
       {shouldShowNavAndFooter && <Footer />}
     </Box>
   );
