@@ -1,7 +1,7 @@
 import { Line } from "react-chartjs-2";
 import { Typography, Box } from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+// import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const TrendChart = ({
   trendData,
@@ -137,48 +137,48 @@ const TrendChart = ({
     });
   }
 
-  const handleGoBack = () => {
-    const newDateRange = { ...currentDateRange };
+  // const handleGoBack = () => {
+  //   const newDateRange = { ...currentDateRange };
 
-    switch (timeGranularity) {
-      case "daily":
-        newDateRange.start.setDate(newDateRange.start.getDate() - 1);
-        newDateRange.end.setDate(newDateRange.end.getDate() - 1);
-        break;
-      case "weekly":
-        newDateRange.start.setDate(newDateRange.start.getDate() - 7);
-        newDateRange.end.setDate(newDateRange.end.getDate() - 7);
-        break;
-      case "monthly":
-        newDateRange.start.setMonth(newDateRange.start.getMonth() - 1);
-        newDateRange.end.setMonth(newDateRange.end.getMonth() - 1);
-        break;
-      default:
-        break;
-    }
-    setCurrentDateRange(newDateRange);
-  };
+  //   switch (timeGranularity) {
+  //     case "daily":
+  //       newDateRange.start.setDate(newDateRange.start.getDate() - 1);
+  //       newDateRange.end.setDate(newDateRange.end.getDate() - 1);
+  //       break;
+  //     case "weekly":
+  //       newDateRange.start.setDate(newDateRange.start.getDate() - 7);
+  //       newDateRange.end.setDate(newDateRange.end.getDate() - 7);
+  //       break;
+  //     case "monthly":
+  //       newDateRange.start.setMonth(newDateRange.start.getMonth() - 1);
+  //       newDateRange.end.setMonth(newDateRange.end.getMonth() - 1);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setCurrentDateRange(newDateRange);
+  // };
 
-  const handleGoForward = () => {
-    const newDateRange = { ...currentDateRange };
-    switch (timeGranularity) {
-      case "daily":
-        newDateRange.start.setDate(newDateRange.start.getDate() + 1);
-        newDateRange.end.setDate(newDateRange.end.getDate() + 1);
-        break;
-      case "weekly":
-        newDateRange.start.setDate(newDateRange.start.getDate() + 7);
-        newDateRange.end.setDate(newDateRange.end.getDate() + 7);
-        break;
-      case "monthly":
-        newDateRange.start.setMonth(newDateRange.start.getMonth() + 1);
-        newDateRange.end.setMonth(newDateRange.end.getMonth() + 1);
-        break;
-      default:
-        break;
-    }
-    setCurrentDateRange(newDateRange);
-  };
+  // const handleGoForward = () => {
+  //   const newDateRange = { ...currentDateRange };
+  //   switch (timeGranularity) {
+  //     case "daily":
+  //       newDateRange.start.setDate(newDateRange.start.getDate() + 1);
+  //       newDateRange.end.setDate(newDateRange.end.getDate() + 1);
+  //       break;
+  //     case "weekly":
+  //       newDateRange.start.setDate(newDateRange.start.getDate() + 7);
+  //       newDateRange.end.setDate(newDateRange.end.getDate() + 7);
+  //       break;
+  //     case "monthly":
+  //       newDateRange.start.setMonth(newDateRange.start.getMonth() + 1);
+  //       newDateRange.end.setMonth(newDateRange.end.getMonth() + 1);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setCurrentDateRange(newDateRange);
+  // };
 
   return (
     <div>
@@ -192,10 +192,10 @@ const TrendChart = ({
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
         </select>
-        <ArrowForwardIosIcon
+        {/* <ArrowForwardIosIcon
           onClick={handleGoForward}
           style={{ cursor: "pointer" }}
-        />
+        /> */}
       </Box>
 
       <div style={{ height: "250px" }}>
