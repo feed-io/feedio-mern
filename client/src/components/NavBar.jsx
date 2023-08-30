@@ -10,18 +10,22 @@ import {
   MenuItem,
   Button,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
+import { useTheme } from "@mui/material";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
 import AuthModal from "./AuthModal";
 import FeedioLogo from "../assets/feedioLogo.svg";
-import { useTheme } from "@mui/material";
+import Logo from "../assets/logo.svg";
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
   const theme = useTheme();
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [openModal, setOpenModal] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [userName, setUserName] = useState("");
@@ -30,7 +34,6 @@ const NavBar = () => {
     if (auth.userId) {
       axios
         .get(`${SERVER_URL}/api/users/${auth.userId}`, {
-
           headers: {
             Authorization: "Bearer " + auth.token,
           },
@@ -52,7 +55,6 @@ const NavBar = () => {
   };
 
   const initials = getInitials(userName);
-
   const avatarUrl = `https://ui-avatars.com/api/?name=${initials}&background=FFEEB4&color=0F2830`;
 
   const handleOpenModal = () => {
@@ -86,9 +88,9 @@ const NavBar = () => {
                 textTransform: "none",
               }}>
               <img
-                src={FeedioLogo}
+                src={isMobile ? Logo : FeedioLogo}
                 alt="Feedio Logo"
-                style={{ width: "120px", color: "#617E8B" }}
+                style={{ width: isMobile ? "40px" : "120px" }}
               />
             </Button>
           </Typography>
