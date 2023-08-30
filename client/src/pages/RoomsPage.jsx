@@ -164,7 +164,7 @@ const RoomsPage = () => {
                   path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
                 },
               ].map(({ icon, label, path }, index) => (
-                <Grid item xs={6} sm={2} key={index}>
+                <Grid item xs={isMobile ? 12 : 6} sm={2} key={index}>
                   <Button
                     startIcon={icon}
                     href={label !== "Billing" ? path : undefined}
@@ -174,12 +174,13 @@ const RoomsPage = () => {
                         : false
                     }
                     variant="primary"
-                    fullWidth={isMobile}
+                    fullWidth
                     sx={{
-                      fontSize: { xs: "0.6rem", sm: "0.8rem" },
+                      fontSize: { xs: "0.7rem", sm: "0.8rem" },
                       whiteSpace: { xs: "normal", sm: "nowrap" },
                       padding: "6px 12px",
                       textTransform: "none",
+                      marginBottom: isMobile ? 2 : 0,
                     }}
                     onClick={
                       label === "Billing" ? handleManageBilling : undefined
@@ -209,65 +210,68 @@ const RoomsPage = () => {
             <TableContainer
               component={Paper}
               sx={{
-                overflowX: "auto",
                 borderRadius: 4,
               }}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow
-                    sx={{
-                      bgcolor: theme.palette.success.main,
-                    }}>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}>
-                      Room
-                    </TableCell>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}
-                      align="right">
-                      Avg. Rating
-                    </TableCell>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}
-                      align="right">
-                      Number of Entries
-                    </TableCell>
-                    <TableCell
-                      sx={{ color: theme.palette.primary.contrastText }}
-                      align="right">
-                      Delete
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {products.map((product, index) => (
+              <div style={{ overflowX: isMobile ? "auto" : "visible" }}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead>
                     <TableRow
-                      key={index}
-                      hover
-                      onClick={() => navigate(`/products/${product._id}`)}
                       sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                        cursor: "pointer",
+                        bgcolor: theme.palette.success.main,
                       }}>
-                      <TableCell component="th" scope="row">
-                        {product.name}
+                      <TableCell
+                        sx={{ color: theme.palette.primary.contrastText }}>
+                        Room
                       </TableCell>
-                      <TableCell align="right">
-                        {product.averageRating.toFixed(1)}
+                      <TableCell
+                        sx={{ color: theme.palette.primary.contrastText }}
+                        align="right">
+                        Avg. Rating
                       </TableCell>
-                      <TableCell align="right">
-                        {product.reviews.length}
+                      <TableCell
+                        sx={{ color: theme.palette.primary.contrastText }}
+                        align="right">
+                        Number of Entries
                       </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          onClick={(e) => handleDeleteProduct(e, product._id)}>
-                          <Delete />
-                        </IconButton>
+                      <TableCell
+                        sx={{ color: theme.palette.primary.contrastText }}
+                        align="right">
+                        Delete
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {products.map((product, index) => (
+                      <TableRow
+                        key={index}
+                        hover
+                        onClick={() => navigate(`/products/${product._id}`)}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                          cursor: "pointer",
+                        }}>
+                        <TableCell component="th" scope="row">
+                          {product.name}
+                        </TableCell>
+                        <TableCell align="right">
+                          {product.averageRating.toFixed(1)}
+                        </TableCell>
+                        <TableCell align="right">
+                          {product.reviews.length}
+                        </TableCell>
+                        <TableCell align="right">
+                          <IconButton
+                            onClick={(e) =>
+                              handleDeleteProduct(e, product._id)
+                            }>
+                            <Delete />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </TableContainer>
           </Box>
           <Box mb={2} mt={4}>
