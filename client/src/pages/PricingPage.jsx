@@ -10,8 +10,10 @@ import {
   Typography,
   Container,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { Star } from "@mui/icons-material";
+
 import Pattern from "../assets/pattern.svg";
 
 const tiers = [
@@ -63,64 +65,60 @@ const tiers = [
 
 const faqs = [
   {
-    question: "What is feedio?",
+    question: "What is Feedio?",
     answer:
-      "Feedio is a reviews and testimonials platform equipped with advanced analytics. We help businesses showcase genuine customer feedback through a customizable widget and provide insights into what their customers are saying and feeling.",
+      "Feedio is a platform that specializes in collecting and showcasing customer reviews and testimonials. We also offer advanced analytics to help you understand your customer feedback better.",
   },
   {
-    question: "How does the subscription model work?",
+    question: "How does the billing work?",
     answer:
-      "Our subscription model offers monthly and yearly plans. Once you choose a plan, you'll be billed at the start of the billing cycle. Yearly plans come with a discount compared to monthly plans.",
+      "We offer a straightforward monthly billing cycle. You'll be billed at the beginning of each month for the services you've subscribed to.",
   },
   {
-    question: "Can I change my subscription plan later?",
+    question: "Can I modify my subscription later?",
     answer:
-      "Absolutely! You can upgrade or downgrade your subscription at any time. If you choose to upgrade, you'll only pay the difference for the remainder of the billing cycle.",
+      "Of course! You can easily upgrade or downgrade your subscription at any time. The changes will be reflected in your next billing cycle.",
   },
   {
-    question: "How do I cancel my subscription?",
+    question: "How can I cancel my subscription?",
     answer:
-      "You can cancel your subscription from the account settings page. Once canceled, you won't be billed for the next cycle. However, there are no refunds for the current billing cycle.",
+      "You can terminate your subscription via the account settings page. Note that while you won't be billed for future cycles, we don't offer refunds for the current billing period.",
   },
   {
-    question: "Is my data secure with feedio?",
+    question: "Is my data safe with Feedio?",
     answer:
-      "Yes, data security is our top priority. We use advanced encryption methods to ensure that your data, as well as your customers' feedback, remains confidential and protected.",
+      "Absolutely, we prioritize data security. We employ robust encryption techniques to safeguard your data and your customers' feedback.",
   },
   {
-    question: "Can I integrate feedio with my existing website or app?",
+    question: "Can Feedio be integrated into my existing platform?",
     answer:
-      "Certainly! Feedio is designed for seamless integration with websites and apps. Our easy-to-follow setup guide will have you up and running in minutes.",
+      "Yes, Feedio is built for easy integration with your current website or application. Our setup guide will help you get started in no time.",
   },
   {
-    question: "What kind of analytics does feedio provide?",
+    question: "What analytics does Feedio offer?",
     answer:
-      "Feedio offers deep dive analytics into customer sentiment, feedback trends, and more. You can understand the overall mood of your reviews, identify recurring themes, and get actionable insights to improve your offerings.",
+      "Feedio provides comprehensive analytics, including sentiment analysis, trending topics in reviews, and actionable insights to help you improve your services.",
   },
   {
-    question: "How does the review widget look?",
+    question: "How customizable is the review widget?",
     answer:
-      "Our review widget is customizable to match your brand's aesthetics. You can choose from various layouts and color schemes to ensure it complements your website or app design.",
+      "Our review widget can be tailored to fit your brand's look and feel. You can select from a range of layouts and color options.",
   },
   {
-    question: "What payment methods do you accept?",
+    question: "What payment options are available?",
     answer:
-      "We accept all major credit cards, including Visa, MasterCard, and American Express. For enterprise clients, we can also arrange for bank transfers.",
+      "We accept all major credit cards such as Visa, MasterCard, and American Express. For larger enterprises, we can facilitate bank transfers.",
   },
   {
-    question: "Do you offer any discounts or special pricing?",
+    question: "How can I get in touch for more questions?",
     answer:
-      "Yes, our yearly plans come with a discount compared to monthly billing. We also offer special pricing for non-profits and educational institutions. Please contact our sales team for more details.",
-  },
-  {
-    question: "I have more questions. How can I reach out?",
-    answer:
-      "We're here to help! You can contact our support team at [support@feedio.com](mailto:support@feedio.com) or use the live chat feature on our website.",
+      "If you have more questions, feel free to email us at [support@feedio.com](mailto:support@feedio.com). We're always here to assist you.",
   },
 ];
 
 const PricingPage = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -129,7 +127,12 @@ const PricingPage = () => {
         textAlign="center"
         pb={8}
         sx={{ px: [4, 6, 8, 10] }}>
-        <Typography variant="h1" textAlign="center" mt={8} mb={4}>
+        <Typography
+          variant="h1"
+          textAlign="center"
+          sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}
+          mt={8}
+          mb={4}>
           The easiest way to drive more sales for your business
         </Typography>
         <Typography

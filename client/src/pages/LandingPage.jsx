@@ -153,7 +153,6 @@ const LandingPage = () => {
                   <Button
                     variant="primary"
                     color="primary"
-                    to="/pricing"
                     href="/pricing"
                     sx={{ fontSize: isMobile ? "0.8rem" : "1rem" }}>
                     Try FREE now

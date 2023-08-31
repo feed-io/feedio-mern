@@ -8,12 +8,17 @@ import {
   Typography,
   Container,
   Avatar,
-  Alert,
   Box,
+  useTheme,
+  useMediaQuery,
+  Snackbar,
+  IconButton,
 } from "@mui/material";
-import { SensorOccupied } from "@mui/icons-material";
+import { Close, SensorOccupied } from "@mui/icons-material";
+
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const SignUp = (props) => {
@@ -21,13 +26,15 @@ const SignUp = (props) => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { handleClose } = props;
-  const [submitError, setSubmitError] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-
         `${SERVER_URL}/api/users/register`,
 
         values,
@@ -43,11 +50,20 @@ const SignUp = (props) => {
       navigate("/dashboard");
       handleClose();
     } catch (error) {
-      setSubmitError(error.message);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setSnackbarMessage(error.response.data.message);
+      } else {
+        setSnackbarMessage("Signup failed. Please try again.");
+      }
+      setSnackbarOpen(true);
     }
   };
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth={isMobile ? "sm" : "xs"}>
       <Box
         sx={{
           marginTop: 8,
@@ -59,15 +75,12 @@ const SignUp = (props) => {
           <SensorOccupied />
         </Avatar>
 
-        <Typography component="h1" variant="h5">
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ fontSize: isMobile ? "1.2rem" : "1.5rem" }}>
           Sign up
         </Typography>
-
-        {submitError && (
-          <Box sx={{ width: "100%", mt: 2 }}>
-            <Alert severity="error">{submitError}</Alert>
-          </Box>
-        )}
 
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -141,6 +154,20 @@ const SignUp = (props) => {
           </Box>
         </Box>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}>
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </Container>
   );
 };
