@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Button,
@@ -8,14 +8,17 @@ import {
   Typography,
   Container,
   Avatar,
-  FormControlLabel,
-  Checkbox,
   Box,
+  Snackbar,
+  IconButton,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
-import { VpnKey } from "@mui/icons-material/";
+import { VpnKey, Close } from "@mui/icons-material/";
 
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Login = (props) => {
@@ -23,13 +26,16 @@ const Login = (props) => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { handleClose } = props;
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/users/login`,
-
         values,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -41,13 +47,28 @@ const Login = (props) => {
       );
       navigate("/dashboard");
       handleClose();
+      setSnackbarMessage("Successfully logged in!");
+      setSnackbarOpen(true);
     } catch (error) {
-      console.log(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setSnackbarMessage(error.response.data.message);
+      } else {
+        setSnackbarMessage("Login failed. Please try again.");
+      }
+      setSnackbarOpen(true);
     }
   };
 
+  const handleForgotPasswordClick = () => {
+    console.log("Forgot Password clicked");
+  };
+
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth={isMobile ? "sm" : "xs"}>
       <Box
         sx={{
           marginTop: 8,
@@ -60,7 +81,10 @@ const Login = (props) => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <VpnKey />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ fontSize: isMobile ? "1.2rem" : "1.5rem" }}>
           Login
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -92,12 +116,12 @@ const Login = (props) => {
             error={!!errors.password}
             helperText={errors.password}
           />
-          <Box sx={{ padding: "10px" }}>
+          {/* <Box sx={{ padding: "10px" }}>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-          </Box>
+          </Box> */}
           <Box sx={{ padding: "10px" }}>
             <Button type="submit" variant="primary">
               Login
@@ -105,13 +129,37 @@ const Login = (props) => {
           </Box>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Button
+                onClick={handleForgotPasswordClick}
+                sx={{
+                  textTransform: "none",
+                  textDecoration: "none",
+                  color: "inherit",
+                  "&:hover": {
+                    textDecoration: "none",
+                    backgroundColor: "transparent",
+                  },
+                }}>
                 Forgot password?
-              </Link>
+              </Button>
             </Grid>
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}>
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </Container>
   );
 };
