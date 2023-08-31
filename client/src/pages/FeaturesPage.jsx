@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   Grid,
   Typography,
@@ -9,6 +8,7 @@ import {
   Card,
   CardContent,
   Box,
+  useMediaQuery,
 } from "@mui/material";
 
 import AmazonTile from "../assets/amazonTile.svg";
@@ -25,7 +25,6 @@ import Webflow from "../assets/webflow.svg";
 import Wordpress from "../assets/wordpress.svg";
 import Blob from "../assets/blob.svg";
 import Blob1 from "../assets/blob1.svg";
-import Proof from "../assets/proof.svg";
 import Blob2 from "../assets/blob2.svg";
 import Unified from "../assets/unified.svg";
 import Testimonial from "../assets/testimonial.svg";
@@ -36,6 +35,7 @@ import Graph2 from "../assets/graph2.svg";
 
 const FeaturesPage = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const platforms = [
     {
@@ -101,7 +101,11 @@ const FeaturesPage = () => {
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
         }}>
-        <Typography variant="h1" textAlign="center" mb={4}>
+        <Typography
+          variant="h1"
+          textAlign="center"
+          mb={4}
+          sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
           Collect and display feedback and reviews all in one solution
         </Typography>
       </Container>
@@ -347,7 +351,11 @@ const FeaturesPage = () => {
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
         }}>
-        <Typography variant="h2" align="center" color="black">
+        <Typography
+          variant="h2"
+          align="center"
+          color="black"
+          sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
           Integrate with any platform
         </Typography>
         <Typography
@@ -415,7 +423,10 @@ const FeaturesPage = () => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Box sx={{ textAlign: "left", pb: 12, pl: 2 }}>
-              <Typography variant="h2" mb={4} sx={{ fontSize: "3.4rem" }}>
+              <Typography
+                variant="h2"
+                mb={4}
+                sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
                 Ready to transform feedback into growth?
               </Typography>
               <Box
