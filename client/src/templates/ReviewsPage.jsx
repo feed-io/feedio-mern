@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Avatar, Box, Rating, Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Avatar, Box, Rating, Typography, useTheme } from "@mui/material";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
 
-const ShowRoom = () => {
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+const ReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
   const { productId } = useParams();
   const auth = useContext(AuthContext);
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -43,20 +46,14 @@ const ShowRoom = () => {
 
       <Box position="relative">
         <Box position="absolute" top="0" left="0" right="0" bottom="0">
-          <img
-            loading="lazy"
-            src="https://source.unsplash.com/random/1920x480"
-            alt="About"
-            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
           <Box
             position="absolute"
             top="0"
             left="0"
             right="0"
             bottom="0"
-            bgcolor="gray.900"
             opacity="0.75"
+            bgcolor={theme.palette.success.main}
             aria-hidden={true}
           />
         </Box>
@@ -126,17 +123,6 @@ const ShowRoom = () => {
                 </Box>
               ) : (
                 <Box overflow="hidden" mx="auto">
-                  <img
-                    loading="lazy"
-                    src="/static/media/no-message.18de8749.svg"
-                    alt="success"
-                    sx={{
-                      width: { xs: "3/4", sm: "1/5" },
-                      mx: "auto",
-                      my: 5,
-                      borderRadius: "lg",
-                    }}
-                  />
                   <Typography
                     variant="h3"
                     align="center"
@@ -154,4 +140,4 @@ const ShowRoom = () => {
   );
 };
 
-export default ShowRoom;
+export default ReviewsPage;

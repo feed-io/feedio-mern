@@ -5,7 +5,6 @@ import {
   Box,
   Container,
   Grid,
-  Typography,
   Snackbar,
   IconButton,
   useTheme,
@@ -18,6 +17,7 @@ import EditRoomModal from "../components/EditRoomModal";
 import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
 import { AuthContext } from "../context/auth-context";
 import { Close } from "@mui/icons-material";
+import LogoSpinner from "../components/spinner/LogoSpinner";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -140,7 +140,16 @@ const DashboardPage = () => {
   }, [productId, auth.userId, auth.token, refreshTrigger]);
 
   if (!product) {
-    return <Typography>Loading...</Typography>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+        bgcolor={theme.palette.success.main}>
+        <LogoSpinner />
+      </Box>
+    );
   }
 
   const handleCopyLink = (link) => {
