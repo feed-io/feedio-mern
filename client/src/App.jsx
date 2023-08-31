@@ -11,7 +11,7 @@ import RoomsPage from "./pages/RoomsPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import DashboardPage from "./pages/DashboardPage";
 import UserProfilePage from "./pages/UserProfilePage";
-import ReviewsWidget from "./templates/ReviewsWidget";
+import ReviewsPage from "./templates/ReviewsPage";
 import FeedbackPage from "./templates/FeedbackPage";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
@@ -41,7 +41,7 @@ const App = () => {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancel" element={<CancelationPage />} />
         <Route path="/products/:productId" element={<DashboardPage />} />
-        <Route path="/showRoom/:productId" element={<ReviewsWidget />} />
+        <Route path="/showRoom/:productId" element={<ReviewsPage />} />
         <Route path="/reviewSpace/:productId" element={<FeedbackPage />} />
       </Routes>
     );
