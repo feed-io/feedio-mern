@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Container,
   Typography,
@@ -25,8 +26,6 @@ import Shopify from "../assets/shopify.svg";
 import Webflow from "../assets/webflow.svg";
 import Wordpress from "../assets/wordpress.svg";
 import Blob from "../assets/blob.svg";
-import Blob1 from "../assets/blob1.svg";
-import Blob2 from "../assets/blob2.svg";
 import Pattern from "../assets/pattern.svg";
 import Graph from "../assets/graph.svg";
 import Sentiment from "../assets/sentiment.svg";
@@ -142,7 +141,7 @@ const LandingPage = () => {
                   variant="h6"
                   color="text.secondary"
                   gutterBottom
-                  sx={{ fontSize: isMobile ? "0.8rem" : "1rem" }}>
+                  sx={{ fontSize: "1rem" }}>
                   Feedback is more than just words; it's a goldmine of insights.
                 </Typography>
                 <Box
@@ -155,6 +154,7 @@ const LandingPage = () => {
                     variant="primary"
                     color="primary"
                     to="/pricing"
+                    href="/pricing"
                     sx={{ fontSize: isMobile ? "0.8rem" : "1rem" }}>
                     Try FREE now
                   </Button>
@@ -179,7 +179,6 @@ const LandingPage = () => {
       <Container
         maxWidth="xxl"
         sx={{
-          padding: "0 32px",
           paddingTop: "40px",
           paddingBottom: "40px",
           backgroundImage: `url(${Pattern}), url(${Pattern})`,
@@ -188,7 +187,10 @@ const LandingPage = () => {
           backgroundRepeat: "repeat, repeat",
         }}>
         <Box sx={{ textAlign: "center", pb: 4 }}>
-          <Typography variant="h2" gutterBottom>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}
+            gutterBottom>
             Harness the power of genuine reviews and advanced analytics to drive
             growth and build trust.
           </Typography>
@@ -245,29 +247,14 @@ const LandingPage = () => {
           bgcolor: theme.palette.info.main,
           position: "relative",
           py: 12,
-          "&::before, &::after": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            width: "20%",
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-          },
-          "&::before": {
-            backgroundImage: `url(${Blob1})`,
-            left: 0,
-            backgroundPosition: "left center",
-          },
-          "&::after": {
-            backgroundImage: `url(${Blob2})`,
-            right: 0,
-            backgroundPosition: "right center",
-          },
         }}>
         <Container maxWidth="lg">
-          <Typography variant="h2" align="center" color="black">
-            Integrate with any platform
+          <Typography
+            variant="h2"
+            align="center"
+            color="black"
+            sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
+            Seamlessly Connect with Any Service
           </Typography>
           <Typography
             variant="body1"
@@ -276,9 +263,9 @@ const LandingPage = () => {
             maxWidth="36rem"
             mx="auto"
             color="grey.400">
-            We built the ultimate tool for showcasing your satisfied customers.
-            With 3-lines of HTML code, you can embed all your feedback to any
-            platform!
+            We've engineered the perfect solution to display your customer
+            testimonials. Just add three lines of HTML code, and you can
+            showcase all your reviews across various platforms!
           </Typography>
           <Grid container spacing={2} mt={12}>
             {platforms.map((platform, index) => (
@@ -312,7 +299,7 @@ const LandingPage = () => {
           py: 8,
           px: [4, 6, 8, 10],
           backgroundImage: `url(${Pattern})`,
-          backgroundPosition: "right center",
+          backgroundPosition: isMobile ? "center center" : "right center",
           backgroundRepeat: "repeat",
           backgroundSize: "cover",
         }}>
@@ -334,7 +321,10 @@ const LandingPage = () => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Box sx={{ textAlign: "left", pb: 12, pl: 2 }}>
-              <Typography variant="h2" mb={4} sx={{ fontSize: "3.4rem" }}>
+              <Typography
+                variant="h2"
+                mb={4}
+                sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
                 Ready to transform feedback into growth?
               </Typography>
               <Box
