@@ -1,58 +1,84 @@
-import React from "react";
-import { Bubble } from "react-chartjs-2";
+import React, { useEffect, useRef } from "react";
+import * as d3 from "d3";
+import cloud from "d3-cloud";
 import Typography from "@mui/material/Typography";
 
-import { useTheme } from "@mui/material";
+const WordCloudChart = ({ words }) => {
+  const cloudRef = useRef(null);
 
-const WordBubbleChart = (props) => {
-  const theme = useTheme();
+  useEffect(() => {
+    const drawWordCloud = () => {
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  // Define colors for bubbles
-  const colors = ["#014751", "#D2C4FB", "#FF3864", "#0F2830", "#00D37F"];
+      const layout = cloud()
+        .size([500, 500])
+        .words(words.map((d) => ({ text: d.text, size: d.value * 10 })))
+        .padding(5)
+        .rotate(() => ~~(Math.random() * 2) * 90)
+        .font("Impact")
+        .fontSize((d) => d.size)
+        .on("end", draw);
 
-  // Convert words to bubble chart data format
-  const data = {
-    datasets: [
-      {
-        label: "Words",
-        data: props.words.map((word, index) => ({
-          x: word.text,
-          y: 1, // You can set y to any constant value or use another variable
-          r: word.value * 10, // Adjust the multiplier to scale the bubble sizes
-          backgroundColor: colors[index % colors.length], // Assign color from the colors array
-        })),
-        borderColor: theme.palette.primary.dark,
-        borderWidth: 1,
-      },
-    ],
-  };
+      layout.start();
 
-  const options = {
-    scales: {
-      x: {
-        type: "category",
-        position: "bottom",
-      },
-      y: {
-        display: false, // Hide y-axis as it's not used
-      },
-    },
-    plugins: {
-      legend: {
-        display: false, // Hide legend as it's not used
-      },
-    },
+      function draw(words) {
+        let svg = d3.select(cloudRef.current).select("svg");
+        if (svg.empty()) {
+          svg = d3.select(cloudRef.current).append("svg");
+        }
+        svg
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", `0 0 ${layout.size()[0]} ${layout.size()[1]}`)
+          .attr("preserveAspectRatio", "xMinYMin meet");
 
-  };
+        let g = svg.select("g");
+        if (g.empty()) {
+          g = svg.append("g");
+        }
+
+        g.attr(
+          "transform",
+          `translate(${layout.size()[0] / 2}, ${layout.size()[1] / 2})`
+        );
+
+        const text = g.selectAll("text").data(words);
+
+        text
+          .enter()
+          .append("text")
+          .merge(text)
+          .style("font-size", (d) => `${d.size}px`)
+          .style("font-family", "Impact")
+          .style("fill", (d, i) => color(i))
+          .attr("text-anchor", "middle")
+          .attr(
+            "transform",
+            (d) => `translate(${[d.x, d.y]})rotate(${d.rotate})`
+          )
+          .text((d) => d.text)
+          .on("mouseover", function (d, i) {
+            d3.select(this).style("fill", "black");
+          })
+          .on("mouseout", function (d, i) {
+            d3.select(this).style("fill", color(i));
+          });
+
+        text.exit().remove();
+      }
+    };
+
+    drawWordCloud();
+  }, [words]);
 
   return (
-    <div>
+    <div style={{ width: "100%", height: "100%" }}>
       <Typography variant="h6" color="textSecondary">
-        Word Bubble Chart
+        Word Cloud Chart
       </Typography>
-      <Bubble data={data} options={options} />
+      <div ref={cloudRef}></div>
     </div>
   );
 };
 
-export default WordBubbleChart;
+export default WordCloudChart;
