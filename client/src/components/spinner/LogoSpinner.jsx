@@ -58,7 +58,6 @@ const LogoSpinner = () => {
           />
         </g>
       </svg>
-      ;
     </div>
   );
 };

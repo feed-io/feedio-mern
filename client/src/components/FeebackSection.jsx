@@ -18,6 +18,7 @@ const FeedbackSection = ({
   userId,
   token,
 }) => {
+  console.log(words);
   return (
     <Box py={4}>
       <Container sx={{ width: "100%" }}>
@@ -63,8 +64,8 @@ const FeedbackSection = ({
                 height: "95%",
                 backgroundColor: "#FfffFF",
               }}>
-              <CardContent>
-                <WordCloud sentimentData={sentimentData} words={words} />
+              <CardContent style={{ height: "400px" }}>
+                <WordCloud words={words} />
               </CardContent>
             </Card>
           </Grid>
