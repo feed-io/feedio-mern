@@ -38,7 +38,8 @@ const generateWidgetConfig = async (
 };
 
 const getWidgetConfig = async (widgetId, productId) => {
-  return await Widget.findOne({ _id: widgetId, product: productId });
+  const widget = await Widget.findOne({ _id: widgetId, product: productId });
+  return widget;
 };
 
 const generateWidgetRepresentation = async (
@@ -53,7 +54,8 @@ const generateWidgetRepresentation = async (
   let templateString;
   let stylePath;
 
-  const reviews = await Review.find({ product: productId });
+  const reviews = await Review.find({ product: productId, status: "fav" });
+
   const reviewsData = reviews.map((review) => ({
     name: review.name,
     content: review.content,

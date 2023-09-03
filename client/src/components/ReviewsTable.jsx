@@ -25,10 +25,9 @@ import {
 } from "@mui/icons-material";
 import Rating from "@mui/material/Rating";
 import Favorite from "@mui/icons-material/Favorite";
-import Archive from "@mui/icons-material/Archive";
 import MailOutline from "@mui/icons-material/MailOutline";
 import CalendarToday from "@mui/icons-material/CalendarToday";
-
+import { red } from "@mui/material/colors";
 import Empty from "../assets/empty.svg";
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -62,13 +61,6 @@ const headCells = [
     align: "center",
   },
   {
-    id: "archive",
-    numeric: false,
-    label: "Archive",
-    sortable: false,
-    align: "center",
-  },
-  {
     id: "delete",
     numeric: false,
     label: "Delete",
@@ -90,7 +82,6 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-
           `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${product._id}/all`,
 
           {
@@ -112,11 +103,7 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
   const handleDelete = async (reviewId) => {
     try {
       await axios.delete(
-
         `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${reviewId}`,
-
-
-
 
         {
           headers: {
@@ -184,6 +171,31 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
         return 0;
     }
   }
+
+  const handleFavorite = async (reviewId, newStatus) => {
+    try {
+      await axios.post(
+        `${SERVER_URL}/api/users/${userId}/products/${product._id}/reviews/${reviewId}/favorite`,
+        {
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      // Update the local state to reflect the change
+      setReviews(
+        reviews.map((review) =>
+          review._id === reviewId ? { ...review, status: newStatus } : review
+        )
+      );
+    } catch (error) {
+      console.log("Error updating favorite status:", error.message);
+    }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -342,13 +354,19 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
                           />
                         </TableCell>
                         <TableCell>
-                          <IconButton>
-                            <Favorite />
-                          </IconButton>
-                        </TableCell>
-                        <TableCell>
-                          <IconButton>
-                            <Archive />
+                          <IconButton
+                            onClick={() =>
+                              handleFavorite(
+                                review._id,
+                                review.status === "fav" ? "unfav" : "fav"
+                              )
+                            }>
+                            <Favorite
+                              style={{
+                                color:
+                                  review.status === "fav" ? "red" : "inherit",
+                              }}
+                            />
                           </IconButton>
                         </TableCell>
                         <TableCell>

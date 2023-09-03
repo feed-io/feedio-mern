@@ -43,7 +43,7 @@ document.getElementById("submit-btn").addEventListener("click", function (e) {
   });
 
   fetch(
-    `${process.env.CLIENT_URL}/api/collection-feedback/createReviewForWidget`,
+    `${process.env.SERVER_URL}/api/collection-feedback/createReviewForWidget`,
     {
       method: "POST",
       headers: {
