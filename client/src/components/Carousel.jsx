@@ -7,8 +7,6 @@ import {
   IconButton,
   Tooltip,
   Typography,
-  Select,
-  MenuItem,
   TextField,
   Snackbar,
   InputAdornment,
@@ -19,6 +17,8 @@ import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { AuthContext } from "../context/auth-context";
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 const Carousel = (props) => {
   const auth = useContext(AuthContext);
   const [hideDate, setHideDate] = useState(false);
@@ -27,7 +27,7 @@ const Carousel = (props) => {
   const [autoScroll, setAutoScroll] = useState(false);
 
   const generateIframeLink = (widgetId) => {
-    const baseIframeUrl = `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
+    const baseIframeUrl = `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
 
     let params = [];
 
@@ -55,7 +55,7 @@ const Carousel = (props) => {
 
     try {
       const response = await axios.post(
-        `https://feedio-server.onrender.com/api/users/${auth.userId}/products/${props.productId}/widgets/config`,
+        `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/config`,
         config,
         {
           headers: {

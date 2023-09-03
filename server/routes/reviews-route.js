@@ -31,7 +31,7 @@ router.post(
   reviewController.createReview
 );
 
-router.get("/favorites", reviewController.getFavoriteReviews);
+router.post("/:rid/favorite", reviewController.updateFavoriteStatus);
 
 router.get("/wordcloud", reviewController.getWordCloudData);
 
