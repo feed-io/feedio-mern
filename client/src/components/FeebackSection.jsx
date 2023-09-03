@@ -18,7 +18,6 @@ const FeedbackSection = ({
   userId,
   token,
 }) => {
-  console.log(words);
   return (
     <Box py={4}>
       <Container sx={{ width: "100%" }}>

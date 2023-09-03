@@ -17,7 +17,7 @@ const ReviewsPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all`,
+          `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/${productId}/all?status=fav`,
           {
             headers: {
               Authorization: "Bearer " + auth.token,

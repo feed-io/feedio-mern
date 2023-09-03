@@ -22,20 +22,14 @@ const CreateWidgetModal = (props) => {
   const layoutOptions = [
     {
       title: "Masonry - scrolling",
-      // imgSrc:
-      // "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Fanimated-demo.gif?alt=media&amp;token=08b0e0d6-5290-4441-a309-942e074c7b77",
       alt: "auto scrolling masonry grid",
     },
     {
       title: "Masonry - fixed",
-      // imgSrc:
-      //   "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Ffixed-masonry-grid.png?alt=media&amp;token=c75b8785-344a-4bd8-96dd-79592466d78e",
       alt: "Fixed masonry grid",
     },
     {
       title: "Carousel slider",
-      // imgSrc:
-      //   "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Fcarousel-animated.gif?alt=media&amp;token=7a42bb1a-0b98-45e9-acbf-37f8a9f36a4e",
       alt: "Fixed masonry grid",
     },
   ];

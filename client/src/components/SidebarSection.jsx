@@ -126,7 +126,7 @@ const Sidebar = ({
         </Grid>
 
         {/* Integrations Section */}
-        <Grid
+        {/* <Grid
           item
           xs={12}
           sx={{ textAlign: "center", marginBottom: { xs: 2, md: 3, lg: 4 } }}>
@@ -150,9 +150,9 @@ const Sidebar = ({
             }}>
             COMING SOON
           </Button>
-        </Grid>
+        </Grid> */}
 
-        {/* Embeds & Metrics (Display) Section */}
+        {/* Widget Section */}
         <Grid item xs={12} sx={{ textAlign: "center" }}>
           <Typography
             variant="h6"

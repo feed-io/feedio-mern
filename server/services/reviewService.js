@@ -99,10 +99,14 @@ const widgetReview = async ({ name, email, content, rating, productId }) => {
   return newReview;
 };
 
-const getAll = async (productId) => {
+const getAll = async (productId, status = null) => {
   const product = await Product.findById(productId).populate("reviews");
   if (!product) {
     throw new Error("Product not found");
+  }
+
+  if (status !== null) {
+    return product.reviews.filter((review) => review.status === status);
   }
 
   return product.reviews;
@@ -128,6 +132,18 @@ const deleteOne = async (reviewId) => {
   await Review.deleteOne({ _id: reviewId });
 
   return "Review deleted successfully";
+};
+
+const updateFavoriteStatus = async (reviewId, newStatus) => {
+  const review = await Review.findById(reviewId);
+  if (!review) {
+    throw new Error("Review not found");
+  }
+
+  review.status = newStatus;
+  await review.save();
+
+  return review;
 };
 
 const stopWords = [
@@ -347,4 +363,5 @@ module.exports = {
   deleteOne,
   getWordCloudData,
   getRatingsTrend,
+  updateFavoriteStatus,
 };

@@ -58,9 +58,10 @@ exports.createReviewForWidget = async (req, res) => {
 
 exports.getAllReviews = async (req, res) => {
   const { pid } = req.params;
+  const { status } = req.query;
 
   try {
-    const reviews = await reviewService.getAll(pid);
+    const reviews = await reviewService.getAll(pid, status);
 
     res.status(200).json({ reviews: reviews });
   } catch (error) {
@@ -70,12 +71,19 @@ exports.getAllReviews = async (req, res) => {
   }
 };
 
-exports.getFavoriteReviews = async (req, res) => {
+exports.updateFavoriteStatus = async (req, res) => {
+  const { rid } = req.params;
+  const { status } = req.body;
+
   try {
-    const favReviews = await Review.find({ status: "fav" });
-    res.status(200).json(favReviews);
+    const updatedReview = await reviewService.updateFavoriteStatus(rid, status);
+    res
+      .status(200)
+      .json({ message: "Favorite status updated", review: updatedReview });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 
