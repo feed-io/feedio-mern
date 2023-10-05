@@ -17,8 +17,8 @@ const create = async ({
   content,
   rating,
   productId,
-  startDate,
-  endDate,
+  // startDate,
+  // endDate,
 }) => {
   const product = await Product.findById(productId);
   if (!product) {
@@ -129,6 +129,9 @@ const deleteOne = async (reviewId) => {
   }
 
   await product.save();
+
+  await calculateAndUpdateProductStats.call(review);
+
   await Review.deleteOne({ _id: reviewId });
 
   return "Review deleted successfully";
@@ -253,6 +256,7 @@ const getRatingsTrend = async (productId, granularity, startDate, endDate) => {
 };
 
 const getTrendsForPeriod = async (productId, start, end, groupBy) => {
+  console.log(productId, start, end, groupBy);
   try {
     const timezoneOffset = new Date().getTimezoneOffset();
     const offsetHours = timezoneOffset / 60;
