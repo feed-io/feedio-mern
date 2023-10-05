@@ -229,6 +229,8 @@ const DashboardPage = () => {
     ],
   };
 
+  console.log(product);
+
   return (
     <>
       <LayoutDashboard>

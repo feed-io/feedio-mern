@@ -27,28 +27,32 @@ const calculateAndUpdateProductStats = async function (next) {
     .model("Review")
     .find({ product: review.product });
 
-  product.totalReviews = reviews.length;
+  if (reviews.length === 0) {
+    product.totalReviews = 0;
+    product.averageRating = 0;
+    product.ratingDistribution = {
+      oneStar: 0,
+      twoStar: 0,
+      threeStar: 0,
+      fourStar: 0,
+      fiveStar: 0,
+    };
+  } else {
+    product.totalReviews = reviews.length;
 
-  product.ratingDistribution = {
-    oneStar: 0,
-    twoStar: 0,
-    threeStar: 0,
-    fourStar: 0,
-    fiveStar: 0,
-  };
+    let totalStars = 0;
+    for (let r of reviews) {
+      totalStars += r.rating;
 
-  let totalStars = 0;
-  for (let r of reviews) {
-    totalStars += r.rating;
+      if (r.rating === 1) product.ratingDistribution.oneStar += 1;
+      else if (r.rating === 2) product.ratingDistribution.twoStar += 1;
+      else if (r.rating === 3) product.ratingDistribution.threeStar += 1;
+      else if (r.rating === 4) product.ratingDistribution.fourStar += 1;
+      else if (r.rating === 5) product.ratingDistribution.fiveStar += 1;
+    }
 
-    if (r.rating === 1) product.ratingDistribution.oneStar += 1;
-    else if (r.rating === 2) product.ratingDistribution.twoStar += 1;
-    else if (r.rating === 3) product.ratingDistribution.threeStar += 1;
-    else if (r.rating === 4) product.ratingDistribution.fourStar += 1;
-    else if (r.rating === 5) product.ratingDistribution.fiveStar += 1;
+    product.averageRating = totalStars / reviews.length;
   }
-
-  product.averageRating = totalStars / reviews.length || 0;
 
   await product.save();
 
@@ -63,4 +67,7 @@ reviewSchema.pre("remove", function (next) {
   calculateAndUpdateProductStats.call(this, next);
 });
 
-module.exports = mongoose.model("Review", reviewSchema);
+module.exports = {
+  Review: mongoose.model("Review", reviewSchema),
+  calculateAndUpdateProductStats,
+};

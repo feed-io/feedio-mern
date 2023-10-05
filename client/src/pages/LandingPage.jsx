@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Typography,
@@ -31,10 +31,12 @@ import Graph from "../assets/graph.svg";
 import Sentiment from "../assets/sentiment.svg";
 import Testimonial from "../assets/testimonial.svg";
 import Analytics from "../assets/analytics.svg";
+import MaintenanceModal from "../components/MaintenanceModal";
 
 const LandingPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isMaintenanceMode, setMaintenanceMode] = useState(true);
 
   const platforms = [
     {
@@ -117,6 +119,15 @@ const LandingPage = () => {
 
   return (
     <main>
+      {/* Conditionally render the maintenance modal */}
+      {isMaintenanceMode && (
+        <MaintenanceModal
+          isOpen={isMaintenanceMode}
+          message="Our backend is currently undergoing maintenance. We apologize for any inconvenience."
+          onClose={() => setMaintenanceMode(false)} // Pass the onClose function
+        />
+      )}
+
       <Box
         sx={{
           bgcolor: theme.palette.info.main,
