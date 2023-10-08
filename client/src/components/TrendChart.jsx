@@ -45,19 +45,6 @@ const TrendChart = ({
 
   const generateTrendLabels = (granularity) => {
     switch (granularity) {
-      case "daily":
-        return Array.from({ length: 24 }, (_, i) => `${i}:00`);
-      case "weekly":
-        return [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-
-          "Sunday",
-        ];
       case "monthly":
         return Array.from({ length: 31 }, (_, i) => `${i + 1}`);
 
@@ -187,11 +174,6 @@ const TrendChart = ({
           Ratings Trend Over Time
         </Typography>
 
-        <select value={timeGranularity} onChange={handleGranularityChange}>
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
         {/* <ArrowForwardIosIcon
           onClick={handleGoForward}
           style={{ cursor: "pointer" }}

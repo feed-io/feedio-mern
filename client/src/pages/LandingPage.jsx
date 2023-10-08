@@ -6,25 +6,13 @@ import {
   Box,
   Grid,
   Card,
-  CardContent,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
 
 import Learn from "../assets/learn.svg";
 import Integration from "../assets/integrate.svg";
-import AmazonTile from "../assets/amazonTile.svg";
-import GoogleTile from "../assets/googleTile.svg";
-import IgTile from "../assets/igTile.svg";
-import TiktokTile from "../assets/tiktokTile.svg";
-import productHuntTile from "../assets/productHunt.svg";
-import redditTile from "../assets/redditTile.svg";
-import twitterTile from "../assets/twitterTile.svg";
-import yelpTile from "../assets/yelp.svg";
-import Framer from "../assets/framer.svg";
-import Shopify from "../assets/shopify.svg";
-import Webflow from "../assets/webflow.svg";
-import Wordpress from "../assets/wordpress.svg";
+
 import Blob from "../assets/blob.svg";
 import Pattern from "../assets/pattern.svg";
 import Graph from "../assets/graph.svg";
@@ -37,57 +25,6 @@ const LandingPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isMaintenanceMode, setMaintenanceMode] = useState(true);
-
-  const platforms = [
-    {
-      src: Framer,
-      alt: "Amazon",
-    },
-    {
-      src: Shopify,
-      alt: "Google",
-    },
-    {
-      src: Webflow,
-      alt: "Instagram",
-    },
-    {
-      src: Wordpress,
-      alt: "Tiktok",
-    },
-    {
-      src: AmazonTile,
-      alt: "Amazon",
-    },
-    {
-      src: GoogleTile,
-      alt: "Google",
-    },
-    {
-      src: IgTile,
-      alt: "Instagram",
-    },
-    {
-      src: TiktokTile,
-      alt: "Tiktok",
-    },
-    {
-      src: productHuntTile,
-      alt: "Product Hunt",
-    },
-    {
-      src: redditTile,
-      alt: "Reddit",
-    },
-    {
-      src: twitterTile,
-      alt: "Twitter",
-    },
-    {
-      src: yelpTile,
-      alt: "Yelp",
-    },
-  ];
 
   const features = [
     {
@@ -119,12 +56,11 @@ const LandingPage = () => {
 
   return (
     <main>
-      {/* Conditionally render the maintenance modal */}
       {isMaintenanceMode && (
         <MaintenanceModal
           isOpen={isMaintenanceMode}
           message="Our backend is currently undergoing maintenance. We apologize for any inconvenience."
-          onClose={() => setMaintenanceMode(false)} // Pass the onClose function
+          onClose={() => setMaintenanceMode(false)}
         />
       )}
 
@@ -251,57 +187,6 @@ const LandingPage = () => {
           ))}
         </Grid>
       </Container>
-
-      <Box
-        sx={{
-          bgcolor: theme.palette.info.main,
-          position: "relative",
-          py: 12,
-        }}>
-        <Container maxWidth="lg">
-          <Typography
-            variant="h2"
-            align="center"
-            color="black"
-            sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
-            Seamlessly Connect with Any Service
-          </Typography>
-          <Typography
-            variant="body1"
-            align="center"
-            mt={4}
-            maxWidth="36rem"
-            mx="auto"
-            color="grey.400">
-            We've engineered the perfect solution to display your customer
-            testimonials. Just add three lines of HTML code, and you can
-            showcase all your reviews across various platforms!
-          </Typography>
-          <Grid container spacing={2} mt={12}>
-            {platforms.map((platform, index) => (
-              <Grid item xs={6} lg={3} key={index}>
-                <Card sx={{ overflow: "hidden", borderRadius: "100px" }}>
-                  <CardContent
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      py: 2,
-                      px: 3,
-                      bgcolor: "#fff",
-                    }}>
-                    <img
-                      src={platform.src}
-                      alt={platform.alt}
-                      style={{ maxHeight: 40, maxWidth: "100%" }}
-                    />
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
 
       <Container
         maxWidth="xxl"
