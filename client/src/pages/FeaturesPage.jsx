@@ -26,7 +26,6 @@ import Wordpress from "../assets/wordpress.svg";
 import Blob from "../assets/blob.svg";
 import Blob1 from "../assets/blob1.svg";
 import Blob2 from "../assets/blob2.svg";
-import Unified from "../assets/unified.svg";
 import Testimonial from "../assets/testimonial.svg";
 import Sentiment from "../assets/sentiment.svg";
 import FeedbackWidget from "../assets/feedbackWidget.svg";
@@ -36,57 +35,6 @@ import Graph2 from "../assets/graph2.svg";
 const FeaturesPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const platforms = [
-    {
-      src: Framer,
-      alt: "Amazon",
-    },
-    {
-      src: Shopify,
-      alt: "Google",
-    },
-    {
-      src: Webflow,
-      alt: "Instagram",
-    },
-    {
-      src: Wordpress,
-      alt: "Tiktok",
-    },
-    {
-      src: AmazonTile,
-      alt: "Amazon",
-    },
-    {
-      src: GoogleTile,
-      alt: "Google",
-    },
-    {
-      src: IgTile,
-      alt: "Instagram",
-    },
-    {
-      src: TiktokTile,
-      alt: "Tiktok",
-    },
-    {
-      src: productHuntTile,
-      alt: "Product Hunt",
-    },
-    {
-      src: redditTile,
-      alt: "Reddit",
-    },
-    {
-      src: twitterTile,
-      alt: "Twitter",
-    },
-    {
-      src: yelpTile,
-      alt: "Yelp",
-    },
-  ];
 
   return (
     <>
@@ -125,34 +73,6 @@ const FeaturesPage = () => {
           Social proof
         </Typography>
         <Grid container spacing={6} sx={{ display: "flex" }}>
-          <Grid item xs={12} md={4} sx={{ display: "flex" }}>
-            <Card
-              sx={{
-                borderRadius: "16px",
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-              }}>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <img
-                  loading="lazy"
-                  src={Unified}
-                  alt="More social proof"
-                  style={{ display: "block", margin: "0 auto", width: "350px" }}
-                />
-                <Typography variant="h4" mt={4} mb={3} textAlign="center">
-                  Unified Feedback Management
-                </Typography>
-                <Typography variant="body1" mt={4} textAlign="center">
-                  Harness the power of social proof by collecting and managing
-                  testimonials and reviews from various platforms, all in one
-                  place. Whether it's Twitter, LinkedIn, TikTok, YouTube, or
-                  Yelp, Feedio brings them all under one roof.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
           <Grid item xs={12} md={4} sx={{ display: "flex" }}>
             <Card
               sx={{
@@ -337,60 +257,6 @@ const FeaturesPage = () => {
               </CardContent>
             </Card>
           </Grid>
-        </Grid>
-      </Container>
-      {/* Integrations */}
-      <Container
-        maxWidth="xxl"
-        sx={{
-          bgcolor: theme.palette.info.main,
-          py: 8,
-          px: [4, 8, 12],
-          backgroundImage: `url(${Blob})`,
-          backgroundPosition: "left center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
-        }}>
-        <Typography
-          variant="h2"
-          align="center"
-          color="black"
-          sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
-          Integrate with any platform
-        </Typography>
-        <Typography
-          variant="body1"
-          align="center"
-          mt={4}
-          maxWidth="36rem"
-          mx="auto"
-          color="grey.400">
-          We built the ultimate tool for showcasing your satisfied customers.
-          With 3-lines of HTML code, you can embed all your feedback to any
-          platform!
-        </Typography>
-        <Grid container spacing={2} mt={12}>
-          {platforms.map((platform, index) => (
-            <Grid item xs={6} lg={3} key={index}>
-              <Card sx={{ overflow: "hidden", borderRadius: "100px" }}>
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    py: 2,
-                    px: 3,
-                    bgcolor: "#fff",
-                  }}>
-                  <img
-                    src={platform.src}
-                    alt={platform.alt}
-                    style={{ maxHeight: 40, maxWidth: "100%" }}
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
         </Grid>
       </Container>
       {/* Call to Action */}
