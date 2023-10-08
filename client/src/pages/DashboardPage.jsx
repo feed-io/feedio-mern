@@ -76,7 +76,7 @@ const DashboardPage = () => {
           },
         }
       );
-
+      console.log(data);
       const data = await response.json();
       setTrendData(data);
     } catch (error) {

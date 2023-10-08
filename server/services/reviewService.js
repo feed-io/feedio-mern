@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const Review = require("../models/review");
+const { Review } = require("../models/review");
 const Product = require("../models/product");
 const { sendEmail, sendAdminNotificationEmail } = require("../utils/email");
 
@@ -260,7 +260,7 @@ const getTrendsForPeriod = async (productId, start, end, groupBy) => {
   try {
     const timezoneOffset = new Date().getTimezoneOffset();
     const offsetHours = timezoneOffset / 60;
-
+    console.log(Review);
     return await Review.aggregate([
       {
         $match: {
@@ -312,18 +312,6 @@ const fillGaps = (trends, start, end, granularity) => {
   let current = new Date(start);
 
   switch (granularity) {
-    case "daily":
-      for (let hour = 0; hour < 24; hour++) {
-        const trendForHour = trends.find((t) => t._id.hour === hour);
-        if (trendForHour) {
-          filledTrends.push(trendForHour);
-        } else {
-          filledTrends.push(createDefaultTrend(current, granularity, hour));
-        }
-      }
-      break;
-
-    case "weekly":
     case "monthly":
       while (current <= end) {
         const trendForDay = trends.find((t) => t._id.day === current.getDate());

@@ -3,7 +3,7 @@ const path = require("path");
 const handlebars = require("handlebars");
 
 const Widget = require("../models/Widget");
-const Review = require("../models/review");
+const { Review } = require("../models/review");
 const Product = require("../models/product");
 
 const generateWidgetConfig = async (

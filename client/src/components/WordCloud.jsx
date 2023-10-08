@@ -74,7 +74,7 @@ const WordCloudChart = ({ words }) => {
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Typography variant="h6" color="textSecondary">
-        Word Cloud Chart
+        Keywords
       </Typography>
       <div ref={cloudRef}></div>
     </div>
