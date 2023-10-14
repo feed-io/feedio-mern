@@ -27,7 +27,6 @@ import Rating from "@mui/material/Rating";
 import Favorite from "@mui/icons-material/Favorite";
 import MailOutline from "@mui/icons-material/MailOutline";
 import CalendarToday from "@mui/icons-material/CalendarToday";
-import { red } from "@mui/material/colors";
 import Empty from "../assets/empty.svg";
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 

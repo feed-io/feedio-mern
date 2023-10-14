@@ -26,7 +26,7 @@ const UserProfilePage = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [user, setUser] = useState("");
+  // const [user, setUser] = useState("");
   const [openDelete, setOpenDelete] = useState(false);
   const [notifyReview, setNotifyReview] = useState(true);
   const [notifyAccount, setNotifyAccount] = useState(true);
@@ -46,7 +46,7 @@ const UserProfilePage = () => {
           }
         );
 
-        setUser(response.data.user);
+        // setUser(response.data.user);
         setEmail(response.data.user.email);
         setName(response.data.user.name);
         setNotifyReview(response.data.user.notifyReview);

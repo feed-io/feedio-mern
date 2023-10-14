@@ -39,9 +39,9 @@ const SubmitFeedbackModal = (props) => {
     setContent(event.target.value);
   };
 
-  const handleRatingChange = (event) => {
-    setRating(event.target.value);
-  };
+  // const handleRatingChange = (event) => {
+  //   setRating(event.target.value);
+  // };
 
   const handleAnswerSubmit = async (event) => {
     event.preventDefault();
@@ -56,7 +56,6 @@ const SubmitFeedbackModal = (props) => {
 
     try {
       await axios.post(
-
         `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
 
         reviewData,
