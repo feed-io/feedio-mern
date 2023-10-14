@@ -68,7 +68,7 @@ app.use(
 
 app.use("/api/users/:id/payments", paymentRoutes);
 
-app.use("/api/payments/webhook", paymentController.handleStripeWebhook);
+app.use("/api/payments/", paymentController.handleStripeWebhook);
 
 app.use("/api/collection-feedback", reviewRoutes);
 

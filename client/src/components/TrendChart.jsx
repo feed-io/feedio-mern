@@ -6,9 +6,9 @@ import { Typography, Box } from "@mui/material";
 const TrendChart = ({
   trendData,
   timeGranularity,
-  setTimeGranularity,
-  currentDateRange,
-  setCurrentDateRange,
+  // setTimeGranularity,
+  // currentDateRange,
+  // setCurrentDateRange,
 }) => {
   const lineChartOptions = {
     maintainAspectRatio: false,
@@ -27,9 +27,9 @@ const TrendChart = ({
     },
   };
 
-  const handleGranularityChange = (e) => {
-    setTimeGranularity(e.target.value);
-  };
+  // const handleGranularityChange = (e) => {
+  //   setTimeGranularity(e.target.value);
+  // };
 
   const roundRating = (rating) => {
     return rating !== null ? Math.round(rating) : null;

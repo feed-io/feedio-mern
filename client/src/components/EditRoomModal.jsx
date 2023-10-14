@@ -8,7 +8,6 @@ import {
   IconButton,
   Button,
   Dialog,
-  DialogTitle,
   DialogContent,
 } from "@mui/material";
 import { Info } from "@mui/icons-material";
@@ -45,9 +44,7 @@ const EditRoomModal = (props) => {
 
     try {
       await axios.put(
-
         `${SERVER_URL}/api/users/${auth.userId}/products/${props.product._id}`,
-
 
         {
           name: newProductName,

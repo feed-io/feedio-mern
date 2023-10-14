@@ -14,7 +14,6 @@ const widgetSchema = new mongoose.Schema(
     },
     scrollSpeed: {
       type: Number,
-      type: Number,
     },
     hideDate: {
       type: Boolean,

@@ -11,18 +11,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-import AmazonTile from "../assets/amazonTile.svg";
-import GoogleTile from "../assets/googleTile.svg";
-import IgTile from "../assets/igTile.svg";
-import TiktokTile from "../assets/tiktokTile.svg";
-import productHuntTile from "../assets/productHunt.svg";
-import redditTile from "../assets/redditTile.svg";
-import twitterTile from "../assets/twitterTile.svg";
-import yelpTile from "../assets/yelp.svg";
-import Framer from "../assets/framer.svg";
-import Shopify from "../assets/shopify.svg";
-import Webflow from "../assets/webflow.svg";
-import Wordpress from "../assets/wordpress.svg";
 import Blob from "../assets/blob.svg";
 import Blob1 from "../assets/blob1.svg";
 import Blob2 from "../assets/blob2.svg";
