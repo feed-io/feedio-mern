@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Typography, Button, Box, Paper, Fade } from "@mui/material";
+import { Modal, Typography, Button, Box, Fade } from "@mui/material";
 
 const modalStyle = {
   display: "flex",

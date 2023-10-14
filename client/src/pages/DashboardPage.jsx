@@ -62,29 +62,28 @@ const DashboardPage = () => {
     if (product) {
       fetchReviews();
     }
-  }, [auth.userId, auth.token, product, refreshTrigger]);
-
-  const fetchTrendData = async () => {
-    try {
-      const response = await fetch(
-        `${SERVER_URL}/api/users/${
-          auth.userId
-        }/products/${productId}/reviews/trends?granularity=${timeGranularity}&startDate=${currentDateRange.start.toISOString()}&endDate=${currentDateRange.end.toISOString()}`,
-        {
-          headers: {
-            Authorization: "Bearer " + auth.token,
-          },
-        }
-      );
-      console.log(data);
-      const data = await response.json();
-      setTrendData(data);
-    } catch (error) {
-      console.log("Error fetching ratings trend data:", error.message);
-    }
-  };
+  }, [auth.userId, auth.token, product, refreshTrigger, productId]);
 
   useEffect(() => {
+    const fetchTrendData = async () => {
+      try {
+        const response = await fetch(
+          `${SERVER_URL}/api/users/${
+            auth.userId
+          }/products/${productId}/reviews/trends?granularity=${timeGranularity}&startDate=${currentDateRange.start.toISOString()}&endDate=${currentDateRange.end.toISOString()}`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.token,
+            },
+          }
+        );
+        const data = await response.json();
+        setTrendData(data);
+      } catch (error) {
+        console.log("Error fetching ratings trend data:", error.message);
+      }
+    };
+
     fetchTrendData();
   }, [
     auth.token,
@@ -115,7 +114,7 @@ const DashboardPage = () => {
     }
 
     fetchWordCloud();
-  }, [auth.token, refreshTrigger]);
+  }, [auth.token, refreshTrigger, auth.userId, productId]);
 
   useEffect(() => {
     const fetchProduct = async () => {
