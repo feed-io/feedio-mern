@@ -1,6 +1,6 @@
 # Feedio - Testimonials App
 
-Feedio is a MERN stack testimonials app designed to gather and showcase feedback from your users. It uses a monorepo structure, combining both the frontend and backend within a single repository.
+
 
 ## Features
 
