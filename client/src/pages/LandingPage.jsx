@@ -12,7 +12,6 @@ import {
 
 import Learn from "../assets/learn.svg";
 import Integration from "../assets/integrate.svg";
-
 import Blob from "../assets/blob.svg";
 import Pattern from "../assets/pattern.svg";
 import Graph from "../assets/graph.svg";

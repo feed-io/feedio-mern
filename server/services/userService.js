@@ -7,7 +7,7 @@ const {
   sendAccountUpdateEmail,
 } = require("../utils/email");
 const User = require("../models/user");
-const Product = require("../models/product");
+const Product = require("../models/Product");
 const Payment = require("../models/Payment");
 
 dotenv.config();
