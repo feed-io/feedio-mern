@@ -12,9 +12,8 @@ import {
 
 import Learn from "../assets/learn.svg";
 import Integration from "../assets/integrate.svg";
-import Blob from "../assets/blob.svg";
-import Pattern from "../assets/pattern.svg";
 import Graph from "../assets/graph.svg";
+import Blob from "../assets/blob.svg";
 import Sentiment from "../assets/sentiment.svg";
 import Testimonial from "../assets/testimonial.svg";
 import Analytics from "../assets/analytics.svg";
@@ -23,7 +22,7 @@ import MaintenanceModal from "../components/MaintenanceModal";
 const LandingPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [isMaintenanceMode, setMaintenanceMode] = useState(true);
+  const [isMaintenanceMode, setMaintenanceMode] = useState(false);
 
   const features = [
     {
@@ -55,13 +54,13 @@ const LandingPage = () => {
 
   return (
     <main>
-      {isMaintenanceMode && (
+      {/* {isMaintenanceMode && (
         <MaintenanceModal
           isOpen={isMaintenanceMode}
           message="Our backend is currently undergoing maintenance. We apologize for any inconvenience."
           onClose={() => setMaintenanceMode(false)}
         />
-      )}
+      )} */}
 
       <Box
         sx={{
@@ -73,8 +72,8 @@ const LandingPage = () => {
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
         }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={4}>
+        <Container maxWidth="xxl" sx={{ paddingLeft: 0, paddingRight: 0 }}>
+          <Grid container spacing={4} sx={{ paddingLeft: 0, paddingRight: 0 }}>
             <Grid item xs={12} md={6}>
               <Box sx={{ textAlign: "left", pb: 12, pl: 2 }}>
                 <Typography
@@ -121,26 +120,31 @@ const LandingPage = () => {
         </Container>
       </Box>
 
-      <Container
-        maxWidth="xxl"
-        sx={{
-          paddingTop: "40px",
-          paddingBottom: "40px",
-          backgroundImage: `url(${Pattern}), url(${Pattern})`,
-          backgroundSize: "cover, cover",
-          backgroundPosition: "left , right",
-          backgroundRepeat: "repeat, repeat",
-        }}>
-        <Box sx={{ textAlign: "center", pb: 4 }}>
+      <Container maxWidth="xxl" sx={{ paddingLeft: 0, paddingRight: 0 }}>
+        <Box
+          sx={{
+            bgcolor: theme.palette.info.main,
+            textAlign: "center",
+            paddingTop: "40px",
+            paddingBottom: "40px",
+          }}>
           <Typography
             variant="h2"
-            sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}
+            sx={{
+              fontSize: isMobile ? "2.5rem" : "4.5rem",
+              paddingLeft: 0,
+              paddingRight: 0,
+            }}
             gutterBottom>
             Harness the power of genuine reviews and advanced analytics to drive
             growth and build trust.
           </Typography>
         </Box>
-        <Grid container spacing={4} justifyContent="center">
+        <Grid
+          bgcolor={theme.palette.info.main}
+          container
+          spacing={4}
+          justifyContent="center">
           {features.map((feature, index) => (
             <Grid item xs={12} sm={6} md={6} lg={6} key={index}>
               <Card
@@ -190,12 +194,11 @@ const LandingPage = () => {
       <Container
         maxWidth="xxl"
         sx={{
+          paddingLeft: 0,
+          paddingRight: 0,
+          bgcolor: theme.palette.info.main,
           py: 8,
           px: [4, 6, 8, 10],
-          backgroundImage: `url(${Pattern})`,
-          backgroundPosition: isMobile ? "center center" : "right center",
-          backgroundRepeat: "repeat",
-          backgroundSize: "cover",
         }}>
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={4}>
@@ -214,7 +217,12 @@ const LandingPage = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Box sx={{ textAlign: "left", pb: 12, pl: 2 }}>
+            <Box
+              sx={{
+                textAlign: "left",
+                pb: 12,
+                pl: 2,
+              }}>
               <Typography
                 variant="h2"
                 mb={4}

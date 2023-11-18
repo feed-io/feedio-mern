@@ -14,8 +14,6 @@ import {
 } from "@mui/material";
 import { Star } from "@mui/icons-material";
 
-import Pattern from "../assets/pattern.svg";
-
 const tiers = [
   {
     title: "Starter",
@@ -122,120 +120,116 @@ const PricingPage = () => {
 
   return (
     <>
-      <Container
-        maxWidth="xxl"
-        textAlign="center"
-        pb={8}
-        sx={{ px: [4, 6, 8, 10] }}>
-        <Typography
-          variant="h1"
-          textAlign="center"
-          sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}
-          mt={8}
-          mb={4}>
-          The easiest way to drive more sales for your business
-        </Typography>
-        <Typography
-          variant="h4"
-          color="text.secondary"
-          textAlign="center"
-          mb={2}>
-          Start with 3 text reviews, then upgrade to our paid plan only if
-          you're happy.
-        </Typography>
-      </Container>
-      {/* Pricing */}
-      <Container
-        maxWidth="xxl"
-        component="main"
-        sx={{
-          py: 8,
-          px: [4, 6, 8, 10],
-          backgroundImage: `url(${Pattern})`,
-          backgroundPosition: "right center",
-          backgroundRepeat: "repeat",
-          backgroundSize: "cover",
-        }}>
-        <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier) => (
-            <Grid
-              item
-              key={tier.title}
-              xs={12}
-              sm={tier.title === "Enterprise" ? 12 : 6}
-              md={4}>
-              <Card>
-                <CardHeader
-                  title={tier.title}
-                  subheader={tier.subheader}
-                  titleTypographyProps={{ align: "center" }}
-                  action={tier.title === "Pro" ? <Star /> : null}
-                  subheaderTypographyProps={{
-                    align: "center",
-                  }}
-                  sx={{
-                    bgcolor: theme.palette.secondary.main,
-                  }}
-                />
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "baseline",
-                      mb: 2,
-                    }}>
-                    <Typography
-                      component="h2"
-                      variant="h3"
-                      color="text.primary">
-                      €{tier.price}
-                    </Typography>
-                    <Typography variant="h6" color="text.secondary">
-                      /mo
-                    </Typography>
-                  </Box>
-                  <ul>
-                    {tier.description.map((line) => (
-                      <Typography variant="subtitle1" key={line}>
-                        {line}
-                      </Typography>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardActions sx={{ justifyContent: "center" }}>
-                  <Button variant="primary">{tier.buttonText}</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      {/* FAQs */}
-      <Container
-        maxWidth="xxl"
-        sx={{
-          py: 8,
-          px: [4, 6, 8, 10],
-          bgcolor: theme.palette.info.main,
-        }}>
-        <Box py={6} display="flex" justifyContent="center">
-          <Typography variant="h2" align="center" gutterBottom>
-            Frequently asked questions
+      <Container maxWidth="xxl" sx={{ bgcolor: theme.palette.info.main }}>
+        <Container textAlign="center" pb={8} sx={{ px: [4, 6, 8, 10] }}>
+          <Typography
+            variant="h1"
+            textAlign="center"
+            sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}
+            mb={4}>
+            The easiest way to drive more sales for your business
           </Typography>
-        </Box>
-        <Grid container spacing={6}>
-          {faqs.map((faq, index) => (
-            <Grid item xs={12} md={6} key={index}>
-              <Typography variant="h4" mb={2}>
-                {faq.question}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                {faq.answer}
-              </Typography>
-            </Grid>
-          ))}
-        </Grid>
+          <Typography
+            variant="h4"
+            color="text.secondary"
+            textAlign="center"
+            mb={2}>
+            Start with 3 text reviews, then upgrade to our paid plan only if
+            you're happy.
+          </Typography>
+        </Container>
+        {/* Pricing */}
+        <Container
+          maxWidth="xxl"
+          component="main"
+          sx={{
+            py: 8,
+            px: [4, 6, 8, 10],
+            backgroundPosition: "right center",
+            backgroundRepeat: "repeat",
+            backgroundSize: "cover",
+          }}>
+          <Grid container spacing={5} alignItems="flex-end">
+            {tiers.map((tier) => (
+              <Grid
+                item
+                key={tier.title}
+                xs={12}
+                sm={tier.title === "Enterprise" ? 12 : 6}
+                md={4}>
+                <Card>
+                  <CardHeader
+                    title={tier.title}
+                    subheader={tier.subheader}
+                    titleTypographyProps={{ align: "center" }}
+                    action={tier.title === "Pro" ? <Star /> : null}
+                    subheaderTypographyProps={{
+                      align: "center",
+                    }}
+                    sx={{
+                      bgcolor: theme.palette.secondary.main,
+                    }}
+                  />
+                  <CardContent>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "baseline",
+                        mb: 2,
+                      }}>
+                      <Typography
+                        component="h2"
+                        variant="h3"
+                        color="text.primary">
+                        €{tier.price}
+                      </Typography>
+                      <Typography variant="h6" color="text.secondary">
+                        /mo
+                      </Typography>
+                    </Box>
+                    <ul>
+                      {tier.description.map((line) => (
+                        <Typography variant="subtitle1" key={line}>
+                          {line}
+                        </Typography>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardActions sx={{ justifyContent: "center" }}>
+                    <Button variant="primary">{tier.buttonText}</Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+        {/* FAQs */}
+        <Container
+          maxWidth="xxl"
+          sx={{
+            py: 8,
+            px: [4, 6, 8, 10],
+            bgcolor: theme.palette.info.main,
+          }}>
+          <Box py={6} display="flex" justifyContent="center">
+            <Typography variant="h2" align="center" gutterBottom>
+              Frequently asked questions
+            </Typography>
+          </Box>
+          <Grid container spacing={6}>
+            {faqs.map((faq, index) => (
+              <Grid item xs={12} md={6} key={index}>
+                <Typography variant="h4" mb={2}>
+                  {faq.question}
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  {faq.answer}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
       </Container>
     </>
   );

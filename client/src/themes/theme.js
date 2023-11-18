@@ -108,6 +108,16 @@ const theme = createTheme({
 });
 
 theme.components = {
+  MuiContainer: {
+    styleOverrides: {
+      root: {
+        "@media (min-width: 600px)": {
+          paddingLeft: 0, // Override padding for medium screens and up
+          paddingRight: 0,
+        },
+      },
+    },
+  },
   MuiButton: {
     styleOverrides: {
       root: {
