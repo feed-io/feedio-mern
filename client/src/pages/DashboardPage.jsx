@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, lazy, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -12,14 +12,18 @@ import {
 import LayoutDashboard from "../components/LayoutDashboard";
 import SidebarSection from "../components/SidebarSection";
 import FeedbackSection from "../components/FeebackSection";
-import CreateWidgetModal from "../components/CreateWidgetModal";
-import EditRoomModal from "../components/EditRoomModal";
-import CollectionFeedbackModal from "../components/CollectionFeedbackModal";
 import { AuthContext } from "../context/auth-context";
 import { Close } from "@mui/icons-material";
 import LogoSpinner from "../components/spinner/LogoSpinner";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+// Lazy loaded components
+const CreateWidgetModal = lazy(() => import("../components/CreateWidgetModal"));
+const EditRoomModal = lazy(() => import("../components/EditRoomModal"));
+const CollectionFeedbackModal = lazy(() =>
+  import("../components/CollectionFeedbackModal")
+);
 
 const DashboardPage = () => {
   const { productId } = useParams();
@@ -39,6 +43,47 @@ const DashboardPage = () => {
   const [wordCounts, setWordCounts] = useState({});
   const [timeGranularity, setTimeGranularity] = useState("monthly");
   const theme = useTheme();
+
+  const categorizeSentiment = (score) => {
+    if (score >= 4) {
+      return "Positive";
+    } else if (score === 3) {
+      return "Neutral";
+    } else {
+      return "Negative";
+    }
+  };
+
+  const sentimentCounts = useMemo(() => {
+    const counts = { Positive: 0, Neutral: 0, Negative: 0 };
+
+    reviews.forEach((review) => {
+      const sentiment = categorizeSentiment(review.sentiment);
+      counts[sentiment]++;
+    });
+
+    return counts;
+  }, [reviews]);
+
+  const words = useMemo(() => {
+    return Object.keys(wordCounts).map((word) => ({
+      text: word,
+      value: wordCounts[word],
+    }));
+  }, [wordCounts]);
+
+  const sentimentData = {
+    labels: ["Positive", "Neutral", "Negative"],
+    datasets: [
+      {
+        data: [
+          sentimentCounts.Positive,
+          sentimentCounts.Neutral,
+          sentimentCounts.Negative,
+        ],
+      },
+    ],
+  };
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -77,6 +122,7 @@ const DashboardPage = () => {
             },
           }
         );
+        console.log(response);
         const data = await response.json();
         setTrendData(data);
       } catch (error) {
@@ -186,46 +232,6 @@ const DashboardPage = () => {
 
   const handleEditRoom = () => {
     setRefreshTrigger((prev) => prev + 1);
-  };
-
-  const categorizeSentiment = (score) => {
-    if (score >= 4) {
-      return "Positive";
-    } else if (score === 3) {
-      return "Neutral";
-    } else {
-      return "Negative";
-    }
-  };
-
-  const sentimentCounts = {
-    Positive: reviews.filter(
-      (review) => categorizeSentiment(review.sentiment) === "Positive"
-    ).length,
-    Neutral: reviews.filter(
-      (review) => categorizeSentiment(review.sentiment) === "Neutral"
-    ).length,
-    Negative: reviews.filter(
-      (review) => categorizeSentiment(review.sentiment) === "Negative"
-    ).length,
-  };
-
-  const words = Object.keys(wordCounts).map((word) => ({
-    text: word,
-    value: wordCounts[word],
-  }));
-
-  const sentimentData = {
-    labels: ["Positive", "Neutral", "Negative"],
-    datasets: [
-      {
-        data: [
-          sentimentCounts.Positive,
-          sentimentCounts.Neutral,
-          sentimentCounts.Negative,
-        ],
-      },
-    ],
   };
 
   console.log(product);

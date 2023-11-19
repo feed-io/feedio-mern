@@ -12,7 +12,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Container,
   useMediaQuery,
   Button,
   IconButton,
@@ -124,89 +123,84 @@ const RoomsPage = () => {
 
   return (
     <>
-      <Container
-        sx={{
-          bgcolor: theme.palette.primary.contrastText,
-          boxShadow: 1,
+      <Box py={4}>
+        {/* Overview Section */}
+        <Box mb={2} margin={8}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}
+            my={2}>
+            <Typography
+              variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
+          </Box>
+          <Grid
+            container
+            mt={4}
+            spacing={2}
+            sx={{ justifyContent: "space-around" }}>
+            {[
+              { icon: <Person />, label: "Profile", path: "/profile/" },
+              {
+                icon: <VerifiedUser />,
+                label: "Subscription",
+                path: "/membership/",
+              },
+              {
+                icon: <Payment />,
+                label: "Billing",
+                status: auth.membershipStatus,
+                path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
+              },
+            ].map(({ icon, label, path }, index) => (
+              <Grid item xs={isMobile ? 12 : 6} sm={2} key={index}>
+                <Button
+                  startIcon={icon}
+                  href={label !== "Billing" ? path : undefined}
+                  disabled={
+                    label === "Billing" && auth.membershipStatus === "free"
+                      ? true
+                      : false
+                  }
+                  variant="primary"
+                  fullWidth
+                  sx={{
+                    fontSize: { xs: "0.7rem", sm: "0.8rem" },
+                    whiteSpace: { xs: "normal", sm: "nowrap" },
+                    padding: "6px 12px",
+                    textTransform: "none",
+                    marginBottom: isMobile ? 2 : 0,
+                  }}
+                  onClick={
+                    label === "Billing" ? handleManageBilling : undefined
+                  }>
+                  {label}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
 
-          borderRadius: 8,
-          my: 8,
-        }}
-        maxWidth={"lg"}>
-        <Box py={4}>
-          {/* Overview Section */}
-          <Box mb={2}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}
-              my={2}>
-              <Typography
-                variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
-            </Box>
-            <Grid
-              container
-              mt={4}
-              spacing={2}
-              sx={{ justifyContent: "space-around" }}>
-              {[
-                { icon: <Person />, label: "Profile", path: "/profile/" },
-                {
-                  icon: <VerifiedUser />,
-                  label: "Subscription",
-                  path: "/membership/",
-                },
-                {
-                  icon: <Payment />,
-                  label: "Billing",
-                  status: auth.membershipStatus,
-                  path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
-                },
-              ].map(({ icon, label, path }, index) => (
-                <Grid item xs={isMobile ? 12 : 6} sm={2} key={index}>
-                  <Button
-                    startIcon={icon}
-                    href={label !== "Billing" ? path : undefined}
-                    disabled={
-                      label === "Billing" && auth.membershipStatus === "free"
-                        ? true
-                        : false
-                    }
-                    variant="primary"
-                    fullWidth
-                    sx={{
-                      fontSize: { xs: "0.7rem", sm: "0.8rem" },
-                      whiteSpace: { xs: "normal", sm: "nowrap" },
-                      padding: "6px 12px",
-                      textTransform: "none",
-                      marginBottom: isMobile ? 2 : 0,
-                    }}
-                    onClick={
-                      label === "Billing" ? handleManageBilling : undefined
-                    }>
-                    {label}
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
+        {/* Rooms Section */}
+        <Box margin={4} padding={4}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={4}
+            mb={2}>
+            <Typography variant={isMobile ? "h5" : "h4"}>Rooms</Typography>
           </Box>
 
-          {/* Rooms Section */}
-          <Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              mt={4}
-              mb={2}>
-              <Typography variant={isMobile ? "h5" : "h4"}>Rooms</Typography>
-            </Box>
-
-            <Box mb={4}>
-              <Divider />
-            </Box>
-
+          <Box mb={4}>
+            <Divider />
+          </Box>
+          <Box
+            maxWidth="80%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center">
             <TableContainer
               component={Paper}
               sx={{
@@ -249,6 +243,7 @@ const RoomsPage = () => {
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                           cursor: "pointer",
+                          margin: "8px",
                         }}>
                         <TableCell component="th" scope="row">
                           {product.name}
@@ -274,11 +269,11 @@ const RoomsPage = () => {
               </div>
             </TableContainer>
           </Box>
-          <Box mb={2} mt={4}>
-            <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
-          </Box>
         </Box>
-      </Container>
+        <Box margin={2} padding={4}>
+          <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
+        </Box>
+      </Box>
     </>
   );
 };

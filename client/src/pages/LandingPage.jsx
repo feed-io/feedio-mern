@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Container,
   Typography,
@@ -22,7 +22,7 @@ import MaintenanceModal from "../components/MaintenanceModal";
 const LandingPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [isMaintenanceMode, setMaintenanceMode] = useState(false);
+  const [isMaintenanceMode, setMaintenanceMode] = React.useState(false);
 
   const features = [
     {
@@ -37,7 +37,6 @@ const LandingPage = () => {
         "Understand the sentiment behind every review. Dive deep into analytics to uncover insights and drive improvements.",
       image: Analytics,
     },
-
     {
       title: "Showcase Genuine Reviews",
       description:
@@ -54,194 +53,90 @@ const LandingPage = () => {
 
   return (
     <main>
-      {/* {isMaintenanceMode && (
-        <MaintenanceModal
-          isOpen={isMaintenanceMode}
-          message="Our backend is currently undergoing maintenance. We apologize for any inconvenience."
-          onClose={() => setMaintenanceMode(false)}
-        />
-      )} */}
-
+      {/* Header Section */}
       <Box
         sx={{
           bgcolor: theme.palette.info.main,
-          pt: 18,
-          pb: 10,
+          pt: isMobile ? 8 : 18,
+          pb: isMobile ? 5 : 10,
           backgroundImage: `url(${Blob})`,
           backgroundPosition: "right center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
         }}>
-        <Container maxWidth="xxl" sx={{ paddingLeft: 0, paddingRight: 0 }}>
-          <Grid container spacing={4} sx={{ paddingLeft: 0, paddingRight: 0 }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
-              <Box sx={{ textAlign: "left", pb: 12, pl: 2 }}>
-                <Typography
-                  variant="h1"
-                  gutterBottom
-                  sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
+              <Box sx={{ textAlign: "left", pb: 12 }}>
+                <Typography variant={isMobile ? "h4" : "h1"}>
                   Elevate Your Brand with Authentic Feedback
                 </Typography>
-                <Typography
-                  variant="h6"
-                  color="text.secondary"
-                  gutterBottom
-                  sx={{ fontSize: "1rem" }}>
+                <Typography variant="h6" color="text.secondary">
                   Feedback is more than just words; it's a goldmine of insights.
                 </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    pt: 2,
-                  }}>
-                  <Button
-                    variant="primary"
-                    color="primary"
-                    href="/pricing"
-                    sx={{ fontSize: isMobile ? "0.8rem" : "1rem" }}>
-                    Try FREE now
-                  </Button>
-                </Box>
+                <Button variant="contained" color="primary" href="/pricing">
+                  Try FREE now
+                </Button>
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                }}>
-                <img src={Graph} alt="Graph" style={{ maxWidth: "100%" }} />
-              </Box>
+              <img src={Graph} alt="Graph" style={{ width: "100%" }} />
             </Grid>
           </Grid>
         </Container>
       </Box>
 
-      <Container maxWidth="xxl" sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Box
-          sx={{
-            bgcolor: theme.palette.info.main,
-            textAlign: "center",
-            paddingTop: "40px",
-            paddingBottom: "40px",
-          }}>
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: isMobile ? "2.5rem" : "4.5rem",
-              paddingLeft: 0,
-              paddingRight: 0,
-            }}
-            gutterBottom>
+      {/* Features Section */}
+      <Container maxWidth="lg">
+        <Box sx={{ textAlign: "center", py: 8 }}>
+          <Typography variant={isMobile ? "h4" : "h2"}>
             Harness the power of genuine reviews and advanced analytics to drive
             growth and build trust.
           </Typography>
         </Box>
-        <Grid
-          bgcolor={theme.palette.info.main}
-          container
-          spacing={4}
-          justifyContent="center">
+        <Grid container spacing={4}>
           {features.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={6} lg={6} key={index}>
-              <Card
-                sx={{
-                  borderRadius: 8,
-                  overflow: "hidden",
-                  padding: "24px",
-                  maxWidth: "400px",
-                  margin: "0 auto",
-                  width: "100%",
-                }}>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  padding={2}>
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    style={{
-                      maxHeight: 250,
-                      maxWidth: "100%",
-                      marginBottom: "10px",
-                    }}
-                  />
-                  <Typography
-                    variant="h6"
-                    align="center"
-                    gutterBottom
-                    style={{ maxWidth: "90%" }}>
-                    {feature.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    align="center"
-                    mt={2}
-                    style={{ maxWidth: "90%" }}>
-                    {feature.description}
-                  </Typography>
-                </Box>
+            <Grid item xs={12} sm={6} key={index}>
+              <Card sx={{ p: 3, textAlign: "center" }}>
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  style={{ height: 200 }}
+                />
+                <Typography variant="h6">{feature.title}</Typography>
+                <Typography variant="body1">{feature.description}</Typography>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
 
-      <Container
-        maxWidth="xxl"
-        sx={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          bgcolor: theme.palette.info.main,
-          py: 8,
-          px: [4, 6, 8, 10],
-        }}>
-        <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                height: "100%",
-              }}>
+      {/* Call to Action Section */}
+      <Box sx={{ bgcolor: theme.palette.info.main, py: 8 }}>
+        <Container maxWidth="lg">
+          <Grid container alignItems="center">
+            <Grid item xs={12} md={4}>
               <img
                 src={Sentiment}
-                alt="Sentiment"
-                style={{ maxWidth: "75%" }}
+                alt="Sentiment Analysis"
+                style={{ width: "100%" }}
               />
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Box
-              sx={{
-                textAlign: "left",
-                pb: 12,
-                pl: 2,
-              }}>
-              <Typography
-                variant="h2"
-                mb={4}
-                sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Typography variant={isMobile ? "h4" : "h2"}>
                 Ready to transform feedback into growth?
               </Typography>
-              <Box
-                sx={{ display: "flex", justifyContent: "flex-start", mb: 8 }}>
-                <Button
-                  variant="primary"
-                  sx={{ transform: "scale(1.05)" }}
-                  href="/pricing">
-                  Get started
-                </Button>
-              </Box>
-            </Box>
+              <Button
+                variant="contained"
+                color="primary"
+                href="/pricing"
+                sx={{ mt: 4 }}>
+                Get started
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </Box>
     </main>
   );
 };
