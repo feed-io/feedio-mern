@@ -197,14 +197,15 @@ const RoomsPage = () => {
             <Divider />
           </Box>
           <Box
-            maxWidth="80%"
             display="flex"
             justifyContent="center"
-            alignItems="center">
+            alignItems="center"
+            width="100%">
             <TableContainer
               component={Paper}
               sx={{
                 borderRadius: 4,
+                maxWidth: "70%",
               }}>
               <div style={{ overflowX: isMobile ? "auto" : "visible" }}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -219,22 +220,23 @@ const RoomsPage = () => {
                       </TableCell>
                       <TableCell
                         sx={{ color: theme.palette.primary.contrastText }}
-                        align="right">
+                        align="center">
                         Avg. Rating
                       </TableCell>
                       <TableCell
                         sx={{ color: theme.palette.primary.contrastText }}
-                        align="right">
+                        align="center">
                         Number of Entries
                       </TableCell>
                       <TableCell
                         sx={{ color: theme.palette.primary.contrastText }}
-                        align="right">
+                        align="center">
                         Delete
                       </TableCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
+                  <TableBody
+                    sx={{ bgcolor: theme.palette.primary.contrastText }}>
                     {products.map((product, index) => (
                       <TableRow
                         key={index}
@@ -248,13 +250,13 @@ const RoomsPage = () => {
                         <TableCell component="th" scope="row">
                           {product.name}
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                           {product.averageRating.toFixed(1)}
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                           {product.reviews.length}
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                           <IconButton
                             onClick={(e) =>
                               handleDeleteProduct(e, product._id)
@@ -270,7 +272,7 @@ const RoomsPage = () => {
             </TableContainer>
           </Box>
         </Box>
-        <Box margin={2} padding={4}>
+        <Box margin={8}>
           <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
         </Box>
       </Box>

@@ -48,6 +48,9 @@ const getButtonVariants = (palette) => [
 
 const theme = createTheme({
   palette: {
+    background: {
+      default: "#AFF8C8",
+    },
     primary: {
       main: "#0F2830", // Firefly
       contrastText: "#F8FBFF", // Zircon
