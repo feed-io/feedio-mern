@@ -79,7 +79,7 @@ const Footer = () => {
                 </IconButton>
               </Link>
               <Link
-                href="https://www.linkedin.com/company/cleanlynn"
+                href="https://www.linkedin.com/company/feedio"
                 target="_blank"
                 rel="noopener">
                 <IconButton>
@@ -120,11 +120,8 @@ const Footer = () => {
               Get in touch:
             </Typography>
             <Typography color={theme.palette.primary.contrastText}>
-              Email: support@feddio.com
+              Email: support@feddio.app
             </Typography>
-            {/* <Typography color={theme.palette.primary.contrastText}>
-              Phone: +1 (800) 123-4567
-            </Typography> */}
           </Grid>
         </Grid>
         {!isMobile && (
