@@ -48,6 +48,9 @@ const getButtonVariants = (palette) => [
 
 const theme = createTheme({
   palette: {
+    background: {
+      default: "#AFF8C8",
+    },
     primary: {
       main: "#0F2830", // Firefly
       contrastText: "#F8FBFF", // Zircon
@@ -108,6 +111,16 @@ const theme = createTheme({
 });
 
 theme.components = {
+  MuiContainer: {
+    styleOverrides: {
+      root: {
+        "@media (min-width: 600px)": {
+          paddingLeft: 0, // Override padding for medium screens and up
+          paddingRight: 0,
+        },
+      },
+    },
+  },
   MuiButton: {
     styleOverrides: {
       root: {

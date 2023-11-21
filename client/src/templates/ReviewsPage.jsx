@@ -33,6 +33,8 @@ const ReviewsPage = () => {
 
     fetchData();
   }, [productId, auth.userId, auth.token]);
+
+  console.log(reviews);
   return (
     <Box className="flex-grow">
       <Box

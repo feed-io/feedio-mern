@@ -11,6 +11,7 @@ import {
   CardHeader,
   Container,
   Box,
+  useTheme,
 } from "@mui/material";
 import { Star, Cancel, Payment } from "@mui/icons-material";
 
@@ -69,6 +70,7 @@ const SubscriptionPage = () => {
   const { userId, token, membershipStatus } = auth;
   const [user, setUser] = useState("");
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleCheckout = async (plan) => {
     if (plan === "Free") {
@@ -172,70 +174,72 @@ const SubscriptionPage = () => {
           You are currently on the {membershipStatus} plan
         </Typography>
         {membershipStatus === "free" ? (
-          <Grid container spacing={5} alignItems="flex-end">
-            {tiers.map((tier) => (
-              <Grid item key={tier.title} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                  }}>
-                  <CardHeader
-                    title={tier.title}
-                    subheader={tier.subheader}
-                    titleTypographyProps={{ align: "center" }}
-                    action={tier.title === "Pro" ? <Star /> : null}
-                    subheaderTypographyProps={{ align: "center" }}
-                    sx={{
-                      backgroundColor: (theme) =>
-                        theme.palette.mode === "light"
-                          ? theme.palette.grey[200]
-                          : theme.palette.grey[700],
-                    }}
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Box
+          <Container
+            maxWidth="xxl"
+            component="main"
+            sx={{
+              py: 8,
+              px: [4, 6, 8, 10],
+              backgroundPosition: "right center",
+              backgroundRepeat: "repeat",
+              backgroundSize: "cover",
+            }}>
+            <Grid container spacing={5} alignItems="flex-end">
+              {tiers.map((tier) => (
+                <Grid
+                  item
+                  key={tier.title}
+                  xs={12}
+                  sm={tier.title === "Enterprise" ? 12 : 6}
+                  md={4}>
+                  <Card sx={{ borderRadius: 4 }}>
+                    <CardHeader
+                      title={tier.title}
+                      subheader={tier.subheader}
+                      titleTypographyProps={{ align: "center" }}
+                      action={tier.title === "Pro" ? <Star /> : null}
+                      subheaderTypographyProps={{
+                        align: "center",
+                      }}
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "baseline",
-                        mb: 2,
-                      }}>
-                      <Typography
-                        component="h2"
-                        variant="h3"
-                        color="text.primary">
-                        €{tier.price}
-                      </Typography>
-                      <Typography variant="h6" color="text.secondary">
-                        /mo
-                      </Typography>
-                    </Box>
-                    <ul>
-                      {tier.description.map((line) => (
+                        bgcolor: theme.palette.secondary.main,
+                        padding: 2,
+                      }}
+                    />
+                    <CardContent sx={{ padding: 2 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "baseline",
+                          mb: 2,
+                        }}>
                         <Typography
-                          component="li"
-                          variant="subtitle1"
-                          align="center"
-                          key={line}>
-                          {line}
+                          component="h2"
+                          variant="h3"
+                          color="text.primary">
+                          €{tier.price}
                         </Typography>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  <CardActions sx={{ mt: "auto" }}>
-                    <Button
-                      fullWidth
-                      variant={tier.buttonVariant}
-                      onClick={() => handleCheckout(tier.title)}>
-                      {tier.buttonText}
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                        <Typography variant="h6" color="text.secondary">
+                          /mo
+                        </Typography>
+                      </Box>
+                      <ul>
+                        {tier.description.map((line) => (
+                          <Typography variant="subtitle1" key={line}>
+                            {line}
+                          </Typography>
+                        ))}
+                      </ul>
+                    </CardContent>
+                    <CardActions sx={{ justifyContent: "center", padding: 2 }}>
+                      <Button variant="primary">{tier.buttonText}</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
         ) : (
           <Box
             sx={{

@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
-const User = require("../models/user");
-const Review = require("../models/review");
+const User = require("../models/User");
+const { Review } = require("../models/Review");
 
 const create = async ({ name, header, content, questions, userId }) => {
   const user = await User.findById(userId);

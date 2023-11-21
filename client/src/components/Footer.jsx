@@ -9,7 +9,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
+import { LinkedIn } from "@mui/icons-material";
 
 import Logo from "../assets/logo.svg";
 
@@ -51,45 +51,6 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" color={theme.palette.primary.contrastText}>
-              Connect with us:
-            </Typography>
-            <Box sx={{ display: "flex", gap: "16px", mt: 1 }}>
-              <Link
-                href="https://www.facebook.com/cleanlynn"
-                target="_blank"
-                rel="noopener">
-                <IconButton>
-                  <Facebook color="secondary" />
-                </IconButton>
-              </Link>
-              <Link
-                href="https://twitter.com/cleanlynn"
-                target="_blank"
-                rel="noopener">
-                <IconButton>
-                  <Twitter color="secondary" />
-                </IconButton>
-              </Link>
-              <Link
-                href="https://www.instagram.com/cleanlynn"
-                target="_blank"
-                rel="noopener">
-                <IconButton>
-                  <Instagram color="secondary" />
-                </IconButton>
-              </Link>
-              <Link
-                href="https://www.linkedin.com/company/cleanlynn"
-                target="_blank"
-                rel="noopener">
-                <IconButton>
-                  <LinkedIn color="secondary" />
-                </IconButton>
-              </Link>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="h6" color={theme.palette.primary.contrastText}>
               Quick Links:
             </Typography>
             <Box mt={2}>
@@ -119,12 +80,17 @@ const Footer = () => {
             <Typography variant="h6" color={theme.palette.primary.contrastText}>
               Get in touch:
             </Typography>
+            <Link
+              href="https://www.linkedin.com/company/feedio"
+              target="_blank"
+              rel="noopener">
+              <IconButton>
+                <LinkedIn color="secondary" />
+              </IconButton>
+            </Link>
             <Typography color={theme.palette.primary.contrastText}>
-              Email: support@feddio.com
+              Email: support@feddio.app
             </Typography>
-            {/* <Typography color={theme.palette.primary.contrastText}>
-              Phone: +1 (800) 123-4567
-            </Typography> */}
           </Grid>
         </Grid>
         {!isMobile && (

@@ -20,7 +20,7 @@ const FeedbackSection = ({
 }) => {
   return (
     <Box py={4}>
-      <Container sx={{ width: "100%" }}>
+      <Container maxWidth="xl">
         <Grid container spacing={4}>
           {/* Trend Chart */}
           <Grid item xs={12}>
@@ -82,31 +82,19 @@ const FeedbackSection = ({
               </CardContent>
             </Card>
           </Grid>
-        </Grid>
 
-        {/* Reviews Section */}
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          paddingBottom={24}
-          height="100%"
-          mt={4}>
-          <Grid item xs={12}>
-            <CardContent>
-              <ReviewsTable
-                onSpaceCreated={handleSpaceCreated}
-                product={product}
-                userId={userId}
-                token={token}
-              />
-            </CardContent>
+          {/* Reviews Section */}
+          <Grid item xs={12} mt={4}>
+            <ReviewsTable
+              onSpaceCreated={handleSpaceCreated}
+              product={product}
+              userId={userId}
+              token={token}
+            />
           </Grid>
-        </Box>
+        </Grid>
       </Container>
     </Box>
   );
 };
-
 export default FeedbackSection;
