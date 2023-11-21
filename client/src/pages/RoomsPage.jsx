@@ -19,9 +19,12 @@ import {
   Divider,
 } from "@mui/material";
 import { Person, VerifiedUser, Payment, Delete } from "@mui/icons-material";
-
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import WidgetsIcon from "@mui/icons-material/Widgets";
+import ReviewsIcon from "@mui/icons-material/RateReview";
 import CreateRoomModal from "../components/CreateRoomModal";
 import { AuthContext } from "../context/auth-context";
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const RoomsPage = () => {
@@ -32,6 +35,15 @@ const RoomsPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const [totalAverage, setTotalAverage] = useState(0);
+  const [activeWidgets, setActiveWidgets] = useState(0);
+  const [totalReviews, setTotalReviews] = useState(0);
+
+  useEffect(() => {
+    setTotalAverage(4.5);
+    setActiveWidgets(3);
+    setTotalReviews(250);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -68,7 +80,7 @@ const RoomsPage = () => {
           }
         );
 
-        setUser(response.data.user.email);
+        setUser(response.data.user.name);
       } catch (error) {
         console.log("Error fetching user:", error.message);
       }
@@ -79,7 +91,7 @@ const RoomsPage = () => {
 
   const handleDeleteProduct = async (event, productId) => {
     event.stopPropagation();
-
+    console.log(productId);
     try {
       await axios.delete(
         `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,
@@ -125,7 +137,7 @@ const RoomsPage = () => {
     <>
       <Box py={4}>
         {/* Overview Section */}
-        <Box mb={2} margin={8}>
+        <Box mb={2} margin={(2, 4)}>
           <Box
             display="flex"
             justifyContent="space-between"
@@ -135,6 +147,7 @@ const RoomsPage = () => {
             <Typography
               variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
           </Box>
+
           <Grid
             container
             mt={4}
@@ -180,10 +193,49 @@ const RoomsPage = () => {
               </Grid>
             ))}
           </Grid>
+          <Grid
+            container
+            mt={4}
+            spacing={2}
+            justifyContent="center"
+            paddingTop={4}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <StarBorderIcon fontSize="large" />
+                <Typography variant="h6">Total Average Rating</Typography>
+                <Typography variant="subtitle1">
+                  {totalAverage.toFixed(1)}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <WidgetsIcon fontSize="large" />
+                <Typography variant="h6">Total Active Widgets</Typography>
+                <Typography variant="subtitle1">{activeWidgets}</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <ReviewsIcon fontSize="large" />
+                <Typography variant="h6">Total Reviews</Typography>
+                <Typography variant="subtitle1">{totalReviews}</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <VerifiedUser fontSize="large" />
+                <Typography variant="h6">Subscription Status</Typography>
+                <Typography variant="subtitle1">
+                  {auth.membershipStatus}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
 
         {/* Rooms Section */}
-        <Box margin={4} padding={4}>
+        <Box margin={2} padding={2}>
           <Box
             display="flex"
             justifyContent="center"
@@ -198,9 +250,11 @@ const RoomsPage = () => {
           </Box>
           <Box
             display="flex"
+            flexDirection="column"
             justifyContent="center"
             alignItems="center"
-            width="100%">
+            width="100%"
+            mb={16}>
             <TableContainer
               component={Paper}
               sx={{
@@ -270,10 +324,10 @@ const RoomsPage = () => {
                 </Table>
               </div>
             </TableContainer>
+            <Box mt={4}>
+              <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
+            </Box>
           </Box>
-        </Box>
-        <Box margin={8}>
-          <CreateRoomModal onSpaceCreated={handleSpaceCreated} />
         </Box>
       </Box>
     </>
