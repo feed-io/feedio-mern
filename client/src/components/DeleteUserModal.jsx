@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Button,
@@ -16,20 +17,21 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const DeleteUserModal = (props) => {
   const { onOpen, onClose } = props;
   const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleDeleteSubmit = async (e) => {
     e.preventDefault();
 
     try {
-
-      await axios.delete(`${SERVER_URL}api/users/${auth.userId}`, {
+      await axios.delete(`${SERVER_URL}/api/users/${auth.userId}`, {
         headers: {
           Authorization: "Bearer " + auth.token,
         },
       });
 
-
       onClose();
+      auth.logout();
+      navigate("/");
     } catch (error) {
       console.log("Error deleting user:", error.message);
     }

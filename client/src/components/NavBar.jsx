@@ -16,7 +16,6 @@ import { useTheme } from "@mui/material";
 import axios from "axios";
 
 import { AuthContext } from "../context/auth-context";
-import AuthModal from "./AuthModal";
 import FeedioLogo from "../assets/feedioLogo.svg";
 import Logo from "../assets/logo.svg";
 
@@ -26,7 +25,6 @@ const NavBar = () => {
   const auth = useContext(AuthContext);
   const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:600px)");
-  const [openModal, setOpenModal] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [userName, setUserName] = useState("");
 
@@ -56,14 +54,6 @@ const NavBar = () => {
 
   const initials = getInitials(userName);
   const avatarUrl = `https://ui-avatars.com/api/?name=${initials}&background=FFEEB4&color=0F2830`;
-
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
 
   return (
     <>
@@ -127,9 +117,10 @@ const NavBar = () => {
           </Box>
           {!auth.isLoggedIn ? (
             <Button
+              component={Link}
+              to="/auth"
               variant="contained"
-              color="secondary"
-              onClick={handleOpenModal}>
+              color="secondary">
               Login
             </Button>
           ) : (
@@ -170,7 +161,6 @@ const NavBar = () => {
           Logout
         </MenuItem>
       </Menu>
-      <AuthModal open={openModal} handleClose={handleCloseModal} />
     </>
   );
 };
