@@ -28,24 +28,21 @@ exports.createCustomerPortalSession = async (req, res) => {
 
 exports.handleStripeWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
-  let event;
 
   try {
-    event = stripe.webhooks.constructEvent(
+    const event = stripe.webhooks.constructEvent(
       req.rawBody,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET
+      process.env.STRIPE_WEBHOOK_SECRET // Your webhook secret
     );
-    console.log(event);
-  } catch (err) {
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
 
-  try {
     await paymentService.handleStripeWebhook(event);
     res.json({ received: true });
-  } catch (error) {
-    return res.status(400).send(`Webhook Error: ${error.message}`);
+  } catch (err) {
+    console.error(
+      `Webhook signature verification failed. Error: ${err.message}`
+    );
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 };
 
