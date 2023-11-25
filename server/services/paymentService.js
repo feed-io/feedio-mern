@@ -1,6 +1,8 @@
 const stripe = require("stripe")(
   "sk_test_51NS5wyCbn1CFQkB8T1TZaH2UqOFaHp8taw4kfF5RyuFLSIrWfY0KhJDp1gFUldX8rc6QEkhxaT9vCYqBjxDuznkW00SIzhL19C"
 );
+// const stripeApiKey = process.env.STRIPE_SECRET_KEY;
+// const stripe = require("stripe")(stripeApiKey);
 
 const Payment = require("../models/Payment");
 const User = require("../models/User");

@@ -160,12 +160,6 @@ const RoomsPage = () => {
                 label: "Subscription",
                 path: "/membership/",
               },
-              {
-                icon: <Payment />,
-                label: "Billing",
-                status: auth.membershipStatus,
-                path: "https://billing.stripe.com/p/login/test_dR617p7Gs2DvesMfYY",
-              },
             ].map(({ icon, label, path }, index) => (
               <Grid item xs={isMobile ? 12 : 6} sm={2} key={index}>
                 <Button
@@ -184,15 +178,13 @@ const RoomsPage = () => {
                     padding: "6px 12px",
                     textTransform: "none",
                     marginBottom: isMobile ? 2 : 0,
-                  }}
-                  onClick={
-                    label === "Billing" ? handleManageBilling : undefined
-                  }>
+                  }}>
                   {label}
                 </Button>
               </Grid>
             ))}
           </Grid>
+
           <Grid
             container
             mt={4}
