@@ -19,7 +19,7 @@ import { VpnKey, Close } from "@mui/icons-material/";
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || "https://api.feedio.app";
 
 const Login = (props) => {
   const { values, errors, handleChange } = useValidation();
