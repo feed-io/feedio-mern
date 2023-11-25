@@ -35,7 +35,7 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/users/login`,
+        `${SERVER_URL}/api/users/login`,
         values,
         { headers: { "Content-Type": "application/json" } }
       );
