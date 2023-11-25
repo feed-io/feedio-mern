@@ -18,7 +18,7 @@ import {
   useTheme,
   Divider,
 } from "@mui/material";
-import { Person, VerifiedUser, Payment, Delete } from "@mui/icons-material";
+import { Person, VerifiedUser, Delete } from "@mui/icons-material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import ReviewsIcon from "@mui/icons-material/RateReview";
@@ -111,26 +111,6 @@ const RoomsPage = () => {
 
   const handleSpaceCreated = () => {
     setRefreshTrigger((prev) => prev + 1);
-  };
-
-  const handleManageBilling = async () => {
-    try {
-      const response = await axios.post(
-        `${SERVER_URL}/api/users/${auth.userId}/payments/create-customer-portal-session`,
-        {},
-        {
-          headers: {
-            Authorization: "Bearer " + auth.token,
-          },
-        }
-      );
-
-      if (response.data && response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
