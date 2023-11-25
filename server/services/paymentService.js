@@ -5,7 +5,7 @@ const stripe = require("stripe")(
 // const stripe = require("stripe")(stripeApiKey);
 
 const Payment = require("../models/Payment");
-const User = require("../models/User");
+const User = require("../models/user");
 
 const createCheckoutSession = async (userId) => {
   try {

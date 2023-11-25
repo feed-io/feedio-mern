@@ -1,5 +1,5 @@
-const User = require("../models/User");
-const { Review } = require("../models/Review");
+const User = require("../models/user");
+const { Review } = require("../models/review");
 const Product = require("../models/Product");
 const { sendEmail, sendAdminNotificationEmail } = require("../utils/email");
 

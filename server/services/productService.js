@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const Product = require("../models/Product");
-const User = require("../models/User");
-const { Review } = require("../models/Review");
+const User = require("../models/user");
+const { Review } = require("../models/review");
 
 const create = async ({ name, header, content, questions, userId }) => {
   const user = await User.findById(userId);

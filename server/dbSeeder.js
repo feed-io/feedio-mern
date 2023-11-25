@@ -1,8 +1,8 @@
 const { faker } = require("@faker-js/faker");
 const mongoose = require("mongoose");
 const Product = require("./models/Product");
-const User = require("./models/User");
-const { Review } = require("./models/Review");
+const User = require("./models/user");
+const { Review } = require("./models/review");
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
