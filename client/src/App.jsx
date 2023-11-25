@@ -7,6 +7,7 @@ import SuccessPage from "./pages/SuccessPage";
 import LandingPage from "./pages/LandingPage";
 import PricingPage from "./pages/PricingPage";
 import FeaturesPage from "./pages/FeaturesPage";
+import AuthPage from "./pages/AuthPage";
 import RoomsPage from "./pages/RoomsPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/auth" element={<AuthPage />} /> {/* Add this line */}
       </Routes>
     );
   }

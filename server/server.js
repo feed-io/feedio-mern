@@ -2,8 +2,9 @@ const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+
 const userRoutes = require("./routes/users-route");
 const productRoutes = require("./routes/products-route");
 const reviewRoutes = require("./routes/reviews-route");
@@ -14,6 +15,7 @@ const checkAuth = require("./middleware/check-auth");
 
 const app = express();
 const envPath = path.join(__dirname, ".env");
+
 dotenv.config({ path: envPath });
 
 app.use(cors());
@@ -25,14 +27,6 @@ app.use(
     },
   })
 );
-
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Could not connect to MongoDB", err));
 
 app.use((req, res, next) => {
   console.log(`${req.method} request to ${req.url}`);
@@ -70,6 +64,14 @@ app.use("/api/users/:id/payments", paymentRoutes);
 app.use("/api/payments/", paymentController.handleStripeWebhook);
 
 app.use("/api/collection-feedback", reviewRoutes);
+
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Could not connect to MongoDB", err));
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)

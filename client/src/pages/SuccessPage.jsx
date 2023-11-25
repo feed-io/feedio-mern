@@ -5,17 +5,20 @@ import { Button, Container, Typography, Box } from "@mui/material";
 
 import { AuthContext } from "../context/auth-context";
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 const Success = () => {
   const auth = useContext(AuthContext);
 
   useEffect(() => {
     axios
-      .get(`https://feedio.lol/api/users/${auth.userId}`, {
+      .get(`${SERVER_URL}/api/users/${auth.userId}`, {
         headers: {
           Authorization: "Bearer " + auth.token,
         },
       })
       .then((response) => {
+        console.log(response);
         auth.updateMembershipStatus(response.data.user.membershipStatus);
       })
       .catch((error) => {

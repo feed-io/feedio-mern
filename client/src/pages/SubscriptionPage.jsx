@@ -73,26 +73,31 @@ const SubscriptionPage = () => {
   const theme = useTheme();
 
   const handleCheckout = async (plan) => {
-    if (plan === "Free") {
-      navigate("/dashboard");
-    } else {
-      const response = await axios.post(
-        `${SERVER_URL}/api/users/${userId}/payments/create-checkout-session`,
-        {},
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      if (response.data && response.data.id) {
-        const { id } = response.data;
-        const stripe = window.Stripe(
-          "pk_test_51NS5wyCbn1CFQkB8htl9FOMk96NaBH1os6POnhCtrvd1kvwkslsGKyz9aevuvRKIZxDlLnqPA1ofvHxdy41D8Gum00X6521Cyl"
+    try {
+      if (plan === "Free") {
+        navigate("/dashboard");
+      } else {
+        const response = await axios.post(
+          `${SERVER_URL}/api/users/${userId}/payments/create-checkout-session`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
-        await stripe.redirectToCheckout({ sessionId: id });
+
+        if (response.data && response.data.id) {
+          const { id } = response.data;
+          const stripe = window.Stripe(
+            "pk_test_51NS5wyCbn1CFQkB8htl9FOMk96NaBH1os6POnhCtrvd1kvwkslsGKyz9aevuvRKIZxDlLnqPA1ofvHxdy41D8Gum00X6521Cyl"
+          );
+          await stripe.redirectToCheckout({ sessionId: id });
+        }
       }
+    } catch (error) {
+      console.error("Checkout error:", error.message);
+      // Handle error scenarios, e.g., display error message to user
     }
   };
 
@@ -107,6 +112,7 @@ const SubscriptionPage = () => {
           },
         }
       );
+      console.log(response);
       if (response.status === 200) {
         auth.updateMembershipStatus("free");
       }
@@ -173,6 +179,7 @@ const SubscriptionPage = () => {
         <Typography variant="body1" gutterBottom>
           You are currently on the {membershipStatus} plan
         </Typography>
+
         {membershipStatus === "free" ? (
           <Container
             maxWidth="xxl"
@@ -233,7 +240,11 @@ const SubscriptionPage = () => {
                       </ul>
                     </CardContent>
                     <CardActions sx={{ justifyContent: "center", padding: 2 }}>
-                      <Button variant="primary">{tier.buttonText}</Button>
+                      <Button
+                        variant={tier.buttonVariant}
+                        onClick={() => handleCheckout(tier.title)}>
+                        {tier.buttonText}
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>

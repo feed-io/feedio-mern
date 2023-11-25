@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Product = require("../models/Product");
 const User = require("../models/User");
 const { Review } = require("../models/Review");
@@ -73,9 +75,10 @@ const deleteOne = async (productId, userId) => {
   await Product.deleteOne({ _id: productId });
   await User.findByIdAndUpdate(
     userId,
-    { $pull: { products: productId } },
+    { $pull: { products: new mongoose.Types.ObjectId(productId) } },
     { new: true }
   );
+
   return "Product and associated reviews deleted successfully";
 };
 

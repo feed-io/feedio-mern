@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
 const {
   sendAccountCreationEmail,
@@ -9,6 +10,8 @@ const {
 const User = require("../models/User");
 const Product = require("../models/Product");
 const Payment = require("../models/Payment");
+const Widget = require("../models/Widget");
+const { Review } = require("../models/Review");
 
 dotenv.config();
 
@@ -150,8 +153,14 @@ const deleteUser = async (id) => {
     throw new Error("User not found");
   }
 
-  await Product.deleteMany({ _id: { $in: user.products } });
-  await Payment.deleteMany({ _id: { $in: user.payments } });
+  const productIds = user.products.map(
+    (product) => new mongoose.Types.ObjectId(product)
+  );
+
+  await Review.deleteMany({ product: { $in: productIds } });
+  await Widget.deleteMany({ product: { $in: productIds } });
+  await Product.deleteMany({ _id: { $in: productIds } });
+  await Payment.deleteMany({ user: id });
   await User.deleteOne({ _id: id });
 
   return { message: "User and associated data deleted successfully" };
