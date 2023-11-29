@@ -9,6 +9,7 @@ const UNPROTECTED_ROUTES = [
   "/api/users/:id/products/:pid/widgets/:wid/serve",
   "/api/payments/webhook",
   "/static/(.*)",
+  "/",
 ];
 
 const isUnprotectedRoute = (path) => {

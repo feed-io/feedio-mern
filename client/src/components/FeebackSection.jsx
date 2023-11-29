@@ -1,10 +1,13 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Box, Grid, Card, CardContent, Container } from "@mui/material";
-import ReviewsTable from "../components/ReviewsTable";
-import TrendChart from "../components/TrendChart";
-import SentimentChart from "../components/SentimentChart";
-import RatingDistribution from "../components/RatingDistribution";
-import WordCloud from "../components/WordCloud";
+import LogoSpinner from "../components/spinner/LogoSpinner";
+const ReviewsTable = React.lazy(() => import("../components/ReviewsTable"));
+const TrendChart = React.lazy(() => import("../components/TrendChart"));
+const SentimentChart = React.lazy(() => import("../components/SentimentChart"));
+const RatingDistribution = React.lazy(() =>
+  import("../components/RatingDistribution")
+);
+const WordCloud = React.lazy(() => import("../components/WordCloud"));
 
 const FeedbackSection = ({
   product,
@@ -31,12 +34,14 @@ const FeedbackSection = ({
                 backgroundColor: "#FfffFF",
               }}>
               <CardContent>
-                <TrendChart
-                  trendData={trendData}
-                  trendLabels={trendLabels}
-                  timeGranularity={timeGranularity}
-                  setTimeGranularity={setTimeGranularity}
-                />
+                <Suspense fallback={<LogoSpinner />}>
+                  <TrendChart
+                    trendData={trendData}
+                    trendLabels={trendLabels}
+                    timeGranularity={timeGranularity}
+                    setTimeGranularity={setTimeGranularity}
+                  />
+                </Suspense>
               </CardContent>
             </Card>
           </Grid>
@@ -50,7 +55,9 @@ const FeedbackSection = ({
                 backgroundColor: "#FfffFF",
               }}>
               <CardContent>
-                <SentimentChart sentimentData={sentimentData} />
+                <Suspense fallback={<LogoSpinner />}>
+                  <SentimentChart sentimentData={sentimentData} />
+                </Suspense>
               </CardContent>
             </Card>
           </Grid>
@@ -64,7 +71,9 @@ const FeedbackSection = ({
                 backgroundColor: "#FfffFF",
               }}>
               <CardContent style={{ height: "400px" }}>
-                <WordCloud words={words} />
+                <Suspense fallback={<LogoSpinner />}>
+                  <WordCloud words={words} />
+                </Suspense>
               </CardContent>
             </Card>
           </Grid>
@@ -78,7 +87,9 @@ const FeedbackSection = ({
                 backgroundColor: "#FfffFF",
               }}>
               <CardContent>
-                <RatingDistribution product={product} />
+                <Suspense fallback={<LogoSpinner />}>
+                  <RatingDistribution product={product} />
+                </Suspense>
               </CardContent>
             </Card>
           </Grid>

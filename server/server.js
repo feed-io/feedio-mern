@@ -11,6 +11,7 @@ const reviewRoutes = require("./routes/reviews-route");
 const paymentRoutes = require("./routes/payments-route");
 const paymentController = require("./controllers/paymentController");
 const widgetRoutes = require("./routes/widget-route");
+const npsRoute = require("./routes/nps-route"); // Adjust the path as necessary
 const checkAuth = require("./middleware/check-auth");
 
 const app = express();
@@ -58,6 +59,8 @@ app.use(
   },
   widgetRoutes
 );
+
+app.use("/api", npsRoute); // Adjust the path as necessary
 
 app.use("/api/users/:id/payments", paymentRoutes);
 

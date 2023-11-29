@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, startTransition } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Typography,
@@ -27,6 +27,12 @@ const Sidebar = ({
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleWidgetClick = (action) => {
+    startTransition(() => {
+      action();
+    });
   };
 
   const content = (
@@ -174,7 +180,7 @@ const Sidebar = ({
           ].map(({ label, onClick }, index) => (
             <Button
               fullWidth
-              onClick={onClick}
+              onClick={() => handleWidgetClick(onClick)}
               variant="text"
               color="primary"
               sx={{

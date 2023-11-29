@@ -15,7 +15,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { Close, SensorOccupied } from "@mui/icons-material";
-
 import { AuthContext } from "../context/auth-context";
 import useValidation from "../hooks/validation-hook";
 
@@ -36,7 +35,6 @@ const SignUp = (props) => {
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/users/register`,
-
         values,
         {
           headers: { "Content-Type": "application/json" },
@@ -62,6 +60,7 @@ const SignUp = (props) => {
       setSnackbarOpen(true);
     }
   };
+
   return (
     <Container component="main" maxWidth={isMobile ? "sm" : "xs"}>
       <Box
@@ -84,7 +83,7 @@ const SignUp = (props) => {
 
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
@@ -98,7 +97,6 @@ const SignUp = (props) => {
                 helperText={errors.name}
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 required
@@ -113,7 +111,6 @@ const SignUp = (props) => {
                 helperText={errors.email}
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 required
@@ -129,7 +126,6 @@ const SignUp = (props) => {
                 helperText={errors.password}
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 required
@@ -146,12 +142,14 @@ const SignUp = (props) => {
               />
             </Grid>
           </Grid>
-
-          <Box sx={{ padding: "10px" }}>
-            <Button type="submit" variant="primary" sx={{ mt: 3, mb: 2 }}>
-              Sign Up
-            </Button>
-          </Box>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3, mb: 2 }}>
+            Sign Up
+          </Button>
         </Box>
       </Box>
       <Snackbar
