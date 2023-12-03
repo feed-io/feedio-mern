@@ -1,49 +1,82 @@
-// npsService.js
+const mongoose = require("mongoose");
 
-/**
- * Calculate the Net Promoter Score (NPS) more efficiently and flexibly.
- * NPS = [(Number of Promoters - Number of Detractors) / (Number of Respondents)] * 100
- * @param {Array} reviews - Array of review objects with a 'score' property.
- * @param {Object} scoreConfig - Configuration for score ranges.
- * @returns {Object} - An object containing the NPS score and distribution.
- */
-const calculateNPS = (
-  reviews,
-  scoreConfig = { promoters: [9, 10], passives: [7, 8], detractors: [0, 6] }
-) => {
-  if (!Array.isArray(reviews)) {
-    throw new Error("Invalid input: reviews should be an array.");
-  }
+const NPS = require("../models/Nps");
+const Product = require("../models/Product");
 
-  const scoreDistribution = { promoters: 0, passives: 0, detractors: 0 };
-
+const calculateNPS = async (productId) => {
+  const reviews = await NPS.find({ productId: productId });
+  console.log(reviews);
+  let promoters = 0;
+  let detractors = 0;
   reviews.forEach((review) => {
-    if (!review.score && review.score !== 0) {
-      throw new Error("Invalid review object: missing 'score' property.");
-    }
-
-    if (scoreConfig.promoters.includes(review.score)) {
-      scoreDistribution.promoters++;
-    } else if (scoreConfig.passives.includes(review.score)) {
-      scoreDistribution.passives++;
-    } else if (scoreConfig.detractors.includes(review.score)) {
-      scoreDistribution.detractors++;
+    console.log(review);
+    if (review.score >= 9) {
+      promoters++;
+    } else if (review.score <= 6) {
+      detractors++;
     }
   });
 
-  const { promoters, detractors } = scoreDistribution;
-  const totalRespondents = reviews.length;
-  const npsScore =
-    totalRespondents > 0
-      ? ((promoters - detractors) / totalRespondents) * 100
-      : 0;
+  const totalResponses = reviews.length;
+  const npsScore = ((promoters - detractors) / totalResponses) * 100;
+  return Math.round(npsScore);
+};
 
-  return {
-    npsScore: Math.round(npsScore),
-    distribution: scoreDistribution,
-  };
+const addNpsScore = async (data) => {
+  console.log(data);
+  const newNpsData = new NPS(data);
+  await newNpsData.save();
+  return newNpsData;
+};
+
+const getNpsScoreDistribution = async (productId) => {
+  try {
+    const scores = await NPS.aggregate([
+      { $match: { productId: new mongoose.Types.ObjectId(productId) } },
+      { $group: { _id: "$score", count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]);
+
+    let distribution = { promoters: 0, passives: 0, detractors: 0 };
+    scores.forEach((item) => {
+      if (item._id >= 9) distribution.promoters += item.count;
+      else if (item._id >= 7) distribution.passives += item.count;
+      else distribution.detractors += item.count;
+    });
+
+    return [
+      distribution.promoters,
+      distribution.passives,
+      distribution.detractors,
+    ];
+  } catch (error) {
+    console.error("Error in getNpsScoreDistribution:", error);
+    throw error;
+  }
+};
+
+const getResponseRate = async (productId, totalUsers) => {
+  const totalResponses = await NPS.countDocuments({ productId: productId });
+  return totalUsers ? (totalResponses / totalUsers) * 100 : 0;
+};
+
+// Get NPS trends over time
+const getNpsTrends = async (productId, timeRange) => {
+  // Implement logic to fetch and aggregate NPS scores over the specified timeRange
+  // This might involve grouping data by month, quarter, etc., and calculating NPS for each group
+};
+
+// Calculate aggregated metrics for a product
+const getProductMetrics = async (productId) => {
+  // Implement logic to calculate average, median, etc., NPS scores for a product
+  // Use MongoDB aggregation for efficiency
 };
 
 module.exports = {
   calculateNPS,
+  addNpsScore,
+  getNpsTrends,
+  getProductMetrics,
+  getNpsScoreDistribution,
+  getResponseRate,
 };

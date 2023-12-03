@@ -3,6 +3,9 @@ import { Box, Grid, Card, CardContent, Container } from "@mui/material";
 import LogoSpinner from "../components/spinner/LogoSpinner";
 const ReviewsTable = React.lazy(() => import("../components/ReviewsTable"));
 const TrendChart = React.lazy(() => import("../components/TrendChart"));
+const NpsScoreDistribution = React.lazy(() =>
+  import("../components/NpsScoreDistribution")
+);
 const SentimentChart = React.lazy(() => import("../components/SentimentChart"));
 const RatingDistribution = React.lazy(() =>
   import("../components/RatingDistribution")
@@ -77,6 +80,21 @@ const FeedbackSection = ({
               </CardContent>
             </Card>
           </Grid>
+
+          {/* <Grid item xs={12} sm={6} md={4} lg={4}>
+            <Card
+              sx={{
+                borderRadius: 4,
+                height: "95%",
+                backgroundColor: "#FfffFF",
+              }}>
+              <CardContent style={{ height: "400px" }}>
+                <Suspense fallback={<LogoSpinner />}>
+                  <NpsScoreDistribution product={product} />
+                </Suspense>
+              </CardContent>
+            </Card>
+          </Grid> */}
 
           {/* Rating Distribution */}
           <Grid item xs={12} sm={6} md={4} lg={4}>

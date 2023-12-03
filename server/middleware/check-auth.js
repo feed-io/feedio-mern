@@ -4,6 +4,7 @@ const { pathToRegexp } = require("path-to-regexp");
 
 const UNPROTECTED_ROUTES = [
   "/api/collection-feedback/createReviewForWidget",
+  "/api/nps/calculatenps",
   "/api/users/register",
   "/api/users/login",
   "/api/users/:id/products/:pid/widgets/:wid/serve",
@@ -34,7 +35,6 @@ module.exports = (req, res, next) => {
   if (req.headers.authorization) {
     try {
       token = req.headers.authorization.split(" ")[1];
-      console.log(token);
     } catch (error) {
       console.error("Error extracting token from Authorization header:", error);
     }

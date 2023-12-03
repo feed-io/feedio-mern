@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const { Review } = require("../models/review");
 const Product = require("../models/Product");
-const { sendEmail, sendAdminNotificationEmail } = require("../utils/email");
+// const { sendEmail, sendAdminNotificationEmail } = require("../utils/email");
 
 const Sentiment = require("sentiment");
 const natural = require("natural");
@@ -46,16 +46,16 @@ const create = async ({
   product.reviews.push(newReview._id);
   await product.save();
 
-  if (user.notifyReview) {
-    sendAdminNotificationEmail({
-      name: name,
-      email: email,
-      content: content,
-      rating: rating,
-      productName: product.name,
-      userEmail: user.email,
-    });
-  }
+  // if (user.notifyReview) {
+  //   sendAdminNotificationEmail({
+  //     name: name,
+  //     email: email,
+  //     content: content,
+  //     rating: rating,
+  //     productName: product.name,
+  //     userEmail: user.email,
+  //   });
+  // }
 
   return newReview;
 };
@@ -87,14 +87,14 @@ const widgetReview = async ({ name, email, content, rating, productId }) => {
   product.reviews.push(newReview._id);
   await product.save();
 
-  sendEmail({
-    to: user.email,
-    subject: "New Review Added from Widget",
-    html: `<h1>New Review for ${product.name} from Widget</h1>
-           <p>${name} has added a review for ${product.name} using the widget.</p>
-           <p>Rating: ${rating}</p>
-           <p>Review: ${content}</p>`,
-  });
+  // sendEmail({
+  //   to: user.email,
+  //   subject: "New Review Added from Widget",
+  //   html: `<h1>New Review for ${product.name} from Widget</h1>
+  //          <p>${name} has added a review for ${product.name} using the widget.</p>
+  //          <p>Rating: ${rating}</p>
+  //          <p>Review: ${content}</p>`,
+  // });
 
   return newReview;
 };
@@ -260,7 +260,7 @@ const getTrendsForPeriod = async (productId, start, end, groupBy) => {
   try {
     const timezoneOffset = new Date().getTimezoneOffset();
     const offsetHours = timezoneOffset / 60;
-    console.log(Review);
+
     return await Review.aggregate([
       {
         $match: {

@@ -18,7 +18,6 @@ const Success = () => {
         },
       })
       .then((response) => {
-        console.log(response);
         auth.updateMembershipStatus(response.data.user.membershipStatus);
       })
       .catch((error) => {

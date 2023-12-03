@@ -7,14 +7,22 @@ const npsSchema = new mongoose.Schema({
     min: 0,
     max: 10,
   },
-  comment: {
-    type: String,
-    trim: true,
-  },
-  userId: {
+  productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
     required: true,
+  },
+  interactionDate: {
+    type: Date,
+    required: true,
+  },
+  followUp: {
+    type: Boolean,
+    default: false,
+  },
+  reason: {
+    type: String,
+    trim: true,
   },
   createdAt: {
     type: Date,
@@ -23,5 +31,4 @@ const npsSchema = new mongoose.Schema({
 });
 
 const NPS = mongoose.model("NPS", npsSchema);
-
 module.exports = NPS;

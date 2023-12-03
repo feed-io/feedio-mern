@@ -138,17 +138,6 @@ const SubmitFeedbackModal = (props) => {
               </Box>
             </form>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={props.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button
-              onClick={handleAnswerSubmit}
-              variant="contained"
-              color="primary">
-              Submit Review
-            </Button>
-          </DialogActions>
         </Dialog>
       </Grid>
     </Container>

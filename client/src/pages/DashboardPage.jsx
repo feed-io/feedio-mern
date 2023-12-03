@@ -18,7 +18,6 @@ import LogoSpinner from "../components/spinner/LogoSpinner";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-// Lazy loaded components
 const CreateWidgetModal = lazy(() => import("../components/CreateWidgetModal"));
 const EditRoomModal = lazy(() => import("../components/EditRoomModal"));
 const CollectionFeedbackModal = lazy(() =>
@@ -122,7 +121,7 @@ const DashboardPage = () => {
             },
           }
         );
-        console.log(response);
+
         const data = await response.json();
         setTrendData(data);
       } catch (error) {
@@ -233,8 +232,6 @@ const DashboardPage = () => {
   const handleEditRoom = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
-
-  console.log(product);
 
   return (
     <>

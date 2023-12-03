@@ -11,7 +11,7 @@ const reviewRoutes = require("./routes/reviews-route");
 const paymentRoutes = require("./routes/payments-route");
 const paymentController = require("./controllers/paymentController");
 const widgetRoutes = require("./routes/widget-route");
-const npsRoute = require("./routes/nps-route"); // Adjust the path as necessary
+const npsRoute = require("./routes/nps-route");
 const checkAuth = require("./middleware/check-auth");
 
 const app = express();
@@ -60,13 +60,13 @@ app.use(
   widgetRoutes
 );
 
-app.use("/api", npsRoute); // Adjust the path as necessary
-
 app.use("/api/users/:id/payments", paymentRoutes);
 
 app.use("/api/payments/", paymentController.handleStripeWebhook);
 
 app.use("/api/collection-feedback", reviewRoutes);
+
+app.use("/api/nps", npsRoute);
 
 mongoose
   .connect(process.env.MONGODB_URI, {
