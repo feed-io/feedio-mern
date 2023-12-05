@@ -26,19 +26,26 @@ document.getElementById("cancel-btn").addEventListener("click", function (e) {
   hideFeedbackForm();
 });
 
-document.getElementById("submit-btn").addEventListener("click", function (e) {
-  e.preventDefault();
+document.getElementById("nps-score").addEventListener("input", function () {
+  const npsScoreValue = document.getElementById("nps-score").value;
+  document.getElementById("nps-score-value").textContent = npsScoreValue;
+});
 
+document.getElementById("submit-btn").addEventListener("click", function (e) {
+  console.log(e);
+  e.preventDefault();
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
   const content = document.getElementById("review").value;
   const rating = document.querySelector('input[name="rating"]:checked').value;
+  const npsScore = document.getElementById("nps-score").value;
 
   const data = JSON.stringify({
     name,
     email,
     content,
     rating: parseFloat(rating),
+    npsScore: parseInt(npsScore),
     productId,
   });
 
@@ -70,22 +77,34 @@ document.getElementById("submit-btn").addEventListener("click", function (e) {
 
 document.querySelectorAll(".star").forEach((star, index) => {
   star.addEventListener("mouseover", function () {
-    for (let i = 0; i <= index; i++) {
-      const starLabel = document.querySelectorAll(".star label")[i];
-      starLabel.style.color = "gold";
-    }
+    highlightStars(index);
   });
 
   star.addEventListener("mouseout", function () {
-    const checkedValue = document.querySelector('input[name="rating"]:checked');
-    const val = checkedValue ? parseInt(checkedValue.value) : 0;
-    for (let i = 0; i <= 4; i++) {
-      const starLabel = document.querySelectorAll(".star label")[i];
-      if (i < val) {
-        starLabel.style.color = "gold";
-      } else {
-        starLabel.style.color = "#e0e0e0";
-      }
-    }
+    resetStars();
+  });
+
+  star.addEventListener("click", function () {
+    setSelectedStar(index);
   });
 });
+
+function highlightStars(index) {
+  document.querySelectorAll(".star label").forEach((label, idx) => {
+    label.style.color = idx <= index ? "gold" : "#e0e0e0";
+  });
+}
+
+function resetStars() {
+  const checkedIndex = document.querySelector('input[name="rating"]:checked')
+    ? parseInt(document.querySelector('input[name="rating"]:checked').value)
+    : -1;
+  document.querySelectorAll(".star label").forEach((label, idx) => {
+    label.style.color = idx <= checkedIndex ? "gold" : "#e0e0e0";
+  });
+}
+
+function setSelectedStar(index) {
+  document.querySelectorAll('input[name="rating"]')[index].checked = true;
+  highlightStars(index);
+}

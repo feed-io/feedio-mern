@@ -39,13 +39,18 @@
     $(".owl-carousel").owlCarousel({
       loop: true,
       margin: 10,
-      nav: {{#unless autoScroll}}true{{else}}false{{/unless}}, 
+      nav: {{#unless autoScroll}}true{{else}}false{{/unless}},
       items: 1,
-      autoplay: {{#if autoScroll}}true{{else}}false{{/if}},  
-      autoplayTimeout: 2000,
+      autoplay: {{#if autoScroll}}true{{else}}false{{/if}},
+      autoplayTimeout: 4000, 
+      dots: false, 
     });
   });
 </script>
+
+
+
+
 
 
 

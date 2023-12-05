@@ -1,36 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
 .feedback-container {
+  font-family: "Roboto", sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  max-width: 600px;
+  margin: auto;
+  padding: 40px 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-  padding: 20px;
-}
-
-.logo-img {
-  height: 40px;
-}
-
-.dialog {
-  display: none;
+.product-name,
+.product-header,
+.input-field label,
+.nps-score label,
+.submit-btn {
+  font-family: "Roboto", sans-serif;
 }
 
 .content-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
 }
 
 .product-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
 }
 
@@ -40,198 +37,112 @@
 
 .product-name {
   font-size: 24px;
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
 .product-header {
-  margin-bottom: 20px;
-}
-
-.product-questions {
-  margin-top: 20px;
-  text-align: left;
-  width: 75%;
-  padding-left: 20px;
-}
-
-.product-questions hr {
-  border-color: rgb(93, 93, 255);
   margin-bottom: 10px;
 }
 
-.feedback-button-container {
-  margin-top: 20px;
-}
-
-.feedback-button {
-  background-color: #f50057;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.feedback-button:hover {
-  background-color: #c51162;
-}
-
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
+.product-questions {
+  text-align: left;
   width: 100%;
-  height: 100%;
-  z-index: 999;
+  margin-bottom: 15px; /* Add space before the form */
 }
 
-.dialog {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
+.feedback-form {
+  width: 100%;
+  display: flex; /* Adjust the display property */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+}
+
+.input-field {
   width: 80%;
-  max-width: 500px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  margin: 10px auto; /* Center and add space around input fields */
 }
 
-.dialog-content .input-field {
-  margin-bottom: 15px;
-}
-
-.dialog-content label {
+.input-field label {
   display: block;
   margin-bottom: 5px;
 }
 
-.dialog-content input,
-.dialog-content textarea {
+.input-field input,
+.input-field textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.dialog-actions {
+.rating {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.dialog-actions button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#submit-btn {
-  background-color: #f50057;
-  color: white;
-}
-
-#submit-btn:hover {
-  background-color: #c51162;
-}
-
-#cancel-btn {
-  background-color: #ccc;
-  color: black;
-}
-
-#cancel-btn:hover {
-  background-color: #aaa;
-}
-
-.input-field {
+  justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+.star {
+  cursor: pointer;
+  color: #e0e0e0;
 }
 
-.star {
-  position: relative;
-  margin-right: 10px;
+.star label {
+  padding: 5px;
+  font-size: 24px;
 }
 
 .star input[type="radio"] {
   display: none;
 }
 
-.star label {
-  cursor: pointer;
-  padding: 10px;
-  font-size: 24px;
-  transition: color 0.3s;
-  color: #e0e0e0;
-  display: inline-block;
+.star input[type="radio"]:checked ~ label {
+  color: gold;
 }
 
-.dialog-content {
+.star input[type="radio"]:hover ~ label {
+  color: gold;
+}
+
+.nps-score {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.nps-score-options {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  min-height: 250px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+  margin-bottom: 8px;
 }
 
-.rating {
+.nps-option {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  font-size: 14px;
 }
 
-.star {
-  position: relative;
-  margin-right: 10px;
+.nps-option input[type="radio"] {
+  margin-right: 5px;
 }
 
-.star input[type="radio"] {
-  display: none;
-}
-
-.star label {
+.submit-btn {
+  background-color: #f50057;
+  color: white;
+  padding: 8px 8px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  padding: 10px;
-  font-size: 24px;
-  transition: color 0.3s;
-  color: #e0e0e0;
-  display: inline-block;
+  transition: background-color 0.3s;
+  width: 30%;
+  margin-top: 5px;
+  font-size: 14px;
 }
 
-.star label::before {
-  content: "★";
-}
-
-.star input[type="radio"]:hover ~ label,
-.star input[type="radio"]:hover ~ .star label,
-.star input[type="radio"]:focus ~ label,
-.star label:hover ~ input[type="radio"]:not(:checked) ~ label {
-  color: gold;
-}
-
-.star input[type="radio"]:checked ~ label,
-.star input[type="radio"]:checked ~ .star label {
-  color: gold;
-}
-.star input[type="radio"]:checked ~ label,
-.star label:hover ~ input[type="radio"]:not(:checked) ~ label,
-.star input[type="radio"]:checked ~ label ~ label {
-  color: gold;
-}
-.star:hover ~ .star label,
-.star:hover label {
-  color: gold;
+.submit-btn:hover {
+  background-color: #c51162;
 }

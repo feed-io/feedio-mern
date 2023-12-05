@@ -10,8 +10,10 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-import MasonryLogo from "../assets/MasonryLogo";
-import CarouselLogo from "../assets/CarouselLogo";
+// import CollectFeeback from "../assets/collectFeedback";
+import MasonryGrid from "../assets/MasonryGrid.svg";
+import MasonryScrollGif from "../assets/MasonryScroll.gif";
+import CarouselGif from "../assets/carousel.gif";
 import MasonryScroll from "./MasonryScroll";
 import MasonryFix from "./MasonryFix";
 import Carousel from "./Carousel.jsx";
@@ -112,21 +114,34 @@ const CreateWidgetModal = (props) => {
                     {(() => {
                       switch (option.title) {
                         case "Masonry - scrolling":
+                          return (
+                            <img
+                              src={MasonryScrollGif}
+                              alt={option.alt}
+                              style={{ width: "80%", marginBottom: "10px" }}
+                            />
+                          );
                         case "Masonry - fixed":
                           return (
-                            <MasonryLogo
+                            <img
+                              src={MasonryGrid}
+                              alt={option.alt}
                               style={{ width: "80%", marginBottom: "10px" }}
                             />
                           );
                         case "Carousel slider":
                           return (
-                            <CarouselLogo
+                            <img
+                              src={CarouselGif}
+                              alt={option.alt}
                               style={{ width: "80%", marginBottom: "10px" }}
                             />
                           );
                         case "Stacked layout":
                           return (
-                            <MasonryLogo
+                            <img
+                              src={option.imgSrc}
+                              alt={option.alt}
                               style={{ width: "80%", marginBottom: "10px" }}
                             />
                           );
@@ -159,102 +174,3 @@ const CreateWidgetModal = (props) => {
 };
 
 export default CreateWidgetModal;
-
-// import React from "react";
-// import {
-//   Dialog,
-//   DialogContent,
-//   IconButton,
-//   FormControlLabel,
-//   Checkbox,
-//   Tooltip,
-//   Select,
-//   MenuItem,
-//   Button,
-// } from "@material-ui/core";
-// import Close from "@material-ui/icons/Close";
-// import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-
-// function CustomModal({
-//   open,
-//   onClose,
-//   onLeftButtonClick,
-//   scrollSpeed,
-//   onSpeedChange,
-// }) {
-//   return (
-//     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-//       <IconButton
-//         style={{ position: "absolute", right: 5, top: 5, zIndex: 999 }}
-//         onClick={onClose}>
-//         <Close />
-//       </IconButton>
-//       <IconButton
-//         style={{ position: "absolute", left: 10, top: 5, zIndex: 999 }}
-//         onClick={onLeftButtonClick}>
-//         <ArrowBackIcon />
-//       </IconButton>
-
-//       <DialogContent>
-//         <div className="text-center text-gray-800">
-//           <h3 className="h3 mb-4">Embed a Wall of Love</h3>
-//         </div>
-//         <p className="text-base font-medium w-full text-gray-800 text-center mb-4">
-//           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full font-medium bg-purple-100 text-purple-800 mr-2">
-//             Step 2
-//           </span>
-//           Customize your Wall of Love
-//         </p>
-
-//         {/* Options */}
-//         <FormControlLabel
-//           control={<Checkbox color="primary" />}
-//           label="Dark theme"
-//         />
-//         <FormControlLabel
-//           control={<Checkbox color="primary" />}
-//           label="Hide the date"
-//         />
-//         <Tooltip
-//           title="You can further customize the speed by adjusting the speed parameter in the embed URL."
-//           placement="top">
-//           <div className="flex items-center mt-3">
-//             <label className="block text-sm text-gray-800 mr-2">
-//               Scroll speed:
-//             </label>
-//             <Select
-//               value={scrollSpeed}
-//               onChange={onSpeedChange}
-//               variant="outlined"
-//               style={{ minWidth: "150px" }}>
-//               <MenuItem value="0.5">Very slow</MenuItem>
-//               <MenuItem value="0.75">Slow</MenuItem>
-//               <MenuItem value="1">Normal</MenuItem>
-//               <MenuItem value="1.5">Fast</MenuItem>
-//               <MenuItem value="2.0">Very fast</MenuItem>
-//             </Select>
-//           </div>
-//         </Tooltip>
-
-//         {/* Embed Code */}
-//         <pre
-//           style={{ background: "#1E1E1E", padding: "1em", marginTop: "20px" }}>
-//           {/* Adjust this to display the actual code */}
-//           Your embed code here
-//         </pre>
-
-//         {/* Footer buttons */}
-//         <div className="mt-4 flex justify-between">
-//           <Button variant="outlined" onClick={onClose}>
-//             Close
-//           </Button>
-//           <Button variant="contained" color="primary">
-//             Copy Code
-//           </Button>
-//         </div>
-//       </DialogContent>
-//     </Dialog>
-//   );
-// }
-
-// export default CustomModal;

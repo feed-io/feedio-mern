@@ -8,17 +8,15 @@ import {
   Card,
   useTheme,
   useMediaQuery,
-  Avatar,
 } from "@mui/material";
 
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import AutoGraphIcon from "@mui/icons-material/AutoGraph";
-import PersonIcon from "@mui/icons-material/Person";
 
 import Learn from "../assets/learn.svg";
 import Integration from "../assets/integrate.svg";
-import Graph from "../assets/graph.svg";
+import headerAsset from "../assets/header-asset.svg";
 import Blob from "../assets/blob.svg";
 import Sentiment from "../assets/sentiment.svg";
 import Testimonial from "../assets/testimonial.svg";
@@ -32,7 +30,7 @@ const LandingPage = () => {
     {
       title: "Engage & Learn",
       description:
-        "Engage with your customers, respond to their feedback, and learn from their experiences to enhance your offerings.",
+        "Connect with your customers by gaining insights from their feedback. Utilize their experiences to continually improve and refine your offerings.",
       image: Learn,
     },
     {
@@ -117,7 +115,7 @@ const LandingPage = () => {
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-              <img src={Graph} alt="Graph" style={{ width: "100%" }} />
+              <img src={headerAsset} alt="Graph" style={{ width: "100%" }} />
             </Grid>
           </Grid>
         </Container>
@@ -252,47 +250,15 @@ const LandingPage = () => {
       </Container>
 
       {/* Testimonials Section */}
-      <Container maxWidth="lg" sx={{ py: 8, mt: 8, pb: 8 }}>
-        <Typography
-          variant={isMobile ? "h4" : "h2"}
-          align="center"
-          paddingBottom={8}
-          gutterBottom>
-          Customer Testimonials
-        </Typography>
-        <Grid container spacing={4} justifyContent="center">
-          {[1, 2, 3].map((testimonial, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  p: 3,
-                }}>
-                <Avatar sx={{ mb: 2, bgcolor: "secondary.main" }}>
-                  {/* Placeholder for customer image */}
-                  <PersonIcon />
-                </Avatar>
-                <Typography variant="h6" gutterBottom>
-                  Customer {index + 1}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 2 }}>
-                  "This is a placeholder testimonial. It gives an idea of how
-                  real customer feedback might look on your site."
-                </Typography>
-                <Typography variant="subtitle2" color="text.primary">
-                  - Name, Position
-                </Typography>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <Box paddingTop={10}>
+        <iframe
+          height="400px"
+          id="656fa487727bcf21cfbe2b00"
+          src="http://localhost:8080/api/users/656d427837d1d557842a0e04/products/656d436a0d0997691374515d/widgets/656fa487727bcf21cfbe2b00/serve?hideDate=on&autoScroll=on&type=carousel"
+          frameBorder="0"
+          scrolling="no"
+          width="100%"></iframe>
+      </Box>
 
       {/* Call to Action Section */}
       <Box sx={{ bgcolor: theme.palette.info.main, py: 8 }}>

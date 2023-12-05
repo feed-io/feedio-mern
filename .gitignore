@@ -1,5 +1,6 @@
 **/node_modules/
 **/.env
+**/dbSeeder.js
 **/images/
 node_modules/
 .vercel

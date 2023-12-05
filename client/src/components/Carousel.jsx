@@ -7,14 +7,15 @@ import {
   IconButton,
   Tooltip,
   Typography,
-  TextField,
   Snackbar,
-  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 import { AuthContext } from "../context/auth-context";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -134,20 +135,9 @@ const Carousel = (props) => {
         <Box mt={3}>
           {iframeSrc && (
             <div>
-              <TextField
-                variant="outlined"
-                fullWidth
-                value={iframeSrc}
-                readOnly
-                InputProps={{
-                  readOnly: true,
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Typography variant="caption">Embed Link:</Typography>
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <SyntaxHighlighter language="markup" style={solarizedlight}>
+                {iframeSrc}
+              </SyntaxHighlighter>
               <Button
                 color="primary"
                 variant="contained"

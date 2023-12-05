@@ -38,6 +38,7 @@ const generateWidgetConfig = async (
 };
 
 const getWidgetConfig = async (widgetId, productId) => {
+  console.log(widgetId, productId);
   const widget = await Widget.findOne({ _id: widgetId, product: productId });
   return widget;
 };
@@ -118,6 +119,14 @@ const generateWidgetRepresentation = async (
     }
 
     return ret;
+  });
+
+  handlebars.registerHelper("range", function (start, end) {
+    var rangeArray = [];
+    for (var i = start; i < end; ++i) {
+      rangeArray.push(i);
+    }
+    return rangeArray;
   });
 
   try {

@@ -10,9 +10,20 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function getRandomDateInCurrentMonth() {
+  const date = new Date();
+  const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  const randomDay = getRandomIntInclusive(
+    firstDayOfMonth.getDate(),
+    lastDayOfMonth.getDate()
+  );
+  return new Date(date.getFullYear(), date.getMonth(), randomDay);
+}
+
 // MongoDB connection string
 const url =
-  "mongodb+srv://ramirezedluis:sJXMs2auAiiRy77E@cluster0.imzonx6.mongodb.net/feedio-local";
+  "mongodb+srv://ramirezedluis:QY4YuT5WEUZPOZHw@cluster0.imzonx6.mongodb.net/feedio-local";
 
 mongoose
   .connect(url)
@@ -79,7 +90,7 @@ async function seedDatabase() {
           content: faker.lorem.paragraph(),
           rating: getRandomIntInclusive(1, 5),
           sentiment: getRandomIntInclusive(1, 5),
-          createdAt: faker.date.past(),
+          createdAt: getRandomDateInCurrentMonth(),
           __v: getRandomIntInclusive(0, 10),
         };
 

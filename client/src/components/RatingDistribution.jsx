@@ -35,9 +35,9 @@ const RatingDistribution = ({ product }) => {
 
   const options = {
     scales: {
-      y: {
-        beginAtZero: true,
-      },
+      // y: {
+      //   beginAtZero: true,
+      // },
     },
     plugins: {
       legend: {

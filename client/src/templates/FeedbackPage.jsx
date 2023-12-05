@@ -53,16 +53,10 @@ const FeedbackTemplate = () => {
       email: email,
       content: content,
       rating: rating,
-    };
-
-    const npsData = {
-      productId: productId,
-      score: npsScore,
-      interactionDate: new Date(),
+      npsScore: npsScore,
     };
 
     try {
-      // Post review data
       await axios.post(
         `${SERVER_URL}/api/users/${auth.userId}/products/${productId}/reviews/createReview`,
         reviewData,
@@ -72,13 +66,6 @@ const FeedbackTemplate = () => {
           },
         }
       );
-
-      // Post NPS data
-      await axios.post(`${SERVER_URL}/api/nps/submitScore`, npsData, {
-        headers: {
-          Authorization: "Bearer " + auth.token,
-        },
-      });
 
       setName("");
       setEmail("");
