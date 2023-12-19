@@ -14,9 +14,11 @@ import { Close } from "@mui/icons-material";
 import MasonryGrid from "../assets/MasonryGrid.svg";
 import MasonryScrollGif from "../assets/MasonryScroll.gif";
 import CarouselGif from "../assets/carousel.gif";
+import AverageCardImg from "../assets/averageCard.svg"; // Assuming this is the correct path
 import MasonryScroll from "./MasonryScroll";
 import MasonryFix from "./MasonryFix";
 import Carousel from "./Carousel.jsx";
+import AverageCard from "./AverageCard.jsx";
 
 const CreateWidgetModal = (props) => {
   const [currentPage, setCurrentPage] = useState("layoutSelection");
@@ -25,26 +27,34 @@ const CreateWidgetModal = (props) => {
     {
       title: "Masonry - scrolling",
       alt: "auto scrolling masonry grid",
+      imgSrc: MasonryScrollGif,
     },
     {
       title: "Masonry - fixed",
       alt: "Fixed masonry grid",
+      imgSrc: MasonryGrid,
     },
     {
       title: "Carousel slider",
-      alt: "Fixed masonry grid",
+      alt: "Carousel slider",
+      imgSrc: CarouselGif,
+    },
+    {
+      title: "Average Card",
+      alt: "User rating average card",
+      imgSrc: AverageCardImg, // Assign the correct image source here
     },
   ];
 
-  const handleMasonryClick = (title) => {
+  const handleWidgetClick = (title) => {
     if (title === "Masonry - scrolling") {
       setCurrentPage("masonry_scroll");
-    }
-    if (title === "Masonry - fixed") {
+    } else if (title === "Masonry - fixed") {
       setCurrentPage("masonry_fix");
-    }
-    if (title === "Carousel slider") {
+    } else if (title === "Carousel slider") {
       setCurrentPage("carousel");
+    } else if (title === "Average Card") {
+      setCurrentPage("average_card");
     }
   };
 
@@ -57,8 +67,7 @@ const CreateWidgetModal = (props) => {
         closeModal={props.closeModal}
       />
     );
-  }
-  if (currentPage === "masonry_fix") {
+  } else if (currentPage === "masonry_fix") {
     return (
       <MasonryFix
         goBack={() => setCurrentPage("layoutSelection")}
@@ -67,12 +76,19 @@ const CreateWidgetModal = (props) => {
         closeModal={props.closeModal}
       />
     );
-  }
-  if (currentPage === "carousel") {
+  } else if (currentPage === "carousel") {
     return (
       <Carousel
         goBack={() => setCurrentPage("layoutSelection")}
         layoutType="carousel"
+        productId={props.productId}
+        closeModal={props.closeModal}
+      />
+    );
+  } else if (currentPage === "average_card") {
+    return (
+      <AverageCard
+        goBack={() => setCurrentPage("layoutSelection")}
         productId={props.productId}
         closeModal={props.closeModal}
       />
@@ -93,17 +109,25 @@ const CreateWidgetModal = (props) => {
             </Button>
           </Box>
           <Typography variant="h4" component="h2" align="center" gutterBottom>
-            Embed a Show Room
+            Embed a widget
           </Typography>
-          <Typography variant="subtitle1" align="center" gutterBottom>
-            Step 1: Choose a layout
+          <Typography variant="body1" align="center">
+            <Box
+              component="span"
+              px={1}
+              py={0.5}
+              borderRadius="full"
+              fontWeight="medium">
+              Step 1
+            </Box>
+            Choose your widget
           </Typography>
           <Grid container spacing={3}>
             {layoutOptions.map((option, index) => (
-              <Grid item xs={12} sm={4} key={index}>
+              <Grid item xs={6} sm={6} md={6} lg={6} key={index}>
                 <ButtonBase
                   style={{ width: "100%" }}
-                  onClick={() => handleMasonryClick(option.title)}>
+                  onClick={() => handleWidgetClick(option.title)}>
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -111,54 +135,11 @@ const CreateWidgetModal = (props) => {
                     justifyContent="center"
                     p={2}
                     width="100%">
-                    {(() => {
-                      switch (option.title) {
-                        case "Masonry - scrolling":
-                          return (
-                            <img
-                              src={MasonryScrollGif}
-                              alt={option.alt}
-                              style={{ width: "80%", marginBottom: "10px" }}
-                            />
-                          );
-                        case "Masonry - fixed":
-                          return (
-                            <img
-                              src={MasonryGrid}
-                              alt={option.alt}
-                              style={{ width: "80%", marginBottom: "10px" }}
-                            />
-                          );
-                        case "Carousel slider":
-                          return (
-                            <img
-                              src={CarouselGif}
-                              alt={option.alt}
-                              style={{ width: "80%", marginBottom: "10px" }}
-                            />
-                          );
-                        case "Stacked layout":
-                          return (
-                            <img
-                              src={option.imgSrc}
-                              alt={option.alt}
-                              style={{ width: "80%", marginBottom: "10px" }}
-                            />
-                          );
-                        default:
-                          return (
-                            <img
-                              src={option.imgSrc}
-                              alt={option.alt}
-                              style={{
-                                width: "80%",
-                                marginBottom: "10px",
-                                borderRadius: "5px",
-                              }}
-                            />
-                          );
-                      }
-                    })()}
+                    <img
+                      src={option.imgSrc}
+                      alt={option.alt}
+                      style={{ width: "80%", marginBottom: "10px" }}
+                    />
                     <Typography variant="h6" component="p" align="center">
                       {option.title}
                     </Typography>

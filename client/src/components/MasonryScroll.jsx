@@ -5,7 +5,6 @@ import {
   Checkbox,
   Dialog,
   IconButton,
-  Tooltip,
   Typography,
   Select,
   MenuItem,
@@ -13,10 +12,11 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import LockIcon from "@mui/icons-material/Lock";
+// import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { CompactPicker } from "react-color";
 
 import { AuthContext } from "../context/auth-context";
 
@@ -26,6 +26,8 @@ const MasonryScroll = (props) => {
   const auth = useContext(AuthContext);
   const [hideDate, setHideDate] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState("1");
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [textColor, setTextColor] = useState("#000000");
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -40,6 +42,9 @@ const MasonryScroll = (props) => {
 
     params.push(`scrollSpeed=${scrollSpeed}`);
     params.push(`type=${props.layoutType}`);
+    params.push(`scrollSpeed=${scrollSpeed}`);
+    params.push(`backgroundColor=${encodeURIComponent(backgroundColor)}`);
+    params.push(`textColor=${encodeURIComponent(textColor)}`);
 
     return `<iframe height="800px" id="${widgetId}" src="${baseIframeUrl}?${params.join(
       "&"
@@ -48,8 +53,10 @@ const MasonryScroll = (props) => {
 
   const sendWidgetConfigToBackend = async () => {
     const config = {
-      hideDate,
-      scrollSpeed,
+      date: hideDate,
+      speed: scrollSpeed,
+      background: backgroundColor,
+      text: textColor,
       type: props.layoutType,
     };
 
@@ -65,9 +72,8 @@ const MasonryScroll = (props) => {
         }
       );
 
-      const widgetId = response.data.widget._id;
+      const widgetId = response.data.widgetData._id;
       const generatedIframeLink = generateIframeLink(widgetId);
-
       setIframeSrc(generatedIframeLink);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
@@ -110,7 +116,7 @@ const MasonryScroll = (props) => {
       </Box>
       <Box textAlign="center" py={3}>
         <Typography variant="h4" gutterBottom>
-          Embed a Show Room
+          Embed a widget
         </Typography>
         <Typography variant="body1">
           <Box
@@ -121,12 +127,11 @@ const MasonryScroll = (props) => {
             fontWeight="medium">
             Step 2
           </Box>
-          Customize your Show Room
+          Customize your widget
         </Typography>
         <Box display="flex" justifyContent="center" alignItems="center" my={2}>
-          {/* <CheckCircleIcon /> */}
           <Typography variant="body2" color="main" ml={1}>
-            Masonry - scrolling
+            Masonry - auto scrolling
           </Typography>
         </Box>
 
@@ -147,11 +152,7 @@ const MasonryScroll = (props) => {
           )}
         </Box>
 
-        <Typography variant="caption" color="main" display="block">
-          Height is set to 800px by default. You can change the height parameter
-          to what you like.
-        </Typography>
-        <Box display="flex" alignItems="center" mt={2}>
+        {/* <Box display="flex" alignItems="center" mt={2}>
           <Checkbox color="secondary" disabled />
           <Typography variant="body2">Remove Feedio branding</Typography>
           <Tooltip
@@ -159,15 +160,34 @@ const MasonryScroll = (props) => {
             arrow>
             <LockIcon color="warning" ml={1} />
           </Tooltip>
+        </Box> */}
+        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+          <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
+            <Typography variant="body2">Background Color:</Typography>
+            <CompactPicker
+              color={backgroundColor}
+              onChangeComplete={(color) => setBackgroundColor(color.hex)}
+            />
+          </Box>
+
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography variant="body2">Text Color:</Typography>
+            <CompactPicker
+              color={textColor}
+              onChangeComplete={(color) => setTextColor(color.hex)}
+            />
+          </Box>
         </Box>
+
         <Box display="flex" alignItems="center" mt={2}>
           <Checkbox
             color="secondary"
             checked={hideDate}
             onChange={(e) => setHideDate(e.target.checked)}
           />
-          <Typography variant="body2">Hide the date</Typography>
+          <Typography variant="body2">Hide date</Typography>
         </Box>
+
         <Box display="flex" alignItems="center" mt={2}>
           <Typography variant="body2">Scroll speed:</Typography>
           <Select
@@ -176,8 +196,8 @@ const MasonryScroll = (props) => {
             variant="outlined"
             size="small"
             ml={1}>
+            <MenuItem value="0.5">0.5x</MenuItem>
             <MenuItem value="1">1x</MenuItem>
-            <MenuItem value="2">2x</MenuItem>
           </Select>
         </Box>
       </Box>
@@ -189,7 +209,7 @@ const MasonryScroll = (props) => {
           Create
         </Button>
       </Box>
-      {/* Snackbar for copied notification */}
+
       <Snackbar
         open={isSnackbarOpen}
         autoHideDuration={3000}

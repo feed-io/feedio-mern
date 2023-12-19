@@ -10,7 +10,7 @@ const SentimentChart = React.lazy(() => import("../components/SentimentChart"));
 const RatingDistribution = React.lazy(() =>
   import("../components/RatingDistribution")
 );
-const WordCloud = React.lazy(() => import("../components/WordCloud"));
+const WordCloud = React.lazy(() => import("../context/WordCloud"));
 
 const FeedbackSection = ({
   product,

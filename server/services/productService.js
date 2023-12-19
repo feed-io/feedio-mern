@@ -25,8 +25,8 @@ const create = async ({ name, header, content, questions, userId }) => {
   return newProduct;
 };
 
-const getAll = async (userId) => {
-  const products = await Product.find({ user: userId });
+const getAll = async () => {
+  const products = await Product.find();
 
   if (!products) {
     throw new Error("No products found");

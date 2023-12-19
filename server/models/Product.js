@@ -9,6 +9,7 @@ const productSchema = new Schema({
   imageUrl: { type: String, required: false },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review", required: true }],
+  widgets: [{ type: Schema.Types.ObjectId, ref: "Widget" }],
   averageRating: { type: Number, default: 0 },
   ratingDistribution: {
     oneStar: { type: Number, default: 0 },
@@ -17,7 +18,6 @@ const productSchema = new Schema({
     fourStar: { type: Number, default: 0 },
     fiveStar: { type: Number, default: 0 },
   },
-  widgets: [{ type: Schema.Types.ObjectId, ref: "Widget" }],
 });
 
 module.exports = mongoose.model("Product", productSchema);

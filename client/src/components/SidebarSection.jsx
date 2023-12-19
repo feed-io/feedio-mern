@@ -22,7 +22,7 @@ const Sidebar = ({
   onClose,
 }) => {
   const theme = useTheme();
-  const lgUp = useMediaQuery(theme.breakpoints.up("md"));
+  const lgUp = useMediaQuery(theme.breakpoints.up("lg")); // Changed to 'lg'
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -131,33 +131,6 @@ const Sidebar = ({
           ))}
         </Grid>
 
-        {/* Integrations Section */}
-        {/* <Grid
-          item
-          xs={12}
-          sx={{ textAlign: "center", marginBottom: { xs: 2, md: 3, lg: 4 } }}>
-          <Typography
-            variant="h6"
-            align="center"
-            sx={{
-              color: theme.palette.primary.main,
-            }}>
-            Integrate
-          </Typography>
-          <Button
-            fullWidth
-            variant="contained"
-            disabled
-            sx={{
-              color: theme.palette.primary.contrastText,
-              padding: "6px 12px",
-              marginTop: 4,
-              textTransform: "none",
-            }}>
-            COMING SOON
-          </Button>
-        </Grid> */}
-
         {/* Widget Section */}
         <Grid item xs={12} sx={{ textAlign: "center" }}>
           <Typography
@@ -219,7 +192,9 @@ const Sidebar = ({
         aria-label="open drawer"
         edge="start"
         onClick={handleDrawerToggle}
-        sx={{ mr: 2, display: { md: "none" } }}>
+        sx={{ mr: 2, display: { lg: "none" } }}>
+        {" "}
+        {/* Changed to 'lg' */}
         <Menu />
       </IconButton>
       <Drawer

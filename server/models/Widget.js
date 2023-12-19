@@ -6,11 +6,19 @@ const widgetSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true,
+      index: true,
     },
     type: {
       type: String,
-      enum: ["masonry_scroll", "masonry_fix", "carousel", "collect-feedback"],
+      enum: [
+        "masonry_scroll",
+        "masonry_fix",
+        "carousel",
+        "average_card",
+        "collect-feedback",
+      ],
       required: true,
+      index: true,
     },
     scrollSpeed: {
       type: Number,
@@ -22,6 +30,12 @@ const widgetSchema = new mongoose.Schema(
     autoScroll: {
       type: Boolean,
       default: false,
+    },
+    backgroundColor: {
+      type: String,
+    },
+    textColor: {
+      type: String,
     },
   },
   {

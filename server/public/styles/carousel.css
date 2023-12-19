@@ -1,101 +1,123 @@
-body {
-  font-family: Arial, sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Shippori+Antique&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.widget.carousel {
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 12px;
+}
+
+body {
+  color: #000;
+  font-family: "Shippori Antique", sans-serif;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60vh;
-  padding: 30px;
-  border-radius: 10px;
+}
+
+.content-wrapper {
+  height: 500px;
+  width: 70%;
+  max-width: 100rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
   overflow: hidden;
 }
 
-.review-item {
-  background-color: #fff;
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 80%;
-  max-width: 450px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.avatar-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.avatar-placeholder {
-  background-color: #ccc;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-  display: inline-block;
+.wrapper-for-arrows {
   position: relative;
-}
-
-.avatar-placeholder {
-  background-color: #ccc;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-  display: inline-block;
-  position: relative;
-}
-
-.avatar-placeholder::before {
-  content: "";
-  display: block;
-  background-color: #666;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.avatar-placeholder::after {
-  content: "";
-  display: block;
-  background-color: #666;
-  width: 30px;
-  height: 12px;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 15px 15px 0 0;
-}
-.review-content {
-  font-size: 13px;
-  margin: 15px 0;
-  text-align: center;
-}
-
-.review-footer {
-  font-size: 11px;
-  color: #777;
+  width: 100%;
+  max-width: 50rem;
+  border-radius: 2rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
-.reviewer-name {
-  font-size: 15px;
+.review-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+  max-width: 40rem;
+}
+
+.review-wrap .imgDiv {
+  border-radius: 50%;
+  width: calc(6rem + 4vmin);
+  height: calc(6rem + 4vmin);
+  background-color: #ccc;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-wrap .imgDiv::before {
+  content: "";
+  display: block;
+  background-color: #666;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+}
+
+.review-wrap .imgDiv::after {
+  content: "";
+  display: block;
+  background-color: #666;
+  width: 60%;
+  height: 30%;
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px 50px 0 0;
+}
+
+.review-wrap .personName {
+  font-size: calc(1rem + 0.5vmin);
   font-weight: bold;
-  color: #333;
+  margin-bottom: 8px;
+  color: rgb(20, 20, 20);
+}
+
+.review-wrap .description {
+  font-size: calc(0.8rem + 0.3vmin);
+  text-align: center;
+  margin-bottom: 10px;
+  /* color: rgb(92, 92, 92); */
+}
+
+.review-wrap .review-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 10px;
 }
 
@@ -135,14 +157,45 @@ body {
   border-radius: 3px;
 }
 
-@media (max-width: 768px) {
-  .review-item {
-    margin: 15px;
-  }
+.arrow-wrap {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-@media (max-width: 480px) {
-  .review-item {
-    margin: 10px 0;
+.arrow {
+  width: calc(1.4rem + 0.6vmin);
+  height: calc(1.4rem + 0.6vmin);
+  border: solid rgb(192, 192, 192);
+  border-width: 0 calc(0.5rem + 0.2vmin) calc(0.5rem + 0.2vmin) 0;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.arrow:hover {
+  transform: scale(1.15);
+}
+
+.left-arrow-wrap {
+  left: 5%;
+  transform: rotate(135deg);
+}
+
+.right-arrow-wrap {
+  right: 5%;
+  transform: rotate(-45deg);
+}
+
+@media screen and (max-width: 900px) {
+  .content-wrapper {
+    width: 90%;
+  }
+
+  .wrapper-for-arrows {
+    max-width: 100%;
+  }
+
+  .review-wrap {
+    max-width: 90%;
   }
 }

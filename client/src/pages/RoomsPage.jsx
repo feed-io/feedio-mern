@@ -40,10 +40,28 @@ const RoomsPage = () => {
   const [totalReviews, setTotalReviews] = useState(0);
 
   useEffect(() => {
-    setTotalAverage(4.5);
-    setActiveWidgets(3);
-    setTotalReviews(250);
-  }, []);
+    if (products.length > 0) {
+      const totalRating = products.reduce(
+        (acc, product) => acc + product.averageRating,
+        0
+      );
+      const totalAverageRating = totalRating / products.length;
+
+      const totalWidgets = products.reduce(
+        (acc, product) => acc + product.widgets.length,
+        0
+      );
+
+      const totalReviewsCount = products.reduce(
+        (acc, product) => acc + product.reviews.length,
+        0
+      );
+
+      setTotalAverage(totalAverageRating);
+      setActiveWidgets(totalWidgets);
+      setTotalReviews(totalReviewsCount);
+    }
+  }, [products]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -88,7 +106,7 @@ const RoomsPage = () => {
 
     fetchUser();
   }, [refreshTrigger, auth.token, auth.userId]);
-
+  console.log(products);
   const handleDeleteProduct = async (event, productId) => {
     event.stopPropagation();
     console.log(productId);

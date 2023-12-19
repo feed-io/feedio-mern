@@ -3,15 +3,16 @@ body {
 }
 
 @keyframes scrollUp {
-  from {
-    transform: translateY(100%);
+  0% {
+    transform: translateY(0);
   }
-  to {
+  100% {
     transform: translateY(-100%);
   }
 }
 
 .widget.masonry_scroll {
+  overflow: hidden;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -20,15 +21,14 @@ body {
   overflow: auto;
   width: 80%;
   margin: 20px auto;
-  animation-name: scrollUp;
-  animation-timing-function: linear;
-  animation-duration: calc(60s / var(--scroll-speed, 1));
-  animation-iteration-count: infinite;
+  background-color: var(--background-color, #ffffff);
+  color: var(--text-color, #000000);
 }
 
 .review-item {
-  flex: 1 1 calc(25% - 40px);
-  background-color: #fff;
+  flex: 1 1 calc(33.333% - 40px);
+  background-color: var(--background-color, #ffffff);
+  color: var(--text-color, #000000);
   margin: 20px;
   padding: 20px;
   border-radius: 8px;

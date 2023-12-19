@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const handlebars = require("handlebars");
+const mongoose = require("mongoose");
 
 const Widget = require("../models/Widget");
 const { Review } = require("../models/review");
@@ -11,7 +12,9 @@ const generateWidgetConfig = async (
   scrollSpeed,
   hideDate,
   type,
-  autoScroll
+  autoScroll,
+  background,
+  text
 ) => {
   let widget = await Widget.findOne({
     productId,
@@ -23,6 +26,8 @@ const generateWidgetConfig = async (
     widget.hideDate = hideDate;
     widget.type = type;
     widget.autoScroll = autoScroll;
+    widget.backgroundColor = background;
+    widget.textColor = text;
   } else {
     widget = new Widget({
       product: productId,
@@ -30,17 +35,40 @@ const generateWidgetConfig = async (
       hideDate: hideDate,
       type: type,
       autoScroll: autoScroll,
+      backgroundColor: background,
+      textColor: text,
     });
   }
   await widget.save();
 
+  const product = await Product.findById(productId);
+  product.widgets.push(widget._id);
+  await product.save();
+
+  console.log(widget);
   return widget;
 };
 
 const getWidgetConfig = async (widgetId, productId) => {
-  console.log(widgetId, productId);
-  const widget = await Widget.findOne({ _id: widgetId, product: productId });
-  return widget;
+  const widgetObjectId = new mongoose.Types.ObjectId(widgetId);
+  const productObjectId = new mongoose.Types.ObjectId(productId);
+
+  try {
+    const widget = await Widget.findOne({
+      _id: widgetObjectId,
+      product: productObjectId,
+    });
+
+    if (!widget) {
+      console.log(`Widget not found. Timestamp: ${Date.now()}`);
+      return null;
+    }
+
+    return widget;
+  } catch (error) {
+    console.error("Error fetching widget config:", error);
+    throw error;
+  }
 };
 
 const generateWidgetRepresentation = async (
@@ -48,7 +76,9 @@ const generateWidgetRepresentation = async (
   scrollSpeed,
   hideDate,
   type,
-  autoScroll
+  autoScroll,
+  background,
+  text
 ) => {
   let widgetRepresentation;
   let templatePath;
@@ -64,6 +94,8 @@ const generateWidgetRepresentation = async (
     createdAt: new Date(review.createdAt).toDateString(),
   }));
 
+  const reviewsLength = reviewsData.length;
+
   const product = await Product.findById(productId);
 
   const productData = {
@@ -71,38 +103,57 @@ const generateWidgetRepresentation = async (
     header: product.header,
     content: product.content,
     questions: product.questions,
+    rating: product.averageRating,
   };
+
+  const itemsPerView = 3;
 
   switch (type) {
     case "masonry_scroll":
       templatePath = path.join(
         __dirname,
-        "../public/templates/masonry-scroll.hbs"
+        "../public/widgetTemplates/masonry-scroll.hbs"
       );
       stylePath = path.join(__dirname, "../public/styles/masonry-scroll.css");
+      scriptPath = path.join(__dirname, "../public/scripts/scroll.js");
 
       break;
 
     case "masonry_fix":
       templatePath = path.join(
         __dirname,
-        "../public/templates/masonry-fix.hbs"
+        "../public/widgetTemplates/masonry-fix.hbs"
       );
       stylePath = path.join(__dirname, "../public/styles/masonry-fix.css");
 
       break;
 
     case "carousel":
-      templatePath = path.join(__dirname, "../public/templates/carousel.hbs");
+      templatePath = path.join(
+        __dirname,
+        "../public/widgetTemplates/carousel.hbs"
+      );
       stylePath = path.join(__dirname, "../public/styles/carousel.css");
+      scriptPath = path.join(__dirname, "../public/scripts/slide.js");
+
+      break;
+
+    case "average_card":
+      templatePath = path.join(
+        __dirname,
+        "../public/widgetTemplates/average-card.hbs"
+      );
+      stylePath = path.join(__dirname, "../public/styles/average-card.css");
+
       break;
 
     case "collect-feedback":
       templatePath = path.join(
         __dirname,
-        "../public/templates/collect-feedback.hbs"
+        "../public/widgetTemplates/collect-feedback.hbs"
       );
       stylePath = path.join(__dirname, "../public/styles/collect-feedback.css");
+      scriptPath = path.join(__dirname, "../public/scripts/sendForm.js");
       break;
 
     default:
@@ -129,40 +180,47 @@ const generateWidgetRepresentation = async (
     return rangeArray;
   });
 
+  handlebars.registerHelper("lte", function (value1, value2, options) {
+    console.log(value1, value2);
+    return value1 <= value2;
+  });
+
+  handlebars.registerHelper("toFixed", function (number, digits) {
+    return number.toFixed(digits);
+  });
+
   try {
     templateString = fs.readFileSync(templatePath, "utf-8");
-    const template = handlebars.compile(templateString);
 
+    const template = handlebars.compile(templateString);
     const styleContent = fs.readFileSync(stylePath, "utf-8");
 
     widgetRepresentation = template({
       reviewsData,
+      reviewsLength,
       productData,
+      productId,
+      itemsPerView,
+      scrollSpeed,
       hideDate,
-      scrollSpeed: scrollSpeed || "1",
+      type,
       autoScroll,
+      background,
+      text,
+      scrollSpeed: scrollSpeed || "0.5",
     });
 
     widgetRepresentation += `<style>${styleContent}</style>`;
 
-    if (type === "collect-feedback") {
-      const scriptContent = fs.readFileSync(
-        path.join(__dirname, "../public/scripts/sendForm.js"),
-        "utf-8"
-      );
-
-      const dynamicScriptContent = `
-        <script>
-          const productId = "${productId}";
-        </script>
-        <script>${scriptContent}</script>
-      `;
-
-      widgetRepresentation += dynamicScriptContent;
+    if (scriptPath) {
+      const scriptContent = fs.readFileSync(scriptPath, "utf-8");
+      widgetRepresentation += `<script>${scriptContent}</script>`;
     }
   } catch (error) {
     console.error("Error compiling the Handlebars template:", error);
   }
+
+  return widgetRepresentation;
 
   return widgetRepresentation;
 };

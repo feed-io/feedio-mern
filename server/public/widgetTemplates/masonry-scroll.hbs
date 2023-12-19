@@ -1,4 +1,4 @@
-<div class="widget masonry_scroll" style="--scroll-speed: {{scrollSpeed}}">
+<div class="widget masonry_scroll" data-scroll-speed="{{scrollSpeed}}" style="--background-color: {{background}}; --text-color: {{text}}">
   {{#each reviewsData}}
     <div class="review-item">
       <div class="avatar-container">
@@ -18,10 +18,7 @@
 </div>
 
 
-<script
-  src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"
-></script>
-<link rel="stylesheet" href="/static/styles/masonry-scroll.css" />
+
 
 
 

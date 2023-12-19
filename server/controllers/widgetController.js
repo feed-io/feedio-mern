@@ -3,20 +3,27 @@ const widgetService = require("../services/widgetService");
 exports.generateWidget = async (req, res, next) => {
   const productId = req.mainParams.pid;
   const type = req.body.type;
-  const hideDate = req.body.hideDate;
-  const scrollSpeed = req.body.scrollSpeed;
+  const hideDate = req.body.date;
+  const scrollSpeed = req.body.speed;
   const autoScroll = req.body.autoScroll;
+  const background = req.body.background;
+  const text = req.body.text;
+
   try {
-    const widget = await widgetService.generateWidgetConfig(
+    const widgetData = await widgetService.generateWidgetConfig(
       productId,
       scrollSpeed,
       hideDate,
       type,
-      autoScroll
+      autoScroll,
+      background,
+      text
     );
-    res
-      .status(200)
-      .json({ message: "Widget configuration saved successfully.", widget });
+
+    res.status(200).json({
+      message: "Widget configuration saved successfully.",
+      widgetData,
+    });
   } catch (error) {
     console.log(error);
     res
@@ -28,7 +35,6 @@ exports.generateWidget = async (req, res, next) => {
 exports.getWidget = async (req, res, next) => {
   const userId = req.mainParams.id;
   const productId = req.mainParams.pid;
-
   try {
     const widget = await widgetService.getWidgetConfig(userId, productId);
 
@@ -41,6 +47,7 @@ exports.getWidget = async (req, res, next) => {
 
     res.status(200).json({ widget });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "Error fetching widget configuration.", error });
@@ -60,7 +67,7 @@ exports.serveWidget = async (req, res, next) => {
     if (!widgetConfig) {
       return res.status(404).json({
         message:
-          "No widget configuration found for the specified user and product.",
+          "No widget configuration found for the specified widget and product.",
       });
     }
 
@@ -70,7 +77,9 @@ exports.serveWidget = async (req, res, next) => {
         widgetConfig.scrollSpeed,
         widgetConfig.hideDate,
         widgetConfig.type,
-        widgetConfig.autoScroll
+        widgetConfig.autoScroll,
+        widgetConfig.backgroundColor,
+        widgetConfig.textColor
       );
 
     res.status(200).send(widgetRepresentation);

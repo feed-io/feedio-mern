@@ -89,6 +89,7 @@ const LandingPage = () => {
   return (
     <main>
       {/* Header Section */}
+
       <Box
         sx={{
           bgcolor: theme.palette.info.main,
@@ -251,13 +252,13 @@ const LandingPage = () => {
 
       {/* Testimonials Section */}
       <Box paddingTop={10}>
-        <iframe
+        {/* <iframe
           height="400px"
           id="656fa487727bcf21cfbe2b00"
           src="http://localhost:8080/api/users/656d427837d1d557842a0e04/products/656d436a0d0997691374515d/widgets/656fa487727bcf21cfbe2b00/serve?hideDate=on&autoScroll=on&type=carousel"
           frameBorder="0"
           scrolling="no"
-          width="100%"></iframe>
+          width="100%"></iframe> */}
       </Box>
 
       {/* Call to Action Section */}
