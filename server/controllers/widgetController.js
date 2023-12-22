@@ -8,6 +8,7 @@ exports.generateWidget = async (req, res, next) => {
   const autoScroll = req.body.autoScroll;
   const background = req.body.background;
   const text = req.body.text;
+  const embedLocation = req.body.location;
 
   try {
     const widgetData = await widgetService.generateWidgetConfig(
@@ -17,7 +18,8 @@ exports.generateWidget = async (req, res, next) => {
       type,
       autoScroll,
       background,
-      text
+      text,
+      embedLocation
     );
 
     res.status(200).json({
@@ -29,6 +31,16 @@ exports.generateWidget = async (req, res, next) => {
     res
       .status(500)
       .json({ message: "Error saving widget configuration.", error });
+  }
+};
+
+exports.getWidgets = async (req, res) => {
+  const productId = req.mainParams.pid;
+  try {
+    const widgets = await widgetService.getWidgets(productId);
+    res.json(widgets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 

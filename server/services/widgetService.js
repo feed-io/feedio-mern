@@ -14,7 +14,8 @@ const generateWidgetConfig = async (
   type,
   autoScroll,
   background,
-  text
+  text,
+  embedLocation
 ) => {
   let widget = await Widget.findOne({
     productId,
@@ -28,6 +29,7 @@ const generateWidgetConfig = async (
     widget.autoScroll = autoScroll;
     widget.backgroundColor = background;
     widget.textColor = text;
+    widget.location = embedLocation;
   } else {
     widget = new Widget({
       product: productId,
@@ -37,6 +39,7 @@ const generateWidgetConfig = async (
       autoScroll: autoScroll,
       backgroundColor: background,
       textColor: text,
+      location: embedLocation,
     });
   }
   await widget.save();
@@ -45,8 +48,20 @@ const generateWidgetConfig = async (
   product.widgets.push(widget._id);
   await product.save();
 
-  console.log(widget);
   return widget;
+};
+
+const getWidgets = async (productId) => {
+  const productObjectId = new mongoose.Types.ObjectId(productId);
+
+  try {
+    const widgets = await Widget.find({ product: productObjectId });
+
+    return widgets;
+  } catch (error) {
+    console.error("Error fetching widgets:", error);
+    throw error;
+  }
 };
 
 const getWidgetConfig = async (widgetId, productId) => {
@@ -58,11 +73,6 @@ const getWidgetConfig = async (widgetId, productId) => {
       _id: widgetObjectId,
       product: productObjectId,
     });
-
-    if (!widget) {
-      console.log(`Widget not found. Timestamp: ${Date.now()}`);
-      return null;
-    }
 
     return widget;
   } catch (error) {
@@ -181,7 +191,6 @@ const generateWidgetRepresentation = async (
   });
 
   handlebars.registerHelper("lte", function (value1, value2, options) {
-    console.log(value1, value2);
     return value1 <= value2;
   });
 
@@ -227,6 +236,7 @@ const generateWidgetRepresentation = async (
 
 module.exports = {
   generateWidgetConfig,
+  getWidgets,
   getWidgetConfig,
   generateWidgetRepresentation,
 };

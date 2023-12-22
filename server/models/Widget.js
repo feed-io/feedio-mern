@@ -20,6 +20,10 @@ const widgetSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    location: {
+      type: String,
+      required: true,
+    },
     scrollSpeed: {
       type: Number,
     },

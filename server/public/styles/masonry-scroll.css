@@ -21,13 +21,12 @@ body {
   overflow: auto;
   width: 80%;
   margin: 20px auto;
-  background-color: var(--background-color, #ffffff);
   color: var(--text-color, #000000);
 }
 
 .review-item {
   flex: 1 1 calc(33.333% - 40px);
-  background-color: var(--background-color, #ffffff);
+  background-color: var(--background-color);
   color: var(--text-color, #000000);
   margin: 20px;
   padding: 20px;
