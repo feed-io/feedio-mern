@@ -170,14 +170,17 @@ const SubscriptionPage = () => {
           alignItems: "center",
           gap: 3,
         }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography
+          color={theme.palette.success.main}
+          variant="h4"
+          gutterBottom>
           Subscription Plan
         </Typography>
-        <Typography variant="body1" gutterBottom>
-          Hi {user.name}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          You are currently on the {membershipStatus} plan
+        <Typography
+          color={theme.palette.success.contrastText}
+          variant="body1"
+          gutterBottom>
+          Hi {user.name}, you are currently on the {membershipStatus} plan
         </Typography>
 
         {membershipStatus === "free" ? (

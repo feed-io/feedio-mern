@@ -173,7 +173,9 @@ const LandingPage = () => {
           {/* Step 1: Sign-Up and Integration */}
           <Grid container spacing={4} justifyContent="center" mt={4}>
             <Grid item xs={12} sm={6} md={4}>
-              <TextSnippetIcon style={{ fontSize: 60 }} />
+              <TextSnippetIcon
+                style={{ fontSize: 60, color: theme.palette.info.main }}
+              />
               <Typography variant="h6" mt={2}>
                 Sign-Up and Integrate
               </Typography>
@@ -185,7 +187,9 @@ const LandingPage = () => {
 
             {/* Step 2: Collect and Analyze Feedback */}
             <Grid item xs={12} sm={6} md={4}>
-              <AutoGraphIcon style={{ fontSize: 60 }} />
+              <AutoGraphIcon
+                style={{ fontSize: 60, color: theme.palette.info.main }}
+              />
               <Typography variant="h6" mt={2}>
                 Collect and Analyze Feedback
               </Typography>
@@ -197,7 +201,9 @@ const LandingPage = () => {
 
             {/* Step 3: Customize and Use Insights */}
             <Grid item xs={12} sm={6} md={4}>
-              <DashboardCustomizeIcon style={{ fontSize: 60 }} />
+              <DashboardCustomizeIcon
+                style={{ fontSize: 60, color: theme.palette.info.main }}
+              />
               <Typography variant="h6" mt={2}>
                 Customize and Act on Insights
               </Typography>
@@ -208,7 +214,12 @@ const LandingPage = () => {
             </Grid>
           </Grid>
           <Box margin={2} padding={2}>
-            <Button variant="contained" color="primary" size="large" mt={4}>
+            <Button
+              href="/pricing"
+              variant="contained"
+              color="primary"
+              size="large"
+              mt={4}>
               Get Started
             </Button>
           </Box>
@@ -258,7 +269,7 @@ const LandingPage = () => {
                   variant="h5">
                   {feature.title}
                 </Typography>
-                <Typography variant="body2">{feature.description}</Typography>
+                <Typography variant="h5">{feature.description}</Typography>
               </Grid>
             </Grid>
           ))}
@@ -267,13 +278,13 @@ const LandingPage = () => {
 
       {/* Testimonials Section */}
       <Box paddingTop={10}>
-        {/* <iframe
-          height="400px"
-          id="656fa487727bcf21cfbe2b00"
-          src="http://localhost:8080/api/users/656d427837d1d557842a0e04/products/656d436a0d0997691374515d/widgets/656fa487727bcf21cfbe2b00/serve?hideDate=on&autoScroll=on&type=carousel"
+        <iframe
+          height="800px"
+          id="65860cc21beeda4bb7cd89e3"
+          src="http://localhost:8080/api/users/6580bdc42cb115eff7e8cfcb/products/6580be336f6b25732195f93d/widgets/65860cc21beeda4bb7cd89e3/serve?hideDate=on&scrollSpeed=1&type=masonry_scroll&scrollSpeed=1&backgroundColor=%23ffffff&textColor=%23000000"
           frameBorder="0"
           scrolling="no"
-          width="100%"></iframe> */}
+          width="100%"></iframe>
       </Box>
 
       {/* Call to Action Section */}

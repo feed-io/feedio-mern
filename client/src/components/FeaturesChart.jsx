@@ -62,7 +62,13 @@ const FeaturesPage = () => {
       {Object.entries(features[tier]).map(([feature, isAvailable]) => (
         <ListItem key={feature}>
           <ListItemIcon>
-            {isAvailable ? <CheckCircleOutlineIcon /> : <DoNotDisturbOnIcon />}
+            {isAvailable ? (
+              <CheckCircleOutlineIcon
+                sx={{ color: theme.palette.secondary.main }}
+              />
+            ) : (
+              <DoNotDisturbOnIcon sx={{ color: theme.palette.error.main }} />
+            )}
           </ListItemIcon>
           <ListItemText primary={feature} />
         </ListItem>
@@ -82,7 +88,7 @@ const FeaturesPage = () => {
       <Grid container spacing={4} justifyContent="center">
         {/* Basic Tier */}
         <Grid item xs={12} sm={4}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+          <Paper elevation={3} sx={{ p: 2, borderRadius: 4 }}>
             <Typography variant="h5" align="center">
               Basic
             </Typography>
@@ -91,7 +97,7 @@ const FeaturesPage = () => {
         </Grid>
         {/* Plus Tier */}
         <Grid item xs={12} sm={4}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+          <Paper elevation={3} sx={{ p: 2, borderRadius: 4 }}>
             <Typography variant="h5" align="center">
               Plus
             </Typography>
@@ -100,7 +106,7 @@ const FeaturesPage = () => {
         </Grid>
         {/* Pro Tier */}
         <Grid item xs={12} sm={4}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+          <Paper elevation={3} sx={{ p: 2, borderRadius: 4 }}>
             <Typography variant="h5" align="center">
               Pro
             </Typography>

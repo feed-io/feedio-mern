@@ -106,10 +106,10 @@ const RoomsPage = () => {
 
     fetchUser();
   }, [refreshTrigger, auth.token, auth.userId]);
-  console.log(products);
+
   const handleDeleteProduct = async (event, productId) => {
     event.stopPropagation();
-    console.log(productId);
+
     try {
       await axios.delete(
         `${SERVER_URL}/api/users/${auth.userId}/products/${productId}`,

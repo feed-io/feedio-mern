@@ -9,10 +9,10 @@ import {
   Select,
   MenuItem,
   Snackbar,
+  TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-// import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -27,6 +27,7 @@ const MasonryScroll = (props) => {
   const [hideDate, setHideDate] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState("1");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [embedLocation, setEmbedLocation] = useState("");
   const [textColor, setTextColor] = useState("#000000");
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
@@ -58,6 +59,7 @@ const MasonryScroll = (props) => {
       background: backgroundColor,
       text: textColor,
       type: props.layoutType,
+      location: embedLocation,
     };
 
     try {
@@ -71,7 +73,6 @@ const MasonryScroll = (props) => {
           },
         }
       );
-
       const widgetId = response.data.widgetData._id;
       const generatedIframeLink = generateIframeLink(widgetId);
       setIframeSrc(generatedIframeLink);
@@ -95,6 +96,10 @@ const MasonryScroll = (props) => {
     setSnackbarOpen(true);
   };
 
+  const handleEmbedLocationChange = (event) => {
+    setEmbedLocation(event.target.value);
+  };
+
   return (
     <Dialog
       open={true}
@@ -115,10 +120,7 @@ const MasonryScroll = (props) => {
         </IconButton>
       </Box>
       <Box textAlign="center" py={3}>
-        <Typography variant="h4" gutterBottom>
-          Embed a widget
-        </Typography>
-        <Typography variant="body1">
+        <Typography variant="h4">
           <Box
             component="span"
             px={1}
@@ -151,16 +153,18 @@ const MasonryScroll = (props) => {
             </div>
           )}
         </Box>
-
-        {/* <Box display="flex" alignItems="center" mt={2}>
-          <Checkbox color="secondary" disabled />
-          <Typography variant="body2">Remove Feedio branding</Typography>
-          <Tooltip
-            title="Please upgrade to our subscription plan to unlock this feature."
-            arrow>
-            <LockIcon color="warning" ml={1} />
-          </Tooltip>
-        </Box> */}
+        <Box display="flex" alignItems="center" mt={2}>
+          <Box my={2}>
+            <TextField
+              label="Embed Location"
+              variant="outlined"
+              fullWidth
+              value={embedLocation}
+              onChange={handleEmbedLocationChange}
+              helperText="Enter the URL or location where you'll embed this widget"
+            />
+          </Box>
+        </Box>
         <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
           <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
             <Typography variant="body2">Background Color:</Typography>

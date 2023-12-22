@@ -6,6 +6,7 @@ import {
   IconButton,
   Typography,
   Snackbar,
+  TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -21,6 +22,7 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const AverageCard = (props) => {
   const auth = useContext(AuthContext);
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [embedLocation, setEmbedLocation] = useState("");
   const [textColor, setTextColor] = useState("#000000");
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
@@ -60,13 +62,16 @@ const AverageCard = (props) => {
       setIframeSrc(generatedIframeLink);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
-      // Error handling omitted for brevity
     }
   };
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(iframeSrc);
     setSnackbarOpen(true);
+  };
+
+  const handleEmbedLocationChange = (event) => {
+    setEmbedLocation(event.target.value);
   };
 
   return (
@@ -89,12 +94,22 @@ const AverageCard = (props) => {
         </IconButton>
       </Box>
       <Box textAlign="center" py={3}>
-        <Typography variant="h4" gutterBottom>
-          Embed an Average Card
+        <Typography variant="h4">
+          <Box
+            component="span"
+            px={1}
+            py={0.5}
+            borderRadius="full"
+            fontWeight="medium">
+            Step 2
+          </Box>
+          Customize your widget
         </Typography>
-        <Typography variant="body1">
-          Step 2: Customize your Average Card Widget
-        </Typography>
+        <Box display="flex" justifyContent="center" alignItems="center" my={2}>
+          <Typography variant="body2" color="main" ml={1}>
+            Average Card
+          </Typography>
+        </Box>
         <Box mt={3}>
           {iframeSrc && (
             <div>
@@ -111,7 +126,18 @@ const AverageCard = (props) => {
             </div>
           )}
         </Box>
-
+        <Box display="flex" alignItems="center" mt={2}>
+          <Box my={2}>
+            <TextField
+              label="Embed Location"
+              variant="outlined"
+              fullWidth
+              value={embedLocation}
+              onChange={handleEmbedLocationChange}
+              helperText="Enter the URL or location where you'll embed this widget"
+            />
+          </Box>
+        </Box>
         <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
           <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
             <Typography variant="body2">Background Color:</Typography>

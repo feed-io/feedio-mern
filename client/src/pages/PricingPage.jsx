@@ -202,7 +202,7 @@ const PricingPage = () => {
                       align: "center",
                     }}
                     sx={{
-                      bgcolor: theme.palette.primary.main,
+                      bgcolor: theme.palette.secondary.main,
                       padding: 2,
                     }}
                   />
@@ -251,21 +251,27 @@ const PricingPage = () => {
             gutterBottom>
             Frequently Asked Questions
           </Typography>
-          <Box sx={{ mt: 3 }}>
-            {faqs.map((faq, index) => (
-              <Accordion key={index}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls={`panel${index}a-content`}
-                  id={`panel${index}a-header`}>
-                  <Typography>{faq.question}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>{faq.answer}</Typography>
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </Box>
+          <Card
+            sx={{
+              borderRadius: 4,
+              // bgcolor: theme.palette.secondary.contrastText,
+            }}>
+            <Box sx={{ mt: 3 }}>
+              {faqs.map((faq, index) => (
+                <Accordion key={index} sx={{ boxShadow: 0 }}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel${index}a-content`}
+                    id={`panel${index}a-header`}>
+                    <Typography variant="h6">{faq.question}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>{faq.answer}</Typography>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </Box>
+          </Card>
         </Container>
       </Container>
     </>

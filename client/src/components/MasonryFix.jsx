@@ -5,16 +5,16 @@ import {
   Checkbox,
   Dialog,
   IconButton,
-  Tooltip,
   Typography,
   Snackbar,
+  TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { CompactPicker } from "react-color";
 
 import { AuthContext } from "../context/auth-context";
 
@@ -25,17 +25,19 @@ const MasonryFix = (props) => {
   const [hideDate, setHideDate] = useState(false);
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [embedLocation, setEmbedLocation] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [textColor, setTextColor] = useState("#000000");
 
   const generateIframeLink = (widgetId) => {
     const baseIframeUrl = `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
-
     let params = [];
-
     if (hideDate) {
       params.push("hideDate=on");
     }
-
     params.push(`type=${props.layoutType}`);
+    params.push(`backgroundColor=${encodeURIComponent(backgroundColor)}`);
+    params.push(`textColor=${encodeURIComponent(textColor)}`);
 
     return `<iframe height="800px" id="${widgetId}" src="${baseIframeUrl}?${params.join(
       "&"
@@ -46,6 +48,8 @@ const MasonryFix = (props) => {
     const config = {
       hideDate,
       type: props.layoutType,
+      backgroundColor,
+      textColor,
     };
 
     try {
@@ -59,22 +63,11 @@ const MasonryFix = (props) => {
           },
         }
       );
-
       const widgetId = response.data.widget._id;
       const generatedIframeLink = generateIframeLink(widgetId);
-
       setIframeSrc(generatedIframeLink);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
-      if (error.response) {
-        console.error("Response Data:", error.response.data);
-        console.error("Response Status:", error.response.status);
-        console.error("Response Headers:", error.response.headers);
-      } else if (error.request) {
-        console.error("Request:", error.request);
-      } else {
-        console.error("Error", error.message);
-      }
       throw error;
     }
   };
@@ -83,6 +76,11 @@ const MasonryFix = (props) => {
     navigator.clipboard.writeText(iframeSrc);
     setSnackbarOpen(true);
   };
+
+  const handleEmbedLocationChange = (event) => {
+    setEmbedLocation(event.target.value);
+  };
+
   return (
     <Dialog
       open={true}
@@ -103,10 +101,7 @@ const MasonryFix = (props) => {
         </IconButton>
       </Box>
       <Box textAlign="center" py={3}>
-        <Typography variant="h4" gutterBottom>
-          Embed a Show Room
-        </Typography>
-        <Typography variant="body1">
+        <Typography variant="h4">
           <Box
             component="span"
             px={1}
@@ -115,10 +110,9 @@ const MasonryFix = (props) => {
             fontWeight="medium">
             Step 2
           </Box>
-          Customize your Show Room
+          Customize your widget
         </Typography>
         <Box display="flex" justifyContent="center" alignItems="center" my={2}>
-          {/* <CheckCircleIcon /> */}
           <Typography variant="body2" color="main" ml={1}>
             Masonry - fixed
           </Typography>
@@ -139,19 +133,33 @@ const MasonryFix = (props) => {
             </div>
           )}
         </Box>
-
-        <Typography variant="caption" color="main" display="block">
-          Height is set to 800px by default. You can change the height parameter
-          to what you like.
-        </Typography>
         <Box display="flex" alignItems="center" mt={2}>
-          <Checkbox color="secondary" disabled />
-          <Typography variant="body2">Remove Feedio branding</Typography>
-          <Tooltip
-            title="Please upgrade to our subscription plan to unlock this feature."
-            arrow>
-            <LockIcon color="warning" ml={1} />
-          </Tooltip>
+          <Box my={2}>
+            <TextField
+              label="Embed Location"
+              variant="outlined"
+              fullWidth
+              value={embedLocation}
+              onChange={handleEmbedLocationChange}
+              helperText="Enter the URL or location where you'll embed this widget"
+            />
+          </Box>
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+          <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
+            <Typography variant="body2">Background Color:</Typography>
+            <CompactPicker
+              color={backgroundColor}
+              onChangeComplete={(color) => setBackgroundColor(color.hex)}
+            />
+          </Box>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography variant="body2">Text Color:</Typography>
+            <CompactPicker
+              color={textColor}
+              onChangeComplete={(color) => setTextColor(color.hex)}
+            />
+          </Box>
         </Box>
         <Box display="flex" alignItems="center" mt={2}>
           <Checkbox

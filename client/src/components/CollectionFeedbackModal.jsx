@@ -2,14 +2,13 @@ import React, { useState, useContext } from "react";
 import {
   Box,
   Button,
-  Checkbox,
   Dialog,
   IconButton,
-  Tooltip,
   Typography,
   Snackbar,
+  TextField,
 } from "@mui/material";
-import { Close, Lock } from "@mui/icons-material/";
+import { Close } from "@mui/icons-material/";
 import axios from "axios";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -20,9 +19,9 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const CollectionFeedbackModal = (props) => {
   const auth = useContext(AuthContext);
-  const [removeBranding, setRemoveBranding] = useState(false);
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [embedLocation, setEmbedLocation] = useState("");
 
   const generateIframeLink = (widgetId) => {
     const baseIframeUrl = `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
@@ -37,14 +36,10 @@ const CollectionFeedbackModal = (props) => {
   };
 
   const sendWidgetConfigToBackend = async () => {
-    const config = {
-      removeBranding,
-      type: "collect-feedback",
-    };
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/config`,
-        config,
+
         {
           headers: {
             "Content-Type": "application/json",
@@ -76,6 +71,10 @@ const CollectionFeedbackModal = (props) => {
     setSnackbarOpen(true);
   };
 
+  const handleEmbedLocationChange = (event) => {
+    setEmbedLocation(event.target.value);
+  };
+
   return (
     <Dialog
       open={true}
@@ -92,11 +91,21 @@ const CollectionFeedbackModal = (props) => {
           <Close />
         </IconButton>
       </Box>
+      <Typography variant="h4">
+        <Box
+          component="span"
+          px={1}
+          py={0.5}
+          borderRadius="full"
+          fontWeight="medium">
+          Step 2
+        </Box>
+        Customize your widget
+      </Typography>
       <Box textAlign="center" py={3}>
         <Typography variant="h4" gutterBottom>
-          Embed a Feedback Collector
+          Embed a widget
         </Typography>
-
         <Box mt={3}>
           {iframeSrc && (
             <div>
@@ -113,21 +122,20 @@ const CollectionFeedbackModal = (props) => {
             </div>
           )}
         </Box>
-        <Typography variant="caption" color="main" display="block">
-          Height is set to 800px by default. You can change the height parameter
-          to what you like.
-        </Typography>
-        <Box display="flex" alignItems="center" mt={2}>
-          <Checkbox color="secondary" disabled />
-          <Typography variant="body2">Remove Feedio branding</Typography>
-          <Tooltip
-            title="Please upgrade to our subscription plan to unlock this feature."
-            arrow>
-            <Lock color="warning" ml={1} />
-          </Tooltip>
-        </Box>
       </Box>
       <Box>
+        <Box display="flex" alignItems="center" mt={2}>
+          <Box my={2}>
+            <TextField
+              label="Embed Location"
+              variant="outlined"
+              fullWidth
+              value={embedLocation}
+              onChange={handleEmbedLocationChange}
+              helperText="Enter the URL or location where you'll embed this widget"
+            />
+          </Box>
+        </Box>
         <Button
           variant="contained"
           color="primary"

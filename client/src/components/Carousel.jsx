@@ -5,15 +5,12 @@ import {
   Checkbox,
   Dialog,
   IconButton,
-  Tooltip,
   Typography,
   Snackbar,
-  Select,
-  MenuItem,
+  TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -28,6 +25,7 @@ const Carousel = (props) => {
   const [hideDate, setHideDate] = useState(false);
   const [autoScroll, setAutoScroll] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [embedLocation, setEmbedLocation] = useState("");
   const [textColor, setTextColor] = useState("#000000");
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
@@ -97,6 +95,10 @@ const Carousel = (props) => {
     setSnackbarOpen(true);
   };
 
+  const handleEmbedLocationChange = (event) => {
+    setEmbedLocation(event.target.value);
+  };
+
   return (
     <Dialog
       open={true}
@@ -117,10 +119,7 @@ const Carousel = (props) => {
         </IconButton>
       </Box>
       <Box textAlign="center" py={3}>
-        <Typography variant="h4" gutterBottom>
-          Embed a Show Room
-        </Typography>
-        <Typography variant="body1">
+        <Typography variant="h4">
           <Box
             component="span"
             px={1}
@@ -129,11 +128,9 @@ const Carousel = (props) => {
             fontWeight="medium">
             Step 2
           </Box>
-          Customize your Show Room
+          Customize your widget
         </Typography>
-
         <Box display="flex" justifyContent="center" alignItems="center" my={2}>
-          {/* <CheckCircleIcon /> */}
           <Typography variant="body2" color="main" ml={1}>
             Carousel
           </Typography>
@@ -155,19 +152,17 @@ const Carousel = (props) => {
             </div>
           )}
         </Box>
-
-        <Typography variant="caption" color="main" display="block">
-          Height is set to 800px by default. You can change the height parameter
-          to what you like.
-        </Typography>
         <Box display="flex" alignItems="center" mt={2}>
-          <Checkbox color="secondary" disabled />
-          <Typography variant="body2">Remove Feedio branding</Typography>
-          <Tooltip
-            title="Please upgrade to our subscription plan to unlock this feature."
-            arrow>
-            <LockIcon color="warning" ml={1} />
-          </Tooltip>
+          <Box my={2}>
+            <TextField
+              label="Embed Location"
+              variant="outlined"
+              fullWidth
+              value={embedLocation}
+              onChange={handleEmbedLocationChange}
+              helperText="Enter the URL or location where you'll embed this widget"
+            />
+          </Box>
         </Box>
         <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
           <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
