@@ -16,6 +16,8 @@ import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 
 import Learn from "../assets/learn.svg";
 import Integration from "../assets/integrate.svg";
+import customWidget from "../assets/customWidgets.svg";
+import AnalyticsCard from "../assets/analyticsCard.svg";
 import headerAsset from "../assets/header-asset.svg";
 import Blob from "../assets/blob.svg";
 import Sentiment from "../assets/sentiment.svg";
@@ -58,31 +60,25 @@ const LandingPage = () => {
       title: "Easy Integration",
       description:
         "Simple code snippet integration into your website or application. Start collecting valuable feedback in minutes.",
-      image: "/path/to/integration-image.jpg",
+      image: Integration,
     },
     {
       title: "Customizable Widgets",
       description:
         "Personalize the look and feel of your feedback widgets to match your brand - change colors, remove Feedio branding, and more.",
-      image: "/path/to/customizable-widgets-image.jpg",
+      image: customWidget,
     },
     {
       title: "Comprehensive Feedback Analysis",
       description:
         "Gain insights from trend analysis, sentiment analysis, and more to understand customer perspectives and improve your offerings.",
-      image: "/path/to/analysis-image.jpg",
+      image: AnalyticsCard,
     },
     {
       title: "Diverse Application Across Industries",
       description:
         "Versatile feedback collection suitable for SaaS, eCommerce, and more - understand specific feature feedback or general product sentiment.",
       image: "/path/to/industries-image.jpg",
-    },
-    {
-      title: "Interactive Tutorials and Support",
-      description:
-        "Get up and running with ease using our interactive tutorials and dedicated support, ensuring you make the most of Feedio.",
-      image: "/path/to/tutorials-image.jpg",
     },
   ];
 
