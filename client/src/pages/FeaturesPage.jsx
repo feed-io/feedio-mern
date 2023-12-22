@@ -7,10 +7,13 @@ import {
   Box,
   Avatar,
   Card,
+  useTheme,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 
 const FeaturesPage = () => {
+  const theme = useTheme();
+
   const features = [
     {
       title: "Dedicated Feedback Website",
@@ -72,10 +75,17 @@ const FeaturesPage = () => {
     <>
       {/* Header Section */}
       <Container maxWidth="lg" sx={{ py: 8, position: "relative" }}>
-        <Typography variant="h2" align="center" gutterBottom>
+        <Typography
+          variant="h2"
+          align="center"
+          color={theme.palette.success.main}
+          gutterBottom>
           Discover the Power of Feedio
         </Typography>
-        <Typography variant="h6" align="center">
+        <Typography
+          color={theme.palette.primary.contrastText}
+          variant="h6"
+          align="center">
           Seamlessly integrate advanced feedback analysis into your workflow
           with Feedio. No development or hosting needed.
         </Typography>
@@ -100,10 +110,17 @@ const FeaturesPage = () => {
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Typography variant="h5" gutterBottom>
+              <Typography
+                color={theme.palette.success.main}
+                variant="h5"
+                gutterBottom>
                 {feature.title}
               </Typography>
-              <Typography variant="body1">{feature.description}</Typography>
+              <Typography
+                color={theme.palette.primary.contrastText}
+                variant="body1">
+                {feature.description}
+              </Typography>
             </Grid>
           </Grid>
         </Container>
@@ -111,7 +128,11 @@ const FeaturesPage = () => {
 
       {/* Testimonials Section */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography
+          color={theme.palette.success.main}
+          variant="h4"
+          align="center"
+          gutterBottom>
           Customer Success Stories
         </Typography>
         <Grid container spacing={4} justifyContent="center">
@@ -149,10 +170,17 @@ const FeaturesPage = () => {
 
       {/* Why Feedio Section */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography
+          variant="h4"
+          align="center"
+          color={theme.palette.success.main}
+          gutterBottom>
           Why Feedio Stands Out
         </Typography>
-        <Typography variant="h6" align="center">
+        <Typography
+          color={theme.palette.primary.contrastText}
+          variant="h6"
+          align="center">
           From seamless integration to deep insights – Feedio offers a
           comprehensive solution for enhancing customer engagement and feedback
           analysis.

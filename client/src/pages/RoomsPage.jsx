@@ -143,6 +143,7 @@ const RoomsPage = () => {
             sx={{ py: 2, mt: 4, borderColor: "divider", borderBottom: 1 }}
             my={2}>
             <Typography
+              color={theme.palette.primary.contrastText}
               variant={isMobile ? "h5" : "h4"}>{`Hi, ${user}`}</Typography>
           </Box>
 
@@ -176,6 +177,7 @@ const RoomsPage = () => {
                     padding: "6px 12px",
                     textTransform: "none",
                     marginBottom: isMobile ? 2 : 0,
+                    color: theme.palette.primary.contrastText,
                   }}>
                   {label}
                 </Button>
@@ -190,33 +192,61 @@ const RoomsPage = () => {
             justifyContent="center"
             paddingTop={4}>
             <Grid item xs={12} sm={6} md={3}>
-              <Box display="flex" flexDirection="column" alignItems="center">
+              <Box
+                color={theme.palette.info.main}
+                display="flex"
+                flexDirection="column"
+                alignItems="center">
                 <StarBorderIcon fontSize="large" />
                 <Typography variant="h6">Total Average Rating</Typography>
-                <Typography variant="subtitle1">
+                <Typography
+                  color={theme.palette.primary.contrastText}
+                  variant="subtitle1">
                   {totalAverage.toFixed(1)}
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Box display="flex" flexDirection="column" alignItems="center">
+              <Box
+                color={theme.palette.info.main}
+                display="flex"
+                flexDirection="column"
+                alignItems="center">
                 <WidgetsIcon fontSize="large" />
                 <Typography variant="h6">Total Active Widgets</Typography>
-                <Typography variant="subtitle1">{activeWidgets}</Typography>
+                <Typography
+                  color={theme.palette.primary.contrastText}
+                  variant="subtitle1">
+                  {activeWidgets}
+                </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Box display="flex" flexDirection="column" alignItems="center">
+              <Box
+                color={theme.palette.info.main}
+                display="flex"
+                flexDirection="column"
+                alignItems="center">
                 <ReviewsIcon fontSize="large" />
                 <Typography variant="h6">Total Reviews</Typography>
-                <Typography variant="subtitle1">{totalReviews}</Typography>
+                <Typography
+                  color={theme.palette.primary.contrastText}
+                  variant="subtitle1">
+                  {totalReviews}
+                </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Box display="flex" flexDirection="column" alignItems="center">
+              <Box
+                color={theme.palette.info.main}
+                display="flex"
+                flexDirection="column"
+                alignItems="center">
                 <VerifiedUser fontSize="large" />
                 <Typography variant="h6">Subscription Status</Typography>
-                <Typography variant="subtitle1">
+                <Typography
+                  color={theme.palette.primary.contrastText}
+                  variant="subtitle1">
                   {auth.membershipStatus}
                 </Typography>
               </Box>
@@ -232,7 +262,11 @@ const RoomsPage = () => {
             alignItems="center"
             mt={4}
             mb={2}>
-            <Typography variant={isMobile ? "h5" : "h4"}>Rooms</Typography>
+            <Typography
+              color={theme.palette.success.main}
+              variant={isMobile ? "h5" : "h4"}>
+              Rooms
+            </Typography>
           </Box>
 
           <Box mb={4}>

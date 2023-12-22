@@ -88,7 +88,7 @@ const LandingPage = () => {
 
       <Box
         sx={{
-          bgcolor: theme.palette.info.main,
+          bgcolor: theme.palette.background,
           pt: isMobile ? 8 : 18,
           pb: isMobile ? 5 : 10,
           backgroundImage: `url(${Blob})`,
@@ -99,11 +99,15 @@ const LandingPage = () => {
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
-              <Box sx={{ textAlign: "left", pb: 6 }}>
+              <Box
+                color={theme.palette.success.main}
+                sx={{ textAlign: "left", pb: 6 }}>
                 <Typography variant={isMobile ? "h4" : "h1"}>
                   Elevate Your Brand with Authentic Feedback
                 </Typography>
-                <Typography variant="h6" color="text.secondary">
+                <Typography
+                  color={theme.palette.primary.contrastText}
+                  variant="h6">
                   Feedback is more than just words; it's a goldmine of insights.
                 </Typography>
                 <Button variant="contained" color="primary" href="/pricing">
@@ -121,9 +125,15 @@ const LandingPage = () => {
       {/* Features Section */}
       <Container
         maxWidth="lg"
-        sx={{ bgcolor: theme.palette.info.main, py: 2, pb: 8 }}>
+        sx={{
+          color: theme.palette.primary.contrastText,
+          py: 2,
+          pb: 8,
+        }}>
         <Box sx={{ textAlign: "center", py: 8 }}>
-          <Typography variant={isMobile ? "h4" : "h2"}>
+          <Typography
+            color={theme.palette.success.main}
+            variant={isMobile ? "h4" : "h2"}>
             Harness the power of genuine reviews and advanced analytics to drive
             growth and build trust.
           </Typography>
@@ -146,12 +156,17 @@ const LandingPage = () => {
       </Container>
 
       {/* How it works Section */}
-      <Container maxWidth="lg" sx={{ bgcolor: theme.palette.info.main, py: 4 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ color: theme.palette.primary.contrastText, py: 4 }}>
         <Box py={8} textAlign="center">
-          <Typography variant={isMobile ? "h4" : "h2"} gutterBottom>
+          <Typography
+            color={theme.palette.success.main}
+            variant={isMobile ? "h4" : "h2"}
+            gutterBottom>
             How It Works
           </Typography>
-          <Typography variant="h6" color="textSecondary">
+          <Typography variant="h6">
             Simple steps to get started with Feedio
           </Typography>
 
@@ -201,8 +216,11 @@ const LandingPage = () => {
       </Container>
 
       {/* Why Section */}
-      <Container maxWidth="lg" sx={{ py: 2, pb: 4 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ color: theme.palette.primary.contrastText, py: 2, pb: 4 }}>
         <Typography
+          color={theme.palette.success.main}
           variant={isMobile ? "h4" : "h2"}
           align="center"
           paddingBottom={8}
@@ -234,12 +252,13 @@ const LandingPage = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                 }}>
-                <Typography gutterBottom variant="h5">
+                <Typography
+                  color={theme.palette.success.main}
+                  gutterBottom
+                  variant="h5">
                   {feature.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {feature.description}
-                </Typography>
+                <Typography variant="body2">{feature.description}</Typography>
               </Grid>
             </Grid>
           ))}
@@ -258,7 +277,7 @@ const LandingPage = () => {
       </Box>
 
       {/* Call to Action Section */}
-      <Box sx={{ bgcolor: theme.palette.info.main, py: 8 }}>
+      <Box sx={{ color: theme.palette.primary.contrastText, py: 8 }}>
         <Container maxWidth="lg">
           <Grid container alignItems="center">
             <Grid item xs={12} md={4}>
@@ -269,7 +288,9 @@ const LandingPage = () => {
               />
             </Grid>
             <Grid item xs={12} md={8} pl={8}>
-              <Typography variant={isMobile ? "h4" : "h2"}>
+              <Typography
+                color={theme.palette.success.main}
+                variant={isMobile ? "h4" : "h2"}>
                 Ready to transform feedback into growth?
               </Typography>
               <Button

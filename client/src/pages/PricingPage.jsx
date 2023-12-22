@@ -126,11 +126,12 @@ const PricingPage = () => {
 
   return (
     <>
-      <Container maxWidth="xxl" sx={{ bgcolor: theme.palette.info.main }}>
+      <Container maxWidth="xxl">
         <Container textAlign="center" sx={{ px: [4, 6, 8, 10], paddingTop: 8 }}>
           <Typography
             variant="h2"
             textAlign="center"
+            color={theme.palette.success.main}
             sx={{ fontSize: isMobile ? "2.5rem" : "4.5rem" }}
             mb={4}>
             The easiest way to drive more sales for your business
@@ -139,14 +140,25 @@ const PricingPage = () => {
 
         {/* Free trial */}
         <Container maxWidth="lg" sx={{ py: 8 }}>
-          <Typography variant="h3" align="center" gutterBottom>
+          <Typography
+            color={theme.palette.success.main}
+            variant="h3"
+            align="center"
+            gutterBottom>
             Start Your Free Trial
           </Typography>
-          <Typography variant="h6" align="center" sx={{ mb: 3 }}>
+          <Typography
+            color={theme.palette.primary.contrastText}
+            variant="h6"
+            align="center"
+            sx={{ mb: 3 }}>
             Experience all the premium features with no commitment.
           </Typography>
           <Box textAlign="center">
-            <Typography variant="body1" sx={{ mb: 4 }}>
+            <Typography
+              color={theme.palette.primary.contrastText}
+              variant="body1"
+              sx={{ mb: 4 }}>
               Sign up today and get a 14-day free trial. Explore the full
               capabilities of Feedio without any restrictions. No credit card
               required!
@@ -190,7 +202,7 @@ const PricingPage = () => {
                       align: "center",
                     }}
                     sx={{
-                      bgcolor: theme.palette.secondary.main,
+                      bgcolor: theme.palette.primary.main,
                       padding: 2,
                     }}
                   />
@@ -208,9 +220,7 @@ const PricingPage = () => {
                         color="text.primary">
                         €{tier.price}
                       </Typography>
-                      <Typography variant="h6" color="text.secondary">
-                        /mo
-                      </Typography>
+                      <Typography variant="h6">/mo</Typography>
                     </Box>
                     <ul>
                       {tier.description.map((line) => (
@@ -234,7 +244,11 @@ const PricingPage = () => {
 
         {/* FAQ Section */}
         <Container maxWidth="lg" sx={{ py: 8 }}>
-          <Typography variant="h3" align="center" gutterBottom>
+          <Typography
+            color={theme.palette.success.main}
+            variant="h3"
+            align="center"
+            gutterBottom>
             Frequently Asked Questions
           </Typography>
           <Box sx={{ mt: 3 }}>

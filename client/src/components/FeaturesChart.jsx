@@ -8,11 +8,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  useTheme,
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
 
 const FeaturesPage = () => {
+  const theme = useTheme();
   const features = {
     Basic: {
       "Website for displaying feedback": true,
@@ -70,7 +72,11 @@ const FeaturesPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Typography variant="h3" align="center" gutterBottom>
+      <Typography
+        variant="h3"
+        align="center"
+        color={theme.palette.success.main}
+        gutterBottom>
         Compare Our Plans
       </Typography>
       <Grid container spacing={4} justifyContent="center">
