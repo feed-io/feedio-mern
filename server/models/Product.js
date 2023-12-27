@@ -18,6 +18,10 @@ const productSchema = new Schema({
     fourStar: { type: Number, default: 0 },
     fiveStar: { type: Number, default: 0 },
   },
+  npsScore: { type: Number, default: 0 },
+  promotersCount: { type: Number, default: 0 },
+  passivesCount: { type: Number, default: 0 },
+  detractorsCount: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model("Product", productSchema);

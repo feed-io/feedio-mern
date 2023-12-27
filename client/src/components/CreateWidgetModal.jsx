@@ -10,11 +10,10 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-// import CollectFeeback from "../assets/collectFeedback";
 import MasonryGrid from "../assets/MasonryGrid.svg";
 import MasonryScrollGif from "../assets/MasonryScroll.gif";
 import CarouselGif from "../assets/carousel.gif";
-import AverageCardImg from "../assets/averageCard.svg"; // Assuming this is the correct path
+import AverageCardImg from "../assets/averageCard.svg";
 import MasonryScroll from "./MasonryScroll";
 import MasonryFix from "./MasonryFix";
 import Carousel from "./Carousel.jsx";
@@ -42,7 +41,7 @@ const CreateWidgetModal = (props) => {
     {
       title: "Average Card",
       alt: "User rating average card",
-      imgSrc: AverageCardImg, // Assign the correct image source here
+      imgSrc: AverageCardImg,
     },
   ];
 

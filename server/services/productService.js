@@ -25,11 +25,20 @@ const create = async ({ name, header, content, questions, userId }) => {
   return newProduct;
 };
 
-const getAll = async () => {
-  const products = await Product.find();
+const getAll = async (userId) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new Error("Invalid user ID");
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const products = await Product.find({ user: userId });
 
   if (!products) {
-    throw new Error("No products found");
+    throw new Error("No products found for this user");
   }
 
   return products;

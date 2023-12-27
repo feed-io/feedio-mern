@@ -27,7 +27,10 @@ import Rating from "@mui/material/Rating";
 import Favorite from "@mui/icons-material/Favorite";
 import MailOutline from "@mui/icons-material/MailOutline";
 import CalendarToday from "@mui/icons-material/CalendarToday";
+
 import Empty from "../assets/empty.svg";
+import LogoSpinner from "../components/spinner/LogoSpinner";
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const headCells = [
@@ -76,8 +79,10 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
   const [orderBy, setOrderBy] = useState("name");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
@@ -94,6 +99,7 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
       } catch (error) {
         console.log("Error fetching reviews:", error.message);
       }
+      setLoading(false);
     };
 
     fetchReviews();
@@ -258,6 +264,19 @@ const ReviewsTable = ({ product, userId, token, onSpaceCreated }) => {
       ? -customSort(a, b, orderBy)
       : customSort(a, b, orderBy);
   });
+
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh" // Adjust the height as needed
+      >
+        <LogoSpinner />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ width: "100%" }}>

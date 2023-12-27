@@ -21,9 +21,9 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const AverageCard = (props) => {
   const auth = useContext(AuthContext);
-  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [backgroundColor, setBackgroundColor] = useState("");
   const [embedLocation, setEmbedLocation] = useState("");
-  const [textColor, setTextColor] = useState("#000000");
+  const [textColor, setTextColor] = useState("");
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -43,6 +43,7 @@ const AverageCard = (props) => {
       type: "average_card",
       background: backgroundColor,
       text: textColor,
+      location: embedLocation,
     };
 
     try {

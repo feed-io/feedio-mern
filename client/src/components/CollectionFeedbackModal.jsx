@@ -36,9 +36,15 @@ const CollectionFeedbackModal = (props) => {
   };
 
   const sendWidgetConfigToBackend = async () => {
+    const config = {
+      type: "collect-feedback",
+      location: embedLocation,
+    };
+
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/config`,
+        config,
 
         {
           headers: {
@@ -47,8 +53,8 @@ const CollectionFeedbackModal = (props) => {
           },
         }
       );
-
-      const widgetId = response.data.widget._id;
+      console.log(response);
+      const widgetId = response.data.widgetData._id;
       const generatedIframeLink = generateIframeLink(widgetId);
       setIframeSrc(generatedIframeLink);
     } catch (error) {

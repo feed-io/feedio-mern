@@ -33,10 +33,14 @@ const DashboardPage = () => {
   const [isCollModalOpen, setIsCollModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [currentDateRange, setCurrentDateRange] = useState({
-    start: new Date(),
-    end: new Date(),
+  const [currentDateRange, setCurrentDateRange] = useState(() => {
+    const start = new Date();
+    start.setDate(1);
+    const end = new Date(start.getFullYear(), start.getMonth() + 1, 0);
+    return { start, end };
   });
+
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [reviews, setReviews] = useState([]);
   const [trendData, setTrendData] = useState([]);
   const [wordCounts, setWordCounts] = useState({});
@@ -96,7 +100,7 @@ const DashboardPage = () => {
             },
           }
         );
-
+        console.log(response.data.reviews);
         setReviews(response.data.reviews);
       } catch (error) {
         console.log("Error fetching reviews:", error.message);
@@ -111,6 +115,11 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchTrendData = async () => {
       try {
+        console.log(
+          "Fetching data for:",
+          currentDateRange.start.toISOString(),
+          currentDateRange.end.toISOString()
+        );
         const response = await fetch(
           `${SERVER_URL}/api/users/${
             auth.userId
@@ -123,20 +132,24 @@ const DashboardPage = () => {
         );
 
         const data = await response.json();
+        console.log("Fetched trend data:", data);
         setTrendData(data);
       } catch (error) {
         console.log("Error fetching ratings trend data:", error.message);
       }
     };
 
-    fetchTrendData();
+    if (product) {
+      fetchTrendData();
+    }
   }, [
-    auth.token,
-    timeGranularity,
     auth.userId,
-    productId,
+    auth.token,
+    product,
     refreshTrigger,
     currentDateRange,
+    timeGranularity,
+    productId,
   ]);
 
   useEffect(() => {
@@ -233,6 +246,32 @@ const DashboardPage = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
 
+  const handlePreviousMonth = () => {
+    setCurrentDateRange((prevRange) => {
+      const start = new Date(prevRange.start);
+      start.setMonth(start.getMonth() - 1);
+      start.setDate(1);
+
+      const end = new Date(start.getFullYear(), start.getMonth() + 1, 0);
+
+      setCurrentMonth(start);
+      return { start, end };
+    });
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDateRange((prevRange) => {
+      const start = new Date(prevRange.start);
+      start.setMonth(start.getMonth() + 1);
+      start.setDate(1);
+
+      const end = new Date(start.getFullYear(), start.getMonth() + 1, 0);
+
+      setCurrentMonth(start);
+      return { start, end };
+    });
+  };
+
   return (
     <>
       <LayoutDashboard>
@@ -263,10 +302,10 @@ const DashboardPage = () => {
                   product={product}
                   reviews={reviews}
                   trendData={trendData}
+                  onPreviousMonth={handlePreviousMonth}
+                  onNextMonth={handleNextMonth}
+                  currentMonth={currentDateRange.start}
                   timeGranularity={timeGranularity}
-                  setTimeGranularity={setTimeGranularity}
-                  currentDateRange={currentDateRange}
-                  setCurrentDateRange={setCurrentDateRange}
                   words={words}
                   sentimentData={sentimentData}
                   handleSpaceCreated={handleSpaceCreated}

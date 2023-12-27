@@ -26,8 +26,8 @@ const MasonryFix = (props) => {
   const [iframeSrc, setIframeSrc] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const [embedLocation, setEmbedLocation] = useState("");
-  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
-  const [textColor, setTextColor] = useState("#000000");
+  const [backgroundColor, setBackgroundColor] = useState("");
+  const [textColor, setTextColor] = useState("");
 
   const generateIframeLink = (widgetId) => {
     const baseIframeUrl = `${SERVER_URL}/api/users/${auth.userId}/products/${props.productId}/widgets/${widgetId}/serve`;
@@ -50,6 +50,7 @@ const MasonryFix = (props) => {
       type: props.layoutType,
       backgroundColor,
       textColor,
+      location: embedLocation,
     };
 
     try {

@@ -33,7 +33,6 @@ exports.createProduct = async (req, res) => {
 
 exports.getAllProducts = async (req, res) => {
   const userId = req.userData.userId;
-
   try {
     const products = await productService.getAll(userId);
     res.status(200).json({ products });

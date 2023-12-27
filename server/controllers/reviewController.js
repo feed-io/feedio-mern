@@ -3,7 +3,7 @@ const { validationResult } = require("express-validator");
 const reviewService = require("../services/reviewService");
 
 exports.createReview = async (req, res) => {
-  const { name, email, content, rating, productId } = req.body;
+  const { name, email, content, rating, productId, npsScore } = req.body;
 
   const errors = validationResult(req);
 
@@ -18,6 +18,7 @@ exports.createReview = async (req, res) => {
       content,
       rating,
       productId,
+      npsScore,
     });
     res
       .status(201)
@@ -114,14 +115,12 @@ exports.getWordCloudData = async (req, res, next) => {
 
 exports.getRatingsTrend = async (req, res) => {
   const productId = req.mainParams.pid;
-  const granularity = req.query.granularity;
   const startDate = req.query.startDate;
   const endDate = req.query.endDate;
 
   try {
     const trends = await reviewService.getRatingsTrend(
       productId,
-      granularity,
       startDate,
       endDate
     );

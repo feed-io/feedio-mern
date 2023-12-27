@@ -21,7 +21,7 @@ const generateWidgetConfig = async (
     productId,
     type,
   });
-
+  console.log("location", embedLocation);
   if (widget) {
     widget.scrollSpeed = scrollSpeed;
     widget.hideDate = hideDate;
@@ -234,9 +234,39 @@ const generateWidgetRepresentation = async (
   return widgetRepresentation;
 };
 
+const deleteWidget = async (widgetId) => {
+  try {
+    const widget = await Widget.findById(widgetId);
+    if (!widget) {
+      throw new Error("Widget not found");
+    }
+
+    const productId = widget.product;
+    await Product.findByIdAndUpdate(
+      productId,
+      { $pull: { widgets: widgetId } },
+      { new: true }
+    );
+
+    await Widget.findByIdAndDelete(widgetId);
+  } catch (error) {
+    console.error("Error deleting widget:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   generateWidgetConfig,
   getWidgets,
   getWidgetConfig,
   generateWidgetRepresentation,
+  deleteWidget,
+};
+
+module.exports = {
+  generateWidgetConfig,
+  getWidgets,
+  getWidgetConfig,
+  generateWidgetRepresentation,
+  deleteWidget,
 };

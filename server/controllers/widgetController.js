@@ -100,3 +100,14 @@ exports.serveWidget = async (req, res, next) => {
     res.status(500).json({ message: "Error serving the widget." });
   }
 };
+
+exports.deleteWidget = async (req, res) => {
+  const widgetId = req.params.wid;
+  try {
+    await widgetService.deleteWidget(widgetId);
+    res.status(200).json({ message: "Widget deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting widget:", error);
+    res.status(500).json({ message: "Error deleting widget", error });
+  }
+};

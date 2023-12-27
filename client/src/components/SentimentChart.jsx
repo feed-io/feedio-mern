@@ -1,7 +1,6 @@
 import React from "react";
 import Chart from "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
-import { Typography } from "@mui/material";
 
 const SentimentChart = ({ sentimentData }) => {
   const modifiedSentimentData = {
@@ -25,9 +24,6 @@ const SentimentChart = ({ sentimentData }) => {
 
   return (
     <div>
-      <Typography variant="h6" color="textSecondary" gutterBottom>
-        Sentiment Distribution
-      </Typography>
       <Doughnut data={modifiedSentimentData} options={chartOptions} />
     </div>
   );

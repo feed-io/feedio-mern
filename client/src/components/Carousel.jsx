@@ -57,6 +57,7 @@ const Carousel = (props) => {
       background: backgroundColor,
       text: textColor,
       type: props.layoutType,
+      location: embedLocation,
     };
 
     try {

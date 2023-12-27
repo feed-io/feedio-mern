@@ -85,7 +85,13 @@ const LandingPage = () => {
   return (
     <main>
       {/* Header Section */}
-
+      {/* <iframe
+        height="800px"
+        id="6586e7ca0d42f88f9b5fe615"
+        src="http://localhost:8080/api/users/6580bdc42cb115eff7e8cfcb/products/6580bddc6f6b25732195f5b3/widgets/6586e7ca0d42f88f9b5fe615/serve?type=collect-feedback"
+        frameBorder="0"
+        scrolling="no"
+        width="100%"></iframe> */}
       <Box
         sx={{
           bgcolor: theme.palette.background,
@@ -280,8 +286,8 @@ const LandingPage = () => {
       <Box paddingTop={10}>
         <iframe
           height="800px"
-          id="65860cc21beeda4bb7cd89e3"
-          src="http://localhost:8080/api/users/6580bdc42cb115eff7e8cfcb/products/6580be336f6b25732195f93d/widgets/65860cc21beeda4bb7cd89e3/serve?hideDate=on&scrollSpeed=1&type=masonry_scroll&scrollSpeed=1&backgroundColor=%23ffffff&textColor=%23000000"
+          id="6587160ec7797bcd9faf4423"
+          src="http://localhost:8080/api/users/6580bdc42cb115eff7e8cfcb/products/6580be336f6b25732195f93d/widgets/6587160ec7797bcd9faf4423/serve?hideDate=on&autoScroll=on&type=carousel"
           frameBorder="0"
           scrolling="no"
           width="100%"></iframe>

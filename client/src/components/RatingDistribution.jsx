@@ -1,19 +1,20 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
 import { Bar } from "react-chartjs-2";
 
 const RatingDistribution = ({ product }) => {
+  const distributionCounts = [
+    product.ratingDistribution.oneStar,
+    product.ratingDistribution.twoStar,
+    product.ratingDistribution.threeStar,
+    product.ratingDistribution.fourStar,
+    product.ratingDistribution.fiveStar,
+  ];
+
   const data = {
     labels: ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"],
     datasets: [
       {
-        data: [
-          product.ratingDistribution.oneStar,
-          product.ratingDistribution.twoStar,
-          product.ratingDistribution.threeStar,
-          product.ratingDistribution.fourStar,
-          product.ratingDistribution.fiveStar,
-        ],
+        data: distributionCounts,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(153, 102, 255, 0.2)",
@@ -35,9 +36,13 @@ const RatingDistribution = ({ product }) => {
 
   const options = {
     scales: {
-      // y: {
-      //   beginAtZero: true,
-      // },
+      y: {
+        min: 0,
+        max: Math.max(100, ...distributionCounts),
+        ticks: {
+          stepSize: 10,
+        },
+      },
     },
     plugins: {
       legend: {
@@ -47,10 +52,17 @@ const RatingDistribution = ({ product }) => {
   };
 
   return (
-    <div>
-      <Typography variant="h6" color="textSecondary" mb={8} gutterBottom>
-        Rating Distribution
-      </Typography>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+        maxWidth: "700px",
+        margin: "auto",
+      }}>
       <Bar data={data} options={options} />
     </div>
   );

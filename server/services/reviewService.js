@@ -3,13 +3,71 @@ const { Review } = require("../models/review");
 const Product = require("../models/Product");
 // const { sendEmail, sendAdminNotificationEmail } = require("../utils/email");
 
+const mongoose = require("mongoose");
 const Sentiment = require("sentiment");
 const natural = require("natural");
-const mongoose = require("mongoose");
 
-const tokenizer = new natural.WordTokenizer();
+const tokenizer = new natural.AggressiveTokenizer();
 const sentiment = new Sentiment();
-const stemmer = natural.PorterStemmer;
+const WordNet = require("natural").WordNet;
+const wordnet = new WordNet();
+
+const recalculateAndUpdateNps = async (productId) => {
+  const reviews = await Review.find({ product: productId });
+  let promoters = 0,
+    passives = 0,
+    detractors = 0;
+
+  reviews.forEach((review) => {
+    if (review.npsScore >= 9) promoters++;
+    else if (review.npsScore >= 7 && review.npsScore <= 8) passives++;
+    else if (review.npsScore <= 6) detractors++;
+  });
+
+  const totalResponses = promoters + passives + detractors;
+  const nps =
+    totalResponses === 0
+      ? 0
+      : ((promoters - detractors) / totalResponses) * 100;
+
+  await Product.findByIdAndUpdate(productId, {
+    npsScore: nps,
+    promotersCount: promoters,
+    passivesCount: passives,
+    detractorsCount: detractors,
+  });
+};
+
+const recalculateAndUpdateRatingDistribution = async (productId) => {
+  const reviews = await Review.find({ product: productId });
+
+  let ratingDistribution = {
+    oneStar: 0,
+    twoStar: 0,
+    threeStar: 0,
+    fourStar: 0,
+    fiveStar: 0,
+  };
+
+  const ratingMap = {
+    1: "oneStar",
+    2: "twoStar",
+    3: "threeStar",
+    4: "fourStar",
+    5: "fiveStar",
+  };
+
+  reviews.forEach((review) => {
+    const ratingKey = ratingMap[review.rating];
+    if (ratingKey) {
+      ratingDistribution[ratingKey]++;
+    }
+  });
+
+  await Product.findByIdAndUpdate(productId, {
+    ratingDistribution: ratingDistribution,
+  });
+};
 
 const create = async ({
   name,
@@ -17,6 +75,7 @@ const create = async ({
   content,
   rating,
   productId,
+  npsScore,
   // startDate,
   // endDate,
 }) => {
@@ -37,6 +96,7 @@ const create = async ({
     content,
     email,
     rating,
+    npsScore: npsScore,
     sentiment: sentimentAnalysis.score,
     product: productId,
   });
@@ -44,6 +104,8 @@ const create = async ({
   await newReview.save();
 
   product.reviews.push(newReview._id);
+  await recalculateAndUpdateNps(productId);
+  await recalculateAndUpdateRatingDistribution(productId);
   await product.save();
 
   // if (user.notifyReview) {
@@ -131,7 +193,8 @@ const deleteOne = async (reviewId) => {
   await product.save();
 
   await calculateAndUpdateProductStats.call(review);
-
+  await recalculateAndUpdateNps(productId);
+  await recalculateAndUpdateRatingDistribution(productId);
   await Review.deleteOne({ _id: reviewId });
 
   return "Review deleted successfully";
@@ -150,43 +213,236 @@ const updateFavoriteStatus = async (reviewId, newStatus) => {
 };
 
 const stopWords = [
+  "a",
+  "about",
+  "above",
+  "after",
+  "again",
+  "against",
+  "all",
+  "am",
+  "an",
   "and",
-  "the",
-  "is",
-  "in",
-  "it",
-  "you",
-  "of",
-  "for",
-  "to",
-  "on",
-  "that",
-  "this",
-  "with",
-  "as",
-  "was",
+  "any",
   "are",
-  "be",
+  "aren't",
+  "as",
   "at",
-  "or",
+  "be",
+  "because",
+  "been",
+  "before",
+  "being",
+  "below",
+  "between",
+  "both",
   "but",
+  "by",
+  "can't",
+  "cannot",
+  "could",
+  "couldn't",
+  "did",
+  "didn't",
+  "do",
+  "does",
+  "doesn't",
+  "doing",
+  "don't",
+  "down",
+  "during",
+  "each",
+  "few",
+  "for",
+  "from",
+  "further",
+  "had",
+  "hadn't",
+  "has",
+  "hasn't",
+  "have",
+  "haven't",
+  "having",
+  "he",
+  "he'd",
+  "he'll",
+  "he's",
+  "her",
+  "here",
+  "here's",
+  "hers",
+  "herself",
+  "him",
+  "himself",
+  "his",
+  "how",
+  "how's",
+  "i",
+  "i'd",
+  "i'll",
+  "i'm",
+  "i've",
+  "if",
+  "in",
+  "into",
+  "is",
+  "isn't",
+  "it",
+  "it's",
+  "its",
+  "itself",
+  "let's",
+  "me",
+  "more",
+  "most",
+  "mustn't",
+  "my",
+  "myself",
+  "no",
+  "nor",
   "not",
+  "of",
+  "off",
+  "on",
+  "once",
+  "only",
+  "or",
+  "other",
+  "ought",
+  "our",
+  "ours",
+  "ourselves",
+  "out",
+  "over",
+  "own",
+  "same",
+  "shan't",
+  "she",
+  "she'd",
+  "she'll",
+  "she's",
+  "should",
+  "shouldn't",
+  "so",
+  "some",
+  "such",
+  "than",
+  "that",
+  "that's",
+  "the",
+  "their",
+  "theirs",
+  "them",
+  "themselves",
+  "then",
+  "there",
+  "there's",
+  "these",
+  "they",
+  "they'd",
+  "they'll",
+  "they're",
+  "they've",
+  "this",
+  "those",
+  "through",
+  "to",
+  "too",
+  "under",
+  "until",
+  "up",
+  "very",
+  "was",
+  "wasn't",
+  "we",
+  "we'd",
+  "we'll",
+  "we're",
+  "we've",
+  "were",
+  "weren't",
+  "what",
+  "what's",
+  "when",
+  "when's",
+  "where",
+  "where's",
+  "which",
+  "while",
+  "who",
+  "who's",
+  "whom",
+  "why",
+  "why's",
+  "with",
+  "won't",
+  "would",
+  "wouldn't",
+  "you",
+  "you'd",
+  "you'll",
+  "you're",
+  "you've",
+  "your",
+  "yours",
+  "yourself",
+  "yourselves",
 ];
 
-const generateWordFrequencies = (reviews) => {
+const generateWordFrequencies = async (reviews) => {
   let wordCounts = {};
-  reviews.forEach((review) => {
-    const tokens = tokenizer
-      .tokenize(review.content)
-      .filter((word) => !stopWords.includes(word.toLowerCase()))
-      .map((word) => stemmer.stem(word));
+  let uniqueTokens = new Set();
 
+  for (const review of reviews) {
+    const tokens = tokenizer.tokenize(review.content);
     tokens.forEach((token) => {
-      wordCounts[token] = (wordCounts[token] || 0) + 1;
+      const lowerToken = token.toLowerCase();
+      if (!stopWords.includes(lowerToken)) {
+        uniqueTokens.add(lowerToken);
+      }
     });
-  });
+  }
+
+  const lemmas = await batchLemmatize([...uniqueTokens]);
+
+  for (const review of reviews) {
+    const tokens = tokenizer.tokenize(review.content);
+    tokens.forEach((token) => {
+      const lowerToken = token.toLowerCase();
+      const lemma = lemmas[lowerToken] || lowerToken;
+      wordCounts[lemma] = (wordCounts[lemma] || 0) + 1;
+    });
+  }
 
   return wordCounts;
+};
+
+const batchLemmatize = async (tokens) => {
+  const lemmaResults = {};
+  const lemmaPromises = tokens.map((token) =>
+    getLemma(token).then((lemma) => {
+      lemmaResults[token] = lemma;
+    })
+  );
+
+  await Promise.all(lemmaPromises);
+  return lemmaResults;
+};
+
+let lemmaCache = {};
+
+const getLemma = async (word) => {
+  if (lemmaCache[word]) {
+    return lemmaCache[word];
+  }
+
+  return new Promise((resolve, reject) => {
+    wordnet.lookup(word, (results) => {
+      const lemma = results.length > 0 ? results[0].lemma : word;
+      lemmaCache[word] = lemma;
+      resolve(lemma);
+    });
+  });
 };
 
 const getWordCloudData = async (productId) => {
@@ -201,62 +457,19 @@ const getWordCloudData = async (productId) => {
   }
 };
 
-Date.prototype.getWeek = function () {
-  const firstDayOfYear = new Date(this.getFullYear(), 0, 1);
-  const pastDaysOfYear = (this - firstDayOfYear) / 86400000;
-  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-};
+const getRatingsTrend = async (productId, startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
 
-const getRatingsTrend = async (productId, granularity, startDate, endDate) => {
-  const startDateObj = new Date(startDate);
-  const endDateObj = new Date(endDate);
+  end.setHours(23, 59, 59, 999);
 
-  let start, end, trends, groupBy;
+  const groupBy = "dayOfMonth";
+  const trends = await getTrendsForPeriod(productId, start, end, groupBy);
 
-  switch (granularity) {
-    case "daily":
-      start = new Date(startDateObj);
-      start.setHours(0, 0, 0, 0);
-
-      end = new Date(endDateObj);
-      end.setHours(23, 59, 59, 999);
-
-      groupBy = "hour";
-      trends = await getTrendsForPeriod(productId, start, end, groupBy);
-      trends = fillGaps(trends, start, end, granularity);
-      break;
-
-    case "weekly":
-      start = new Date(startDateObj);
-      start.setDate(startDateObj.getDate() - startDateObj.getDay());
-
-      end = new Date(endDateObj);
-      end.setDate(endDateObj.getDate() + 6);
-
-      groupBy = "dayOfWeek";
-      trends = await getTrendsForPeriod(productId, start, end, groupBy);
-      trends = fillGaps(trends, start, end, granularity);
-      break;
-
-    case "monthly":
-      start = new Date(startDateObj.getFullYear(), startDateObj.getMonth(), 1);
-
-      end = new Date(endDateObj.getFullYear(), endDateObj.getMonth() + 1, 0);
-
-      groupBy = "dayOfMonth";
-      trends = await getTrendsForPeriod(productId, start, end, groupBy);
-      trends = fillGaps(trends, start, end, granularity);
-      break;
-
-    default:
-      throw new Error("Invalid granularity");
-  }
-
-  return trends;
+  return fillGaps(trends, start, end);
 };
 
 const getTrendsForPeriod = async (productId, start, end, groupBy) => {
-  console.log(productId, start, end, groupBy);
   try {
     const timezoneOffset = new Date().getTimezoneOffset();
     const offsetHours = timezoneOffset / 60;
@@ -297,7 +510,6 @@ const getTrendsForPeriod = async (productId, start, end, groupBy) => {
           "_id.year": 1,
           "_id.month": 1,
           "_id.day": 1,
-          [`_id.${groupBy}`]: 1,
         },
       },
     ]);
@@ -307,29 +519,25 @@ const getTrendsForPeriod = async (productId, start, end, groupBy) => {
   }
 };
 
-const fillGaps = (trends, start, end, granularity) => {
+const fillGaps = (trends, start, end) => {
   const filledTrends = [];
   let current = new Date(start);
 
-  switch (granularity) {
-    case "monthly":
-      while (current <= end) {
-        const trendForDay = trends.find((t) => t._id.day === current.getDate());
-        if (trendForDay) {
-          filledTrends.push(trendForDay);
-        } else {
-          filledTrends.push(createDefaultTrend(current, granularity));
-        }
-        current.setDate(current.getDate() + 1);
-      }
-      break;
+  while (current <= end) {
+    const trendForDay = trends.find((t) => t._id.day === current.getDate());
+    if (trendForDay) {
+      filledTrends.push(trendForDay);
+    } else {
+      filledTrends.push(createDefaultTrend(current));
+    }
+    current.setDate(current.getDate() + 1);
   }
 
   return filledTrends;
 };
 
-const createDefaultTrend = (date, granularity, hour = null) => {
-  const defaultTrend = {
+const createDefaultTrend = (date) => {
+  return {
     _id: {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
@@ -340,12 +548,6 @@ const createDefaultTrend = (date, granularity, hour = null) => {
     lowestRating: null,
     count: 0,
   };
-
-  if (granularity === "daily") {
-    defaultTrend._id.hour = hour;
-  }
-
-  return defaultTrend;
 };
 
 module.exports = {

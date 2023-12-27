@@ -1,21 +1,36 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import cloud from "d3-cloud";
-import Typography from "@mui/material/Typography";
 
 const WordCloudChart = ({ words }) => {
   const cloudRef = useRef(null);
 
+  const getSentimentLabel = (value) => {
+    if (value < 0) return "Negative";
+    if (value === 0) return "Neutral";
+    return "Positive";
+  };
+
   useEffect(() => {
     const drawWordCloud = () => {
       const color = d3.scaleOrdinal(d3.schemeCategory10);
+      const cloudWidth = 669.6;
+      const cloudHeight = 400;
+
+      const mappedWords = words.map((d) => ({
+        text: d.text,
+        size: d.value + 10,
+        originalSize: d.value + 10,
+        sentiment: getSentimentLabel(d.value),
+      }));
 
       const layout = cloud()
-        .size([500, 500])
-        .words(words.map((d) => ({ text: d.text, size: d.value * 10 })))
-        .padding(5)
-        .rotate(() => ~~(Math.random() * 2) * 90)
-        .font("Impact")
+        .size([cloudWidth, cloudHeight])
+        .words(mappedWords)
+        .padding(2)
+        .rotate(0)
+        .spiral("archimedean")
+        .font("Times New Roman")
         .fontSize((d) => d.size)
         .on("end", draw);
 
@@ -27,23 +42,18 @@ const WordCloudChart = ({ words }) => {
           svg = d3.select(cloudRef.current).append("svg");
         }
         svg
-          .attr("width", "100%")
-          .attr("height", "100%")
-          .attr("viewBox", `0 0 ${layout.size()[0]} ${layout.size()[1]}`)
-          .attr("preserveAspectRatio", "xMinYMin meet");
+          .attr("width", cloudWidth)
+          .attr("height", cloudHeight)
+          .style("display", "block");
 
         let g = svg.select("g");
         if (g.empty()) {
           g = svg.append("g");
         }
 
-        g.attr(
-          "transform",
-          `translate(${layout.size()[0] / 2}, ${layout.size()[1] / 2})`
-        );
+        g.attr("transform", `translate(${cloudWidth / 2}, ${cloudHeight / 2})`);
 
         const text = g.selectAll("text").data(words);
-
         text
           .enter()
           .append("text")
@@ -54,14 +64,19 @@ const WordCloudChart = ({ words }) => {
           .attr("text-anchor", "middle")
           .attr(
             "transform",
-            (d) => `translate(${[d.x, d.y]})rotate(${d.rotate})`
+            (d) => `translate(${[d.x, d.y]}) rotate(${d.rotate})`
           )
           .text((d) => d.text)
-          .on("mouseover", function (d, i) {
-            d3.select(this).style("fill", "black");
+          .on("mouseover", function (event, d) {
+            d3.select(this)
+              .style("font-size", `${d.originalSize + 20}px`)
+              .style("cursor", "pointer")
+              .attr("title", `Sentiment: ${d.sentiment}`);
           })
-          .on("mouseout", function (d, i) {
-            d3.select(this).style("fill", color(i));
+          .on("mouseout", function (event, d) {
+            d3.select(this)
+              .style("font-size", `${d.originalSize}px`)
+              .style("cursor", "default");
           });
 
         text.exit().remove();
@@ -72,11 +87,14 @@ const WordCloudChart = ({ words }) => {
   }, [words]);
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <Typography variant="h6" color="textSecondary">
-        Keywords
-      </Typography>
-      <div ref={cloudRef}></div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+      <div ref={cloudRef} style={{ width: "100%", height: "100%" }}></div>
     </div>
   );
 };

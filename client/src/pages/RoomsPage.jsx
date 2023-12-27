@@ -40,35 +40,10 @@ const RoomsPage = () => {
   const [totalReviews, setTotalReviews] = useState(0);
 
   useEffect(() => {
-    if (products.length > 0) {
-      const totalRating = products.reduce(
-        (acc, product) => acc + product.averageRating,
-        0
-      );
-      const totalAverageRating = totalRating / products.length;
-
-      const totalWidgets = products.reduce(
-        (acc, product) => acc + product.widgets.length,
-        0
-      );
-
-      const totalReviewsCount = products.reduce(
-        (acc, product) => acc + product.reviews.length,
-        0
-      );
-
-      setTotalAverage(totalAverageRating);
-      setActiveWidgets(totalWidgets);
-      setTotalReviews(totalReviewsCount);
-    }
-  }, [products]);
-
-  useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
           `${SERVER_URL}/api/users/${auth.userId}/products/all`,
-
           {
             headers: {
               Authorization: "Bearer " + auth.token,
@@ -77,6 +52,28 @@ const RoomsPage = () => {
         );
 
         setProducts(response.data.products);
+        console.log(response.data.products);
+
+        // Now calculate the total average, widgets and reviews based on the new products
+        const totalRating = response.data.products.reduce(
+          (acc, product) => acc + product.averageRating,
+          0
+        );
+        const totalAverageRating = totalRating / response.data.products.length;
+
+        const totalWidgets = response.data.products.reduce(
+          (acc, product) => acc + product.widgets.length,
+          0
+        );
+
+        const totalReviewsCount = response.data.products.reduce(
+          (acc, product) => acc + product.reviews.length,
+          0
+        );
+
+        setTotalAverage(totalAverageRating);
+        setActiveWidgets(totalWidgets);
+        setTotalReviews(totalReviewsCount);
       } catch (error) {
         console.log("Error fetching products:", error.message);
       }
@@ -84,7 +81,6 @@ const RoomsPage = () => {
 
     fetchProducts();
   }, [refreshTrigger, auth.token, auth.userId]);
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
